@@ -15,6 +15,6 @@ namespace Kubex.Models
         public virtual Country Country { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
-        public ICollection<Company> Companies { get; set; }
+        public virtual ICollection<Company> Companies { get; set; }
     }
 }
