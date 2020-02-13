@@ -23,16 +23,29 @@ namespace Kubex.API
         }
 
         public IConfiguration Configuration { get; }
+        
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        //Configure services for development environment here
+        public void ConfigureDevelopmentServices(IServiceCollection services) 
         {
-            services.AddControllers();
-
-            services.AddDbContext<DataContext>(options => {
+            services.AddDbContext<DataContext>(options =>
+            {
                 options.UseLazyLoadingProxies();
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
             });
+        }
+
+        //Configure services for production environment here
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+
+        }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        //General configuration, gets added both in production and development environments.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
