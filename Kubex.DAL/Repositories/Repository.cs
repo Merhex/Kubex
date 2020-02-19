@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Kubex.DAL.Repositories
 {
-    public class Repository<T, TKey> : IRepository<T, TKey> where T : class
+    public class Repository<T, TKey> : IRepository<T, TKey> 
+        where T : class
     {
         protected readonly DataContext _context;
 
