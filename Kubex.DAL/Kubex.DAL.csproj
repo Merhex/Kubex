@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kubex.Models\Kubex.Models.csproj" />
+    <ProjectReference Include="..\Kubex.DTO\Kubex.DTO.csproj" />
   </ItemGroup>
 
 </Project>
