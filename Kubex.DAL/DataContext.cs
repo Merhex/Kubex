@@ -42,6 +42,8 @@ namespace Kubex.DAL
 
             builder.ApplyConfiguration(new UserPostConfiguration());
             builder.ApplyConfiguration(new MissionConfiguration());
+            builder.ApplyConfiguration(new AddressConfiguration());
+            builder.ApplyConfiguration(new UserConfiguration());
         }
     }
 }

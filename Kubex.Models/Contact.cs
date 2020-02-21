@@ -9,5 +9,7 @@ namespace Kubex.Models
         
         public byte ContactTypeId { get; set; }
         public virtual ContactType ContactType { get; set; }
+        public int CompanyId { get; set; }
+        public virtual Company Company { get; set; }
     }
 }

@@ -6,6 +6,7 @@ namespace Kubex.Models
     {
         public int Id { get; set; }
         public int HouseNumber { get; set; }
+        public string AppartementBus { get; set; }
 
         public int StreetId { get; set; }
         public virtual Street Street { get; set; }

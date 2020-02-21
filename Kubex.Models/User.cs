@@ -10,8 +10,9 @@ namespace Kubex.Models
 
         public int AddressId { get; set; }
         public virtual Address Address { get; set; }
+        public int LicenseId { get; set; }
+        public virtual License License { get; set; }
 
-        public virtual ICollection<License> Licenses { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
         public virtual ICollection<UserPost> UserPosts { get; set; }
     }

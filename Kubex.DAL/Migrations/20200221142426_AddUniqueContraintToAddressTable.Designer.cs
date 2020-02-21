@@ -3,14 +3,16 @@ using System;
 using Kubex.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kubex.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200221142426_AddUniqueContraintToAddressTable")]
+    partial class AddUniqueContraintToAddressTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,8 +295,7 @@ namespace Kubex.DAL.Migrations
 
                     b.HasIndex("LicenseTypeId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Licenses");
                 });
@@ -554,9 +555,6 @@ namespace Kubex.DAL.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("LicenseId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
 
@@ -789,7 +787,7 @@ namespace Kubex.DAL.Migrations
             modelBuilder.Entity("Kubex.Models.Address", b =>
                 {
                     b.HasOne("Kubex.Models.Country", "Country")
-                        .WithMany("Addresses")
+                        .WithMany()
                         .HasForeignKey("CountryId1");
 
                     b.HasOne("Kubex.Models.Street", "Street")
@@ -799,7 +797,7 @@ namespace Kubex.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Kubex.Models.ZIP", "ZIP")
-                        .WithMany("Addresses")
+                        .WithMany()
                         .HasForeignKey("ZIPId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -869,7 +867,7 @@ namespace Kubex.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Kubex.Models.Location", "Location")
-                        .WithMany("Entries")
+                        .WithMany()
                         .HasForeignKey("LocationId");
 
                     b.HasOne("Kubex.Models.Entry", "ParentEntry")
@@ -877,7 +875,7 @@ namespace Kubex.DAL.Migrations
                         .HasForeignKey("ParentEntryId");
 
                     b.HasOne("Kubex.Models.Priority", "Priority")
-                        .WithMany("Entries")
+                        .WithMany()
                         .HasForeignKey("PriorityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -886,14 +884,14 @@ namespace Kubex.DAL.Migrations
             modelBuilder.Entity("Kubex.Models.License", b =>
                 {
                     b.HasOne("Kubex.Models.LicenseType", "LicenseType")
-                        .WithMany("Licenses")
+                        .WithMany()
                         .HasForeignKey("LicenseTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Kubex.Models.User", "User")
-                        .WithOne("License")
-                        .HasForeignKey("Kubex.Models.License", "UserId");
+                        .WithMany("Licenses")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Kubex.Models.Media", b =>
@@ -951,7 +949,7 @@ namespace Kubex.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Kubex.Models.Location", "Location")
-                        .WithMany("Posts")
+                        .WithMany()
                         .HasForeignKey("LocationId");
                 });
 
@@ -974,7 +972,7 @@ namespace Kubex.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Kubex.Models.RoundStatus", "RoundStatus")
-                        .WithMany("Rounds")
+                        .WithMany()
                         .HasForeignKey("RoundStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

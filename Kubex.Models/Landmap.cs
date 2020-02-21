@@ -9,5 +9,6 @@ namespace Kubex.Models
         public string FloorplanUrl { get; set; }
 
         public virtual ICollection<Checkpoint> Checkpoints { get; set; }
+        public virtual ICollection<Round> Rounds { get; set; }
     }
 }
