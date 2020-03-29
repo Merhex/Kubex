@@ -6,7 +6,7 @@ namespace Kubex.Models
 
         public string Url { get; set; }
 
-        public byte EntryTypeId { get; set; }
+        public byte? EntryTypeId { get; set; }
         public virtual EntryType EntryType { get; set; }
         public byte MediaTypeId { get; set; }
         public virtual MediaType MediaType { get; set; }

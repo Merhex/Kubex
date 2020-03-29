@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kubex.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200221135544_AddedCompanyFKToContactTable")]
-    partial class AddedCompanyFKToContactTable
+    [Migration("20200329171237_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,7 +26,7 @@ namespace Kubex.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("AppartementBus")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
@@ -51,55 +51,10 @@ namespace Kubex.DAL.Migrations
 
                     b.HasIndex("ZIPId");
 
+                    b.HasIndex("AppartementBus", "CountryId", "HouseNumber", "StreetId", "ZIPId")
+                        .IsUnique();
+
                     b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("Kubex.Models.Checkpoint", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<byte>("CheckpointTypeId")
-                        .HasColumnType("tinyint unsigned");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Identifier")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<int?>("LandmapId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Mandatory")
-                        .HasColumnType("tinyint(1)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CheckpointTypeId");
-
-                    b.HasIndex("LandmapId");
-
-                    b.HasIndex("LocationId");
-
-                    b.ToTable("Checkpoints");
-                });
-
-            modelBuilder.Entity("Kubex.Models.CheckpointType", b =>
-                {
-                    b.Property<byte>("Id")
-                        .HasColumnType("tinyint unsigned");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CheckpointTypes");
                 });
 
             modelBuilder.Entity("Kubex.Models.Company", b =>
@@ -111,10 +66,6 @@ namespace Kubex.DAL.Migrations
                     b.Property<int?>("AddressId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.Property<string>("LogoUrl")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -123,8 +74,6 @@ namespace Kubex.DAL.Migrations
                     b.HasIndex("AddressId");
 
                     b.ToTable("Companies");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Company");
                 });
 
             modelBuilder.Entity("Kubex.Models.Contact", b =>
@@ -133,7 +82,10 @@ namespace Kubex.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ContactId")
                         .HasColumnType("int");
 
                     b.Property<byte>("ContactTypeId")
@@ -154,6 +106,8 @@ namespace Kubex.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("ContactId");
 
                     b.HasIndex("ContactTypeId");
 
@@ -259,20 +213,6 @@ namespace Kubex.DAL.Migrations
                     b.ToTable("EntryTypes");
                 });
 
-            modelBuilder.Entity("Kubex.Models.Landmap", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("FloorplanUrl")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Landmaps");
-                });
-
             modelBuilder.Entity("Kubex.Models.License", b =>
                 {
                     b.Property<int>("Id")
@@ -319,6 +259,9 @@ namespace Kubex.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("GPSData")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -327,7 +270,7 @@ namespace Kubex.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Location");
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("Kubex.Models.Media", b =>
@@ -339,7 +282,7 @@ namespace Kubex.DAL.Migrations
                     b.Property<int?>("EntryId")
                         .HasColumnType("int");
 
-                    b.Property<byte>("EntryTypeId")
+                    b.Property<byte?>("EntryTypeId")
                         .HasColumnType("tinyint unsigned");
 
                     b.Property<byte>("MediaTypeId")
@@ -372,65 +315,29 @@ namespace Kubex.DAL.Migrations
                     b.ToTable("MediaTypes");
                 });
 
-            modelBuilder.Entity("Kubex.Models.Mission", b =>
-                {
-                    b.Property<int>("CheckpointId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoundId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time(6)");
-
-                    b.Property<byte>("MissionTypeId")
-                        .HasColumnType("tinyint unsigned");
-
-                    b.HasKey("CheckpointId", "RoundId");
-
-                    b.HasIndex("MissionTypeId");
-
-                    b.HasIndex("RoundId");
-
-                    b.ToTable("Missions");
-                });
-
-            modelBuilder.Entity("Kubex.Models.MissionType", b =>
-                {
-                    b.Property<byte>("Id")
-                        .HasColumnType("tinyint unsigned");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MissionTypes");
-                });
-
             modelBuilder.Entity("Kubex.Models.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("AddressId")
+                    b.Property<int?>("AddressId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<int?>("LocationId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("LocationId");
 
@@ -450,60 +357,21 @@ namespace Kubex.DAL.Migrations
                     b.ToTable("Priorities");
                 });
 
-            modelBuilder.Entity("Kubex.Models.Round", b =>
+            modelBuilder.Entity("Kubex.Models.RoleType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<bool>("AgentRole")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Description")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time(6)");
-
-                    b.Property<int?>("EntryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LandmapId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<byte>("RoundStatusId")
-                        .HasColumnType("tinyint unsigned");
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time(6)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("EntryId");
-
-                    b.HasIndex("LandmapId");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("RoundStatusId");
-
-                    b.ToTable("Rounds");
-                });
-
-            modelBuilder.Entity("Kubex.Models.RoundStatus", b =>
-                {
-                    b.Property<byte>("Id")
-                        .HasColumnType("tinyint unsigned");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RoundStatuses");
+                    b.ToTable("RoleTypes");
                 });
 
             modelBuilder.Entity("Kubex.Models.Street", b =>
@@ -518,6 +386,26 @@ namespace Kubex.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Streets");
+                });
+
+            modelBuilder.Entity("Kubex.Models.Team", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<int>("RoleTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostId", "UserId");
+
+                    b.HasIndex("RoleTypeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("Kubex.Models.User", b =>
@@ -535,16 +423,15 @@ namespace Kubex.DAL.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.Property<string>("Email")
                         .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("EmployeeNumber")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -575,6 +462,9 @@ namespace Kubex.DAL.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int>("RoletypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -596,24 +486,9 @@ namespace Kubex.DAL.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
+                    b.HasIndex("RoletypeId");
+
                     b.ToTable("AspNetUsers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
-                });
-
-            modelBuilder.Entity("Kubex.Models.UserPost", b =>
-                {
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.HasKey("PostId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserPosts");
                 });
 
             modelBuilder.Entity("Kubex.Models.ZIP", b =>
@@ -758,63 +633,21 @@ namespace Kubex.DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Kubex.Models.Customer", b =>
-                {
-                    b.HasBaseType("Kubex.Models.Company");
-
-                    b.Property<string>("ContractNumber")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasDiscriminator().HasValue("Customer");
-                });
-
-            modelBuilder.Entity("Kubex.Models.Agent", b =>
-                {
-                    b.HasBaseType("Kubex.Models.User");
-
-                    b.Property<string>("DepartmentNumber")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("EmployeeNumber")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasDiscriminator().HasValue("Agent");
-                });
-
             modelBuilder.Entity("Kubex.Models.Address", b =>
                 {
                     b.HasOne("Kubex.Models.Country", "Country")
-                        .WithMany()
+                        .WithMany("Addresses")
                         .HasForeignKey("CountryId1");
 
                     b.HasOne("Kubex.Models.Street", "Street")
-                        .WithMany()
+                        .WithMany("Addresses")
                         .HasForeignKey("StreetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Kubex.Models.ZIP", "ZIP")
-                        .WithMany()
+                        .WithMany("Addresses")
                         .HasForeignKey("ZIPId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Kubex.Models.Checkpoint", b =>
-                {
-                    b.HasOne("Kubex.Models.CheckpointType", "CheckpointType")
-                        .WithMany()
-                        .HasForeignKey("CheckpointTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Kubex.Models.Landmap", null)
-                        .WithMany("Checkpoints")
-                        .HasForeignKey("LandmapId");
-
-                    b.HasOne("Kubex.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -828,11 +661,13 @@ namespace Kubex.DAL.Migrations
 
             modelBuilder.Entity("Kubex.Models.Contact", b =>
                 {
-                    b.HasOne("Kubex.Models.Company", "Company")
+                    b.HasOne("Kubex.Models.Company", null)
                         .WithMany("Contacts")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
+
+                    b.HasOne("Kubex.Models.Contact", null)
+                        .WithMany("Contacts")
+                        .HasForeignKey("ContactId");
 
                     b.HasOne("Kubex.Models.ContactType", "ContactType")
                         .WithMany()
@@ -858,13 +693,13 @@ namespace Kubex.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Kubex.Models.EntryType", "EntryType")
-                        .WithMany()
+                        .WithMany("Entries")
                         .HasForeignKey("EntryTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Kubex.Models.Location", "Location")
-                        .WithMany()
+                        .WithMany("Entries")
                         .HasForeignKey("LocationId");
 
                     b.HasOne("Kubex.Models.Entry", "ParentEntry")
@@ -872,7 +707,7 @@ namespace Kubex.DAL.Migrations
                         .HasForeignKey("ParentEntryId");
 
                     b.HasOne("Kubex.Models.Priority", "Priority")
-                        .WithMany()
+                        .WithMany("Entries")
                         .HasForeignKey("PriorityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -881,7 +716,7 @@ namespace Kubex.DAL.Migrations
             modelBuilder.Entity("Kubex.Models.License", b =>
                 {
                     b.HasOne("Kubex.Models.LicenseType", "LicenseType")
-                        .WithMany()
+                        .WithMany("Licenses")
                         .HasForeignKey("LicenseTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -898,80 +733,49 @@ namespace Kubex.DAL.Migrations
                         .HasForeignKey("EntryId");
 
                     b.HasOne("Kubex.Models.EntryType", "EntryType")
-                        .WithMany()
-                        .HasForeignKey("EntryTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Media")
+                        .HasForeignKey("EntryTypeId");
 
                     b.HasOne("Kubex.Models.MediaType", "MediaType")
-                        .WithMany()
+                        .WithMany("Media")
                         .HasForeignKey("MediaTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Kubex.Models.Mission", b =>
-                {
-                    b.HasOne("Kubex.Models.Checkpoint", "Checkpoint")
-                        .WithMany("Missions")
-                        .HasForeignKey("CheckpointId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Kubex.Models.MissionType", "MissionType")
-                        .WithMany()
-                        .HasForeignKey("MissionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Kubex.Models.Round", "Round")
-                        .WithMany("Missions")
-                        .HasForeignKey("RoundId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Kubex.Models.Post", b =>
                 {
                     b.HasOne("Kubex.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Kubex.Models.Customer", "Customer")
                         .WithMany("Posts")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AddressId");
+
+                    b.HasOne("Kubex.Models.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId");
 
                     b.HasOne("Kubex.Models.Location", "Location")
-                        .WithMany()
+                        .WithMany("Posts")
                         .HasForeignKey("LocationId");
                 });
 
-            modelBuilder.Entity("Kubex.Models.Round", b =>
+            modelBuilder.Entity("Kubex.Models.Team", b =>
                 {
-                    b.HasOne("Kubex.Models.Entry", null)
-                        .WithMany("Rounds")
-                        .HasForeignKey("EntryId");
-
-                    b.HasOne("Kubex.Models.Landmap", "Landmap")
-                        .WithMany()
-                        .HasForeignKey("LandmapId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Kubex.Models.Post", "Post")
-                        .WithMany("Rounds")
+                        .WithMany("Teams")
                         .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Kubex.Models.RoleType", "RoleType")
+                        .WithMany()
+                        .HasForeignKey("RoleTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Kubex.Models.RoundStatus", "RoundStatus")
-                        .WithMany()
-                        .HasForeignKey("RoundStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("Kubex.Models.User", "User")
+                        .WithMany("Teams")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -982,20 +786,11 @@ namespace Kubex.DAL.Migrations
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("Kubex.Models.UserPost", b =>
-                {
-                    b.HasOne("Kubex.Models.Post", "Post")
-                        .WithMany("UserPosts")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Kubex.Models.User", "User")
-                        .WithMany("UserPosts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.HasOne("Kubex.Models.RoleType", "RoleType")
+                        .WithMany()
+                        .HasForeignKey("RoletypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

@@ -23,18 +23,6 @@ namespace Kubex.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CheckpointTypes",
-                columns: table => new
-                {
-                    Id = table.Column<byte>(nullable: false),
-                    Type = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CheckpointTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ContactTypes",
                 columns: table => new
                 {
@@ -84,19 +72,6 @@ namespace Kubex.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Landmaps",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FloorplanUrl = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Landmaps", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LicenseTypes",
                 columns: table => new
                 {
@@ -110,17 +85,18 @@ namespace Kubex.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Location",
+                name: "Locations",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
                     GPSData = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Location", x => x.Id);
+                    table.PrimaryKey("PK_Locations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,18 +112,6 @@ namespace Kubex.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MissionTypes",
-                columns: table => new
-                {
-                    Id = table.Column<byte>(nullable: false),
-                    Type = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MissionTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Priorities",
                 columns: table => new
                 {
@@ -160,15 +124,17 @@ namespace Kubex.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoundStatuses",
+                name: "RoleTypes",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(nullable: false),
-                    Status = table.Column<string>(nullable: true)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(nullable: true),
+                    AgentRole = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoundStatuses", x => x.Id);
+                    table.PrimaryKey("PK_RoleTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -219,42 +185,6 @@ namespace Kubex.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Checkpoints",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Identifier = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Mandatory = table.Column<bool>(nullable: false),
-                    CheckpointTypeId = table.Column<byte>(nullable: false),
-                    LocationId = table.Column<int>(nullable: false),
-                    LandmapId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Checkpoints", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Checkpoints_CheckpointTypes_CheckpointTypeId",
-                        column: x => x.CheckpointTypeId,
-                        principalTable: "CheckpointTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Checkpoints_Landmaps_LandmapId",
-                        column: x => x.LandmapId,
-                        principalTable: "Landmaps",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Checkpoints_Location_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Location",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Entries",
                 columns: table => new
                 {
@@ -284,9 +214,9 @@ namespace Kubex.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Entries_Location_LocationId",
+                        name: "FK_Entries_Locations_LocationId",
                         column: x => x.LocationId,
-                        principalTable: "Location",
+                        principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -310,6 +240,7 @@ namespace Kubex.DAL.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     HouseNumber = table.Column<int>(nullable: false),
+                    AppartementBus = table.Column<string>(nullable: true),
                     StreetId = table.Column<int>(nullable: false),
                     ZIPId = table.Column<int>(nullable: false),
                     CountryId = table.Column<int>(nullable: false),
@@ -345,7 +276,7 @@ namespace Kubex.DAL.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Url = table.Column<string>(nullable: true),
-                    EntryTypeId = table.Column<byte>(nullable: false),
+                    EntryTypeId = table.Column<byte>(nullable: true),
                     MediaTypeId = table.Column<byte>(nullable: false),
                     EntryId = table.Column<int>(nullable: true)
                 },
@@ -363,7 +294,7 @@ namespace Kubex.DAL.Migrations
                         column: x => x.EntryTypeId,
                         principalTable: "EntryTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Media_MediaTypes_MediaTypeId",
                         column: x => x.MediaTypeId,
@@ -393,10 +324,9 @@ namespace Kubex.DAL.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
-                    AddressId = table.Column<int>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false),
                     EmployeeNumber = table.Column<string>(nullable: true),
-                    DepartmentNumber = table.Column<string>(nullable: true)
+                    RoletypeId = table.Column<int>(nullable: false),
+                    AddressId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -405,6 +335,12 @@ namespace Kubex.DAL.Migrations
                         name: "FK_AspNetUsers_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_RoleTypes_RoletypeId",
+                        column: x => x.RoletypeId,
+                        principalTable: "RoleTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -416,9 +352,7 @@ namespace Kubex.DAL.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     LogoUrl = table.Column<string>(nullable: true),
-                    AddressId = table.Column<int>(nullable: true),
-                    Discriminator = table.Column<string>(nullable: false),
-                    ContractNumber = table.Column<string>(nullable: true)
+                    AddressId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -549,8 +483,9 @@ namespace Kubex.DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CustomerId = table.Column<int>(nullable: false),
-                    AddressId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    CompanyId = table.Column<int>(nullable: true),
+                    AddressId = table.Column<int>(nullable: true),
                     LocationId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -561,17 +496,17 @@ namespace Kubex.DAL.Migrations
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Posts_Companies_CustomerId",
-                        column: x => x.CustomerId,
+                        name: "FK_Posts_Companies_CompanyId",
+                        column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Posts_Location_LocationId",
+                        name: "FK_Posts_Locations_LocationId",
                         column: x => x.LocationId,
-                        principalTable: "Location",
+                        principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -586,6 +521,7 @@ namespace Kubex.DAL.Migrations
                     Sequence = table.Column<int>(nullable: false),
                     ContactTypeId = table.Column<byte>(nullable: false),
                     CompanyId = table.Column<int>(nullable: true),
+                    ContactId = table.Column<int>(nullable: true),
                     PostId = table.Column<int>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
@@ -596,6 +532,12 @@ namespace Kubex.DAL.Migrations
                         name: "FK_Contacts_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Contacts_Contacts_ContactId",
+                        column: x => x.ContactId,
+                        principalTable: "Contacts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -619,99 +561,31 @@ namespace Kubex.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rounds",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    StartTime = table.Column<TimeSpan>(nullable: false),
-                    Duration = table.Column<TimeSpan>(nullable: false),
-                    RoundStatusId = table.Column<byte>(nullable: false),
-                    LandmapId = table.Column<int>(nullable: false),
-                    PostId = table.Column<int>(nullable: false),
-                    EntryId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rounds", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Rounds_Entries_EntryId",
-                        column: x => x.EntryId,
-                        principalTable: "Entries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Rounds_Landmaps_LandmapId",
-                        column: x => x.LandmapId,
-                        principalTable: "Landmaps",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Rounds_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Rounds_RoundStatuses_RoundStatusId",
-                        column: x => x.RoundStatusId,
-                        principalTable: "RoundStatuses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserPosts",
+                name: "Teams",
                 columns: table => new
                 {
                     PostId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>(nullable: false),
+                    RoleTypeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserPosts", x => new { x.PostId, x.UserId });
+                    table.PrimaryKey("PK_Teams", x => new { x.PostId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_UserPosts_Posts_PostId",
+                        name: "FK_Teams_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_UserPosts_AspNetUsers_UserId",
+                        name: "FK_Teams_RoleTypes_RoleTypeId",
+                        column: x => x.RoleTypeId,
+                        principalTable: "RoleTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Teams_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Missions",
-                columns: table => new
-                {
-                    CheckpointId = table.Column<int>(nullable: false),
-                    RoundId = table.Column<int>(nullable: false),
-                    Duration = table.Column<TimeSpan>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    MissionTypeId = table.Column<byte>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Missions", x => new { x.CheckpointId, x.RoundId });
-                    table.ForeignKey(
-                        name: "FK_Missions_Checkpoints_CheckpointId",
-                        column: x => x.CheckpointId,
-                        principalTable: "Checkpoints",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Missions_MissionTypes_MissionTypeId",
-                        column: x => x.MissionTypeId,
-                        principalTable: "MissionTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Missions_Rounds_RoundId",
-                        column: x => x.RoundId,
-                        principalTable: "Rounds",
                         principalColumn: "Id");
                 });
 
@@ -729,6 +603,12 @@ namespace Kubex.DAL.Migrations
                 name: "IX_Addresses_ZIPId",
                 table: "Addresses",
                 column: "ZIPId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_AppartementBus_CountryId_HouseNumber_StreetId_ZIPId",
+                table: "Addresses",
+                columns: new[] { "AppartementBus", "CountryId", "HouseNumber", "StreetId", "ZIPId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -773,19 +653,9 @@ namespace Kubex.DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Checkpoints_CheckpointTypeId",
-                table: "Checkpoints",
-                column: "CheckpointTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Checkpoints_LandmapId",
-                table: "Checkpoints",
-                column: "LandmapId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Checkpoints_LocationId",
-                table: "Checkpoints",
-                column: "LocationId");
+                name: "IX_AspNetUsers_RoletypeId",
+                table: "AspNetUsers",
+                column: "RoletypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_AddressId",
@@ -796,6 +666,11 @@ namespace Kubex.DAL.Migrations
                 name: "IX_Contacts_CompanyId",
                 table: "Contacts",
                 column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contacts_ContactId",
+                table: "Contacts",
+                column: "ContactId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contacts_ContactTypeId",
@@ -863,24 +738,14 @@ namespace Kubex.DAL.Migrations
                 column: "MediaTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Missions_MissionTypeId",
-                table: "Missions",
-                column: "MissionTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Missions_RoundId",
-                table: "Missions",
-                column: "RoundId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Posts_AddressId",
                 table: "Posts",
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_CustomerId",
+                name: "IX_Posts_CompanyId",
                 table: "Posts",
-                column: "CustomerId");
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_LocationId",
@@ -888,28 +753,13 @@ namespace Kubex.DAL.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rounds_EntryId",
-                table: "Rounds",
-                column: "EntryId");
+                name: "IX_Teams_RoleTypeId",
+                table: "Teams",
+                column: "RoleTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rounds_LandmapId",
-                table: "Rounds",
-                column: "LandmapId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rounds_PostId",
-                table: "Rounds",
-                column: "PostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rounds_RoundStatusId",
-                table: "Rounds",
-                column: "RoundStatusId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserPosts_UserId",
-                table: "UserPosts",
+                name: "IX_Teams_UserId",
+                table: "Teams",
                 column: "UserId");
         }
 
@@ -940,10 +790,7 @@ namespace Kubex.DAL.Migrations
                 name: "Media");
 
             migrationBuilder.DropTable(
-                name: "Missions");
-
-            migrationBuilder.DropTable(
-                name: "UserPosts");
+                name: "Teams");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -955,34 +802,16 @@ namespace Kubex.DAL.Migrations
                 name: "LicenseTypes");
 
             migrationBuilder.DropTable(
-                name: "MediaTypes");
-
-            migrationBuilder.DropTable(
-                name: "Checkpoints");
-
-            migrationBuilder.DropTable(
-                name: "MissionTypes");
-
-            migrationBuilder.DropTable(
-                name: "Rounds");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "CheckpointTypes");
-
-            migrationBuilder.DropTable(
                 name: "Entries");
 
             migrationBuilder.DropTable(
-                name: "Landmaps");
+                name: "MediaTypes");
 
             migrationBuilder.DropTable(
                 name: "Posts");
 
             migrationBuilder.DropTable(
-                name: "RoundStatuses");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "DailyActivityReports");
@@ -997,7 +826,10 @@ namespace Kubex.DAL.Migrations
                 name: "Companies");
 
             migrationBuilder.DropTable(
-                name: "Location");
+                name: "Locations");
+
+            migrationBuilder.DropTable(
+                name: "RoleTypes");
 
             migrationBuilder.DropTable(
                 name: "Addresses");

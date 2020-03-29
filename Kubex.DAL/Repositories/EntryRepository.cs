@@ -26,7 +26,6 @@ namespace Kubex.DAL.Repositories
                 Location = dto.Location,
                 ChildEntries = dto.ChildEntries,
                 Media = dto.Media,
-                Rounds = dto.Rounds,
             };
 
             Add(entry);

@@ -1,15 +1,17 @@
+using System.Collections.Generic;
+
 namespace Kubex.Models
 {
     public class Contact
     {
         public int Id { get; set; }
 
-        public string Value { get; set; } //TODO: Clarify
-        public int Sequence { get; set; } //TODO: Clarify
+        public string Value { get; set; }
+        public int Sequence { get; set; }
         
         public byte ContactTypeId { get; set; }
         public virtual ContactType ContactType { get; set; }
-        public int CompanyId { get; set; }
-        public virtual Company Company { get; set; }
+
+        public virtual ICollection<Contact> Contacts { get; set; }
     }
 }

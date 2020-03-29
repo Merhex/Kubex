@@ -15,6 +15,5 @@ namespace Kubex.DTO
 
         public virtual ICollection<Entry> ChildEntries { get; set; }
         public virtual ICollection<Media> Media { get; set; }
-        public virtual ICollection<Round> Rounds { get; set; }
     }
 }

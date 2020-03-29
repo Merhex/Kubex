@@ -5,18 +5,18 @@ namespace Kubex.Models
     public class Post
     {
         public int Id { get; set; }
+        public string Name { get; set; }
 
-        public int CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
+        public int? CompanyId { get; set; }
+        public virtual Company Company { get; set; }
 
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         public virtual Address Address { get; set; }
 
         public int? LocationId { get; set; }
         public virtual Location Location { get; set; }
 
         public virtual ICollection<Contact> Contacts { get; set; }
-        public virtual ICollection<Round> Rounds { get; set; }
-        public virtual ICollection<UserPost> UserPosts { get; set; }
+        public virtual ICollection<Team> Teams { get; set; }
     }
 }
