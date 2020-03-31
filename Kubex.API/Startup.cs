@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kubex.DAL;
+using Kubex.DTO.Configurations;
 using Kubex.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -61,13 +62,14 @@ namespace Kubex.API
                     = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
 
-            services.AddAutoMapper(typeof(Startup).Assembly);
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
             services
                 .AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>()
                 .AddSignInManager<SignInManager<User>>()
-                .AddUserManager<UserManager<User>>();
+                .AddUserManager<UserManager<User>>()
+                .AddRoleManager<RoleManager<IdentityRole>>();
 
             services
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

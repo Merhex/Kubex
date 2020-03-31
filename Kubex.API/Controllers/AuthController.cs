@@ -47,10 +47,12 @@ namespace Kubex.API.Controllers
             {
                 var userToReturn = _mapper.Map<UserToReturnDTO>(newUser);
 
-                return Ok(new 
-                { 
-                    user = userToReturn
-                });
+                return CreatedAtRoute
+                (
+                    "GetUser",
+                    new { controller = "Users", userName = newUser.UserName },
+                    userToReturn
+                );
             }
 
             return BadRequest(result.Errors);
@@ -65,21 +67,23 @@ namespace Kubex.API.Controllers
 
             if (result.Succeeded)
             {
+                var userToReturn = _mapper.Map<UserToReturnDTO>(user);
+
                 return Ok(new
                 {
                     token = GenerateJwtToken(user).Result,
-                    user
+                    user = userToReturn
                 });
             }
 
-            return Unauthorized();
+            return Unauthorized("We could not find an account with that given username and password.");
         }
 
         private async Task<string> GenerateJwtToken(User user)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName)
             };
 
