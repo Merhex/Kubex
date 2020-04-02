@@ -10,6 +10,9 @@ namespace Kubex.DTO.Configurations
             CreateMap<User, UserToReturnDTO>();
 
             CreateMap<UserToReturnDTO, User>();
+
+            CreateMap<UserRegisterDTO, User>()
+                .ForMember(u => u.Address, opt => opt.MapFrom<AddressResolver>());
         }
     }
 }
