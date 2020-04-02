@@ -3,14 +3,16 @@ using System;
 using Kubex.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kubex.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200402143653_ChangedZIPCodeColumnType")]
+    partial class ChangedZIPCodeColumnType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,9 +65,6 @@ namespace Kubex.DAL.Migrations
 
                     b.Property<int?>("AddressId")
                         .HasColumnType("int");
-
-                    b.Property<string>("CustomerNumber")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("LogoUrl")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -463,6 +462,9 @@ namespace Kubex.DAL.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int>("RoletypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -483,6 +485,8 @@ namespace Kubex.DAL.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasName("UserNameIndex");
+
+                    b.HasIndex("RoletypeId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -780,6 +784,12 @@ namespace Kubex.DAL.Migrations
                     b.HasOne("Kubex.Models.Address", "Address")
                         .WithMany("Users")
                         .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Kubex.Models.RoleType", "RoleType")
+                        .WithMany()
+                        .HasForeignKey("RoletypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
