@@ -1,5 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\Kubex.DAL\Kubex.DAL.csproj" />
+    <ProjectReference Include="..\Kubex.DTO\Kubex.DTO.csproj" />
+    <ProjectReference Include="..\Kubex.Models\Kubex.Models.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
