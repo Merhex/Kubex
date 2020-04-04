@@ -13,16 +13,11 @@ namespace Kubex.API.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserService _userService;
 
         public UsersController(
-            RoleManager<IdentityRole> roleManager,
             IUserService userService)
         {
-            _roleManager = roleManager;
             _userService = userService;
         }
 
