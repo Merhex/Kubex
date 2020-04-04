@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using Kubex.BLL.Services;
 using Kubex.DTO;
 using Kubex.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -15,61 +16,40 @@ namespace Kubex.API.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IUserService _userService;
 
-        public UsersController(IMapper mapper,
-            UserManager<User> userManager,
-            RoleManager<IdentityRole> roleManager)
+        public UsersController(
+            RoleManager<IdentityRole> roleManager,
+            IUserService userService)
         {
             _roleManager = roleManager;
-            _userManager = userManager;
-            _mapper = mapper;
+            _userService = userService;
         }
 
         [HttpGet("{userName}", Name = "GetUser")]
         public async Task<IActionResult> Get(string userName)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            var user = await _userService.GetUserAsync(userName);
 
-            if (user == null)
-                return BadRequest("We could not find a user with the given username.");
-
-            var userToReturn = _mapper.Map<UserToReturnDTO>(user);
-
-            return Ok(userToReturn);
+            return Ok(user);
         }
 
         [Authorize(Roles = "Administrator, Manager")]
         [HttpPost("{userName}/roles/add")]
-        public async Task<IActionResult> AddRole(string userName, AddRoleDTO dto)
+        public async Task<IActionResult> AddRole(string userName, ModifyRolesDTO dto)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            var user = await _userService.AddRoleToUserAsync(dto);
 
-            if (user == null)
-                return BadRequest("We could not find a user with the given username.");
-
-            if (await _roleManager.FindByNameAsync(dto.Role) == null)
-                return BadRequest("The given role does not exist.");
-
-            await _userManager.AddToRoleAsync(user, dto.Role);
-
-            return Ok();
+            return Ok(user);
         }
 
         [Authorize(Roles = "Administrator, Manager")]
         [HttpPost("{userName}/roles/delete")]
-        public async Task<IActionResult> DeleteRole(AddRoleDTO dto, string userName)
+        public async Task<IActionResult> DeleteRole(string userName, ModifyRolesDTO dto)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            var user = await _userService.RemoveRoleFromUserAsync(dto);
 
-            if (user == null)
-                return BadRequest("We could not find a user with the given username.");
-
-            if (await _roleManager.FindByNameAsync(dto.Role) == null)
-                return BadRequest("The given role does not exist.");
-
-            await _userManager.RemoveFromRoleAsync(user, dto.Role);
-
-            return Ok();
+            return Ok(user);
         }
     }
 }

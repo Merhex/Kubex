@@ -1,6 +1,8 @@
+using Kubex.Models;
+
 namespace Kubex.DAL.Repositories
 {
-    public interface IDailyActivityReportRepository
+    public interface IDailyActivityReportRepository : IRepository<DailyActivityReport, int>
     {
          
     }
