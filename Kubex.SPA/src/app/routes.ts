@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-// import { ClientComponent } from './client/client.component';
+import { LoginComponent } from './login/login.component';
 
 export const appRoutes: Routes = [
     { path: 'home', component: HomeComponent },
-    // { path: 'clients', component: ClientComponent },
+    { path: 'login', component: LoginComponent },
     { path: '**', redirectTo: 'home', pathMatch: 'full' }
 ];
