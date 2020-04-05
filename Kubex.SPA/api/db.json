@@ -1,0 +1,19 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "name": "Bellens",
+        "first name": "Kurt"
+      },
+      {
+        "id": 2,
+        "name": "Breekweg",
+        "first name": "Axel"
+      },
+      {
+        "id": 3,
+        "name": "Paulus",
+        "first name": "Jean"
+      }
+    ]
+  }
