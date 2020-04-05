@@ -24,7 +24,6 @@ namespace Kubex.DAL
         public DbSet<Street> Streets { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<ZIP> ZIPCodes { get; set; }
-        public DbSet<RoleType> RoleTypes { get; set; }
         public DbSet<Location> Locations { get; set; }
 
         public DataContext(DbContextOptions options) : base (options) { }
@@ -35,6 +34,18 @@ namespace Kubex.DAL
 
             builder.ApplyConfiguration(new TeamConfiguration());
             builder.ApplyConfiguration(new AddressConfiguration());
+
+            builder.Entity<ZIP>()
+                .HasIndex(x => x.Code)
+                .IsUnique();
+
+            builder.Entity<Street>()
+                .HasIndex(x => x.Name)
+                .IsUnique();   
+
+            builder.Entity<Country>()
+                .HasIndex(x => x.Name)
+                .IsUnique();  
         }
     }
 }

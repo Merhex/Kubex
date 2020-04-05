@@ -5,7 +5,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Kubex.BLL.Services;
 using Kubex.DAL;
+using Kubex.DAL.Repositories;
 using Kubex.DTO.Configurations;
 using Kubex.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -67,16 +69,19 @@ namespace Kubex.API
                 });
 
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
-
-            services
-                .AddIdentity<User, IdentityRole>()
+            
+            services.AddIdentityCore<User>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>()
                 .AddSignInManager<SignInManager<User>>()
                 .AddUserManager<UserManager<User>>()
-                .AddRoleManager<RoleManager<IdentityRole>>();
+                .AddDefaultTokenProviders();
 
             services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddAuthentication(options => {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -89,6 +94,13 @@ namespace Kubex.API
                 });
             
             services.AddAuthorization();
+
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IStreetRepository, StreetRepository>();
+            services.AddScoped<IZIPCodeRepository, ZIPCodeRepository>();
+            services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

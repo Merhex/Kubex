@@ -1,12 +1,18 @@
 using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kubex.DAL.Repositories;
 using Kubex.DTO;
 using Kubex.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Kubex.BLL.Services
 {
@@ -16,11 +22,22 @@ namespace Kubex.BLL.Services
         private readonly IMapper _mapper;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserRepository _repository;
+        private readonly IConfiguration _configuration;
+        private readonly SignInManager<User> _signInManager;
+        private readonly IAddressRepository _addressRepository;
 
         public UserService(UserManager<User> userManager,
-            RoleManager<IdentityRole> roleManager, IMapper mapper, IUserRepository repository)
+            RoleManager<IdentityRole> roleManager,
+            IMapper mapper,
+            IUserRepository repository,
+            IConfiguration configuration,
+            SignInManager<User> signInManager,
+            IAddressRepository addressRepository)
         {
             _repository = repository;
+            _configuration = configuration;
+            _signInManager = signInManager;
+            _addressRepository = addressRepository;
             _roleManager = roleManager;
             _mapper = mapper;
             _userManager = userManager;
@@ -104,8 +121,93 @@ namespace Kubex.BLL.Services
             return usersToReturn;
         }
 
+        public async Task<string> GenerateJWTToken(UserLoginDTO dto)
+        {
+            var user = await _userManager.FindByNameAsync(dto.UserName);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName)
+            };
+
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var tokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(double.Parse(_configuration.GetSection("AppSettings:TokenExperiryInDays").Value)),
+                SigningCredentials = credentials
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
+        }
+
+        public async Task<UserToReturnDTO> Register(UserRegisterDTO dto)
+        {
+            var newUser = _mapper.Map<User>(dto);
+
+            var address = await _addressRepository
+                .FindRange
+                ( 
+                    a => a.Country.Name == dto.Country &&
+                    a.ZIP.Code == dto.ZIP &&
+                    a.Street.Name == dto.Street
+                )
+                .FirstAsync();
+            
+            if (address != null)
+                newUser.Address = address;
+
+            var result = await _userManager.CreateAsync(newUser, dto.Password);
+                   
+            if (result.Succeeded)
+            {
+                var userToReturn = _mapper.Map<UserToReturnDTO>(newUser);
+
+                return userToReturn;
+            }
+
+            throw new ApplicationException($"Something went wrong trying to register the user: {result.Errors.FirstOrDefault().Description}");
+        }
+
+        public async Task<UserToReturnDTO> Login(UserLoginDTO dto)
+        {
+            var user = await _userManager.FindByNameAsync(dto.UserName);
+
+            if (user == null)
+                throw new ApplicationException("We could not find an account with that given username and password.");
+
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
+
+            if (result.Succeeded)
+            {
+                var userToReturn = _mapper.Map<UserToReturnDTO>(user);
+
+                return userToReturn;
+            }
+
+            throw new ApplicationException("We could not find an account with that given username and password.");
+        }
+
+        
         private async Task<(bool isValid, string error, User user)> ValidateModifyRolesDTO(ModifyRolesDTO dto) 
         {
+            if (dto == null)
+                return (false, "The data sent was invalid, please check the formatting or contact an administrator if you think this is an error.", null);
+                
             var user = await _userManager.FindByNameAsync(dto.UserName);
 
             if (user == null)

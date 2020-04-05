@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kubex.BLL.Services;
@@ -21,30 +22,52 @@ namespace Kubex.API.Controllers
             _userService = userService;
         }
 
+        [Authorize]        
         [HttpGet("{userName}", Name = "GetUser")]
         public async Task<IActionResult> Get(string userName)
         {
-            var user = await _userService.GetUserAsync(userName);
+            try
+            {
+                var user = await _userService.GetUserAsync(userName);
 
-            return Ok(user);
+                return Ok(user);
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Authorize(Roles = "Administrator, Manager")]
         [HttpPost("{userName}/roles/add")]
-        public async Task<IActionResult> AddRole(string userName, ModifyRolesDTO dto)
+        public async Task<IActionResult> AddRole(string userName,  [FromBody] ModifyRolesDTO dto)
         {
-            var user = await _userService.AddRoleToUserAsync(dto);
+            try
+            {
+                var user = await _userService.AddRoleToUserAsync(dto);
 
-            return Ok(user);
+                return Ok(user);
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [Authorize(Roles = "Administrator, Manager")]
         [HttpPost("{userName}/roles/delete")]
-        public async Task<IActionResult> DeleteRole(string userName, ModifyRolesDTO dto)
+        public async Task<IActionResult> DeleteRole(string userName, [FromBody] ModifyRolesDTO dto)
         {
-            var user = await _userService.RemoveRoleFromUserAsync(dto);
+            try
+            {
+                var user = await _userService.RemoveRoleFromUserAsync(dto);
 
-            return Ok(user);
+                return Ok(user); 
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
