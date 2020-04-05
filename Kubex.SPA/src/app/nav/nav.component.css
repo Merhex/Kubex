@@ -1,0 +1,13 @@
+li {
+    width: 100px;
+}
+
+a {
+    width: 100px;
+    height: 40px;;
+}
+
+img {
+    max-height: 40px;
+    margin-top: -5px;
+}
