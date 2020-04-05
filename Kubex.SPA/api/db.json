@@ -3,17 +3,38 @@
       {
         "id": 1,
         "name": "Bellens",
-        "first name": "Kurt"
+        "firstname": "Kurt",
+        "photo": "U0001_KB.png"
       },
       {
         "id": 2,
         "name": "Breekweg",
-        "first name": "Axel"
+        "firstname": "Axel",
+        "photo": "U0002_AB.png"
       },
       {
         "id": 3,
         "name": "Paulus",
-        "first name": "Jean"
+        "firstname": "Jeanine",
+        "photo": "U0003_JP.png"
+      },
+      {
+        "id": 4,
+        "name": "Springers",
+        "firstname": "Tanja",
+        "photo": "U0004_TS.png"
+      },
+      {
+        "id": 5,
+        "name": "Fung",
+        "firstname": "Lok",
+        "photo": "U0005_LF.png"
+      },
+      {
+        "id": 6,
+        "name": "Claasen",
+        "firstname": "Nadine",
+        "photo": "U0006_NC.png"
       }
     ]
   }

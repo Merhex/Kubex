@@ -1,0 +1,20 @@
+.userlist div {
+    width: 20%;
+    min-width: 300px;
+    max-width: 500px;
+    background-color: slategray;
+    border: 1px solid grey;
+    padding: 10px;
+}
+
+.item img {
+    width: 50px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.item span {
+    margin-left: 5px;
+    font-size: 1.75rem;
+    vertical-align: middle;
+}

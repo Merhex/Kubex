@@ -1,0 +1,7 @@
+
+<div class="userlist">
+  <div class="item" *ngFor="let user of users | async">
+    <img src="/assets/images/users/{{user.photo}}"/>
+    <span>{{user.name}} {{user.firstname}}</span>
+  </div>
+</div>
