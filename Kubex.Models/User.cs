@@ -9,7 +9,7 @@ namespace Kubex.Models
         public string LastName { get; set; }
         public string EmployeeNumber { get; set; }
 
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         public virtual Address Address { get; set; }
 
         public virtual ICollection<License> Licenses { get; set; }

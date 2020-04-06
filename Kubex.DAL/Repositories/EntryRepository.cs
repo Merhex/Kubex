@@ -12,25 +12,5 @@ namespace Kubex.DAL.Repositories
         {
 
         }
-
-        public Entry Create(CreatingEntryDTO dto)
-        {
-            var entry = new Entry() 
-            {
-                OccuranceDate = DateTime.Now,
-                Description = dto.Description,                
-                ParentEntry = dto.ParentEntry,
-                DailyActivityReport = dto.DailyActivityReport,
-                EntryType = dto.EntryType,
-                Priority = dto.Priority,
-                Location = dto.Location,
-                ChildEntries = dto.ChildEntries,
-                Media = dto.Media,
-            };
-
-            Add(entry);
-
-            return entry;
-        }
     }
 }
