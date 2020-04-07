@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Kubex.BLL.Services;
 using Kubex.DTO;
 using Kubex.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -20,94 +21,50 @@ namespace Kubex.API.Controllers
     [Route("[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
+        private readonly IUserService _userService;
 
-        public AuthController(UserManager<User> userManager,
-            SignInManager<User> signInManager,
-            IMapper mapper,
-            IConfiguration configuration)
+        public AuthController(IUserService userService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _mapper = mapper;
-            _configuration = configuration;
+            _userService = userService;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterDTO dto)
         {
-            var newUser = _mapper.Map<User>(dto);
-
-            var result = await _userManager.CreateAsync(newUser, dto.Password);
-
-            if (result.Succeeded)
+            try
             {
-                var userToReturn = _mapper.Map<UserToReturnDTO>(newUser);
+                var newUser = await _userService.Register(dto);
 
                 return CreatedAtRoute
                 (
                     "GetUser",
                     new { controller = "Users", userName = newUser.UserName },
-                    userToReturn
+                    newUser
                 );
             }
-
-            return BadRequest(result.Errors);
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDTO dto)
         {
-            var user = await _userManager.FindByNameAsync(dto.UserName);
-
-            var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
-
-            if (result.Succeeded)
+            try
             {
-                var userToReturn = _mapper.Map<UserToReturnDTO>(user);
+                var user = await _userService.Login(dto);
 
                 return Ok(new
                 {
-                    token = GenerateJwtToken(user).Result,
-                    user = userToReturn
+                    token = await _userService.GenerateJWTToken(dto),
+                    user
                 });
             }
-
-            return Unauthorized("We could not find an account with that given username and password.");
-        }
-
-        private async Task<string> GenerateJwtToken(User user)
-        {
-            var claims = new List<Claim>
+            catch (ApplicationException ex)
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Name, user.UserName)
-            };
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
+                return BadRequest(ex.Message);
             }
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var tokenDescriptor = new SecurityTokenDescriptor()
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(double.Parse(_configuration.GetSection("AppSettings:TokenExperiryInDays").Value)),
-                SigningCredentials = credentials
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
         }
     }
 }

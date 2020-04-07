@@ -1,7 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
+  <ItemGroup>
+    <ProjectReference Include="..\Kubex.DAL\Kubex.DAL.csproj"/>
+    <ProjectReference Include="..\Kubex.DTO\Kubex.DTO.csproj"/>
+    <ProjectReference Include="..\Kubex.Models\Kubex.Models.csproj"/>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1"/>
+    <PackageReference Include="System.Linq.Async" Version="4.1.1"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1"/>
+  </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
 </Project>

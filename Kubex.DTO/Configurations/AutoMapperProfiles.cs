@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AutoMapper;
 using Kubex.Models;
 
@@ -13,6 +14,8 @@ namespace Kubex.DTO.Configurations
 
             CreateMap<UserRegisterDTO, User>()
                 .ForMember(u => u.Address, opt => opt.MapFrom<AddressResolver>());
+            
+            CreateMap<IEnumerable<User>, UsersToReturnDTO>();
         }
     }
 }
