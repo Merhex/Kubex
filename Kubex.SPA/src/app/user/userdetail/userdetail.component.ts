@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./userdetail.component.css']
 })
 export class UserdetailComponent implements OnInit {
-  user: Observable<any> = this.http.get('/api/users/1');
+  user: Observable<any> = this.http.get('/users/1');
 
   constructor(private http: HttpClient) { }
 

@@ -10,8 +10,8 @@ import {SelectItem} from 'primeng/api';
 })
 export class UserlistComponent implements OnInit {
 
-  // users: Observable<any> = this.http.get('http://localhost:3000/api/users');
-  users: Observable<any> = this.http.get('/api/users');
+  users: Observable<any> = this.http.get('http://localhost:3000/users');
+  // users: Observable<any> = this.http.get('api/users');
 
   constructor(private http: HttpClient) {}
 

@@ -1,5 +1,12 @@
-
+<div>
+    <form>
+      <input type="text">
+      <p-button icon="pi pi-search" iconPos="right"></p-button>
+      
+    </form>
+  </div>
 <div class="userlist">
+  
   <div class="item" *ngFor="let user of users | async">
     <img src="/assets/images/users/{{user.photo}}"/>
     <span>{{user.name}} {{user.firstname}}</span>
