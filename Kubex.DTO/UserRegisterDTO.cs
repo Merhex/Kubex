@@ -11,5 +11,7 @@ namespace Kubex.DTO
         public string Street { get; set; }
         public string ZIP { get; set; }
         public string Country { get; set; }
+        public bool isAgent { get; set; }
+        public bool isCompany { get; set; }
     }
 }

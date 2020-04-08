@@ -21,6 +21,23 @@ namespace Kubex.API.Controllers
         {
             _userService = userService;
         }
+        
+        [Authorize]        
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                var requestingUser = HttpContext.User;
+                var users = await _userService.GetUsersAsync(requestingUser);
+
+                return Ok(users);
+            }
+            catch (ApplicationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [Authorize]        
         [HttpGet("{userName}", Name = "GetUser")]
@@ -44,6 +61,7 @@ namespace Kubex.API.Controllers
         {
             try
             {
+                dto.RequestingUser = HttpContext.User;
                 var user = await _userService.AddRoleToUserAsync(dto);
 
                 return Ok(user);
@@ -60,6 +78,7 @@ namespace Kubex.API.Controllers
         {
             try
             {
+                dto.RequestingUser = HttpContext.User;
                 var user = await _userService.RemoveRoleFromUserAsync(dto);
 
                 return Ok(user); 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Kubex.DTO
 {
@@ -6,5 +7,6 @@ namespace Kubex.DTO
     {
         public string UserName { get; set; }
         public IEnumerable<string> Roles { get; set; }
+        public ClaimsPrincipal RequestingUser { get; set; }
     }
 }

@@ -68,9 +68,7 @@ namespace Kubex.BLL.Services
             var check = await ValidateModifyRolesDTO(dto);
 
             if (! check.isValid) 
-            {
                 throw new ApplicationException(check.error);
-            }
 
             var result = await _userManager.AddToRolesAsync(check.user, dto.Roles);
 
@@ -96,9 +94,7 @@ namespace Kubex.BLL.Services
             var check = await ValidateModifyRolesDTO(dto);
 
             if (! check.isValid) 
-            {
                 throw new ApplicationException(check.error);
-            }
 
             var result = await _userManager.RemoveFromRolesAsync(check.user, dto.Roles);
 
@@ -112,11 +108,20 @@ namespace Kubex.BLL.Services
             throw new ApplicationException("Something went wrong trying to remove the given roles, please try again.");
         }
 
-        public async Task<UsersToReturnDTO> GetUsersAsync(Expression<Func<User, bool>> predicate)
+        public async Task<IEnumerable<UserToReturnDTO>> GetUsersAsync(ClaimsPrincipal requestingUser)
         {
-            var users = await _repository.FindRange(predicate).ToListAsync();
+            var users = new List<User>();
 
-            var usersToReturn = _mapper.Map<UsersToReturnDTO>(users);
+            foreach (var claim in requestingUser.Claims)
+            {
+                if (claim.Type == ClaimTypes.Role) 
+                {
+                    var usersInRole =  await _userManager.GetUsersInRoleAsync(claim.Value);
+                    users.AddRange(usersInRole);
+                }
+            }
+
+            var usersToReturn = _mapper.Map<IEnumerable<UserToReturnDTO>>(users.ToHashSet());
 
             return usersToReturn;
         }
@@ -143,7 +148,7 @@ namespace Kubex.BLL.Services
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(double.Parse(_configuration.GetSection("AppSettings:TokenExperiryInDays").Value)),
+                Expires = DateTime.Now.AddSeconds(double.Parse(_configuration.GetSection("AppSettings:TokenExperiryInSeconds").Value)),
                 SigningCredentials = credentials
             };
 
@@ -164,16 +169,20 @@ namespace Kubex.BLL.Services
                     a => a.Country.Name == dto.Country &&
                     a.ZIP.Code == dto.ZIP &&
                     a.Street.Name == dto.Street
-                )
-                .FirstAsync();
+                );
             
             if (address != null)
-                newUser.Address = address;
+                newUser.Address = address.FirstOrDefault();
 
             var result = await _userManager.CreateAsync(newUser, dto.Password);
                    
             if (result.Succeeded)
             {
+                if (dto.isAgent)
+                    await _userManager.AddToRoleAsync(newUser, "Agent");
+                 if (dto.isCompany)
+                    await _userManager.AddToRoleAsync(newUser, "Company");
+                
                 var userToReturn = _mapper.Map<UserToReturnDTO>(newUser);
 
                 return userToReturn;
@@ -189,7 +198,6 @@ namespace Kubex.BLL.Services
             if (user == null)
                 throw new ApplicationException("We could not find an account with that given username and password.");
 
-
             var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
 
             if (result.Succeeded)
@@ -202,7 +210,6 @@ namespace Kubex.BLL.Services
             throw new ApplicationException("We could not find an account with that given username and password.");
         }
 
-        
         private async Task<(bool isValid, string error, User user)> ValidateModifyRolesDTO(ModifyRolesDTO dto) 
         {
             if (dto == null)
@@ -216,7 +223,10 @@ namespace Kubex.BLL.Services
             foreach (var role in dto.Roles)
             {
                 if (! await _roleManager.RoleExistsAsync(role))
-                    return (false, $"The given role: {role} does not exist.", null);
+                    return (false, $"The given role: {role}, does not exist.", null);
+                
+                if (! dto.RequestingUser.IsInRole(role))
+                    return (false, $"You are not allowed to modify user {dto.UserName}, to the given role: {role}.", null);
             }
 
             return (true, null, user);

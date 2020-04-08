@@ -8,14 +8,11 @@ namespace Kubex.DTO.Configurations
     {
         public AutoMapperProfiles()
         {
-            CreateMap<User, UserToReturnDTO>();
-
-            CreateMap<UserToReturnDTO, User>();
+            CreateMap<User, UserToReturnDTO>()
+                .ReverseMap();
 
             CreateMap<UserRegisterDTO, User>()
                 .ForMember(u => u.Address, opt => opt.MapFrom<AddressResolver>());
-            
-            CreateMap<IEnumerable<User>, UsersToReturnDTO>();
         }
     }
 }
