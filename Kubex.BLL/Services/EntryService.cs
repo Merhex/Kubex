@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Kubex.DAL.Repositories;
+using Kubex.BLL.Services.Interfaces;
+using Kubex.DAL.Repositories.Interfaces;
 using Kubex.DTO;
 using Kubex.Models;
 

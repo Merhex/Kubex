@@ -14,6 +14,6 @@ namespace Kubex.Models
 
         public virtual ICollection<License> Licenses { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
-        public virtual ICollection<Team> Teams { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }

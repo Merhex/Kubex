@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Kubex.DTO;
-using Kubex.Models;
 
-namespace Kubex.BLL.Services
+namespace Kubex.BLL.Services.Interfaces
 {
     public interface IUserService
     {

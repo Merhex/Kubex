@@ -1,11 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
-using Kubex.BLL.Services;
+using Kubex.BLL.Services.Interfaces;
 using Kubex.DTO;
-using Kubex.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kubex.API.Controllers

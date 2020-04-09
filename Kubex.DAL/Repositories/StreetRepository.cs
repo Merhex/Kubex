@@ -1,3 +1,4 @@
+using Kubex.DAL.Repositories.Interfaces;
 using Kubex.Models;
 
 namespace Kubex.DAL.Repositories

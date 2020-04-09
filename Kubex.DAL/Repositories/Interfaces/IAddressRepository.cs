@@ -1,9 +1,6 @@
-using System;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Kubex.Models;
 
-namespace Kubex.DAL.Repositories
+namespace Kubex.DAL.Repositories.Interfaces
 {
     public interface IAddressRepository : IRepository<Address, int>
     {

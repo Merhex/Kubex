@@ -3,10 +3,10 @@ using Kubex.Models;
 
 namespace Kubex.DAL.Repositories
 {
-    public class ZIPCodeRepository 
-        : Repository<ZIP, int>, IZIPCodeRepository
+    public class PostRepository 
+        : Repository<Post, int>, IPostRepository
     {
-        public ZIPCodeRepository(DataContext context)
+        public PostRepository(DataContext context)
             : base(context)
         {
             
