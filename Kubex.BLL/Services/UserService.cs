@@ -215,7 +215,7 @@ namespace Kubex.BLL.Services
             if (dto == null)
                 return (false, "The data sent was invalid, please check the formatting or contact an administrator if you think this is an error.", null);
                 
-            var user = await _userManager.FindByNameAsync(dto.UserName);
+            var user = await _userManager.FindByNameAsync(dto.Name);
 
             if (user == null)
                 return (false, "Could not find a user with the given username", null);
@@ -226,7 +226,7 @@ namespace Kubex.BLL.Services
                     return (false, $"The given role: {role}, does not exist.", null);
                 
                 if (! dto.RequestingUser.IsInRole(role))
-                    return (false, $"You are not allowed to modify user {dto.UserName}, to the given role: {role}.", null);
+                    return (false, $"You are not allowed to modify user {dto.Name}, to the given role: {role}.", null);
             }
 
             return (true, null, user);

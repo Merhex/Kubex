@@ -13,6 +13,11 @@ namespace Kubex.DTO.Configurations
 
             CreateMap<UserRegisterDTO, User>()
                 .ForMember(u => u.Address, opt => opt.MapFrom<AddressResolver>());
+            
+            CreateMap<CreateCompanyDTO, Company>()
+                .ReverseMap();
+            
+            CreateMap<CreatePostDTO, Post>();
         }
     }
 }
