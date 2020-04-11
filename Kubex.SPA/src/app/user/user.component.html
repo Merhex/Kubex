@@ -4,7 +4,7 @@
       <div class="row">
         <div class="ui-inputgroup">  
           <input class="col col-sm-10" type="text" pInputText placeholder="Search User">   
-          <button class="col col-sm-1" pButton type="button" icon="pi pi-search" class="ui-button-warn"></button>
+          <button class="col col-sm-1" pButton type="button" icon="pi pi-search" class="ui-button-info"></button>
         </div>
       </div>
 
@@ -17,8 +17,7 @@
         </div>
       </div>
 
-      <!-- </div> -->
-
+      <!-- TEMP: JSON -->
       <div class="card-container">
         <div *ngIf="selectedUser">
           <p>Hello {{selectedUser.name}}</p>
@@ -27,7 +26,8 @@
       </div>
     </div>
 
-    <div *ngIf="selectedUser" class="col col-lg-9" style="vertical-align: center;">
+    <!-- User detail -->
+    <div *ngIf="selectedUser" class="col col-lg-9 main" style="vertical-align: center;">
       <div class="row">
         <div class="col col-sm-2">
           <img src="/assets/images/users/{{selectedUser.photo}}" style="width: 100%;"/>
@@ -41,6 +41,14 @@
       </div>
 
 
+      
+
+
     </div>
   </div>
+
+  <!-- Bottom row -->
+  <footer class="row">
+    <button class="col col-sm-1 saveUser" pButton type="button" icon="pi pi-save" class="ui-button-warning"></button>
+  </footer>
 </div>
