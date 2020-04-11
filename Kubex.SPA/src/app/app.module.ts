@@ -9,8 +9,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { UserComponent } from './user/user.component';
-import { UserlistComponent } from './user/userlist/userlist.component';
-import { UserdetailComponent } from './user/userdetail/userdetail.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 
@@ -22,8 +20,6 @@ import {ListboxModule} from 'primeng/listbox';
       AppComponent,
       NavComponent,
       UserComponent,
-      UserlistComponent,
-      UserdetailComponent,
       HomeComponent,
       LoginComponent
    ],

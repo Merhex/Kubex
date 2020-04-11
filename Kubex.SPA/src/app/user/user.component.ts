@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-user',
@@ -6,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  constructor() { }
+  // @Input() inputUser: UserlistComponent;
+  // @Output() outputUser = new EventEmitter<any>();
+  selectedUser = null;
 
-  ngOnInit() {
+  users: Observable<any> = this.http.get('http://localhost:3000/users/');
+  // users: Observable<any> = this.http.get('api/users');
+
+  displayUser(userId) {
+    return this.http.get('http://localhost:3000/users/' + userId).subscribe(response => {
+      // this.outputUser.emit(response);
+      this.selectedUser = response;
+    });
   }
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {}
 
 }
