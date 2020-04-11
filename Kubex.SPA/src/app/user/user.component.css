@@ -1,11 +1,12 @@
 .container {
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .userlist div {
-    width: 15%;
-    min-width: 240px;
-    max-width: 500px;
+    /* width: 15%;
+    min-width: 240px; */
+    /* max-width: 500px; */
+    margin: 0;
     max-height: 90%;
     background-color: slategray;
     border: 1px solid grey;
@@ -26,4 +27,8 @@
     margin-left: 15px;
     font-size: 1.25rem;
     vertical-align: middle;
+}
+
+.name {
+    margin: 4% 0 4% 0;
 }

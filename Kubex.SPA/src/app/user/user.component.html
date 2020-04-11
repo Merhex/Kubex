@@ -1,17 +1,21 @@
 <div class="container">
   <div class="row">
     <div class="col col-lg-3">
-        <div class="ui-inputgroup">
-          <input type="text" pInputText placeholder="Search User">   
-          <button pButton type="button" icon="pi pi-search" class="ui-button-warn"></button>      
+      <div class="row">
+        <div class="ui-inputgroup">  
+          <input class="col col-sm-10" type="text" pInputText placeholder="Search User">   
+          <button class="col col-sm-1" pButton type="button" icon="pi pi-search" class="ui-button-warn"></button>
         </div>
+      </div>
 
+      <div class="row">
         <div class="userlist">
           <div class="item" *ngFor="let user of users | async" (click)="displayUser(user.id)">
             <img src="/assets/images/users/{{user.photo}}"/>
             <span>{{user.name}} {{user.firstname}}</span>
           </div>
         </div>
+      </div>
 
       <!-- </div> -->
 
@@ -23,11 +27,19 @@
       </div>
     </div>
 
-    <div class="col col-lg-9">
-      <div class="col col-sm-12">
-        <input *ngIf="selectedUser" type="text" class="form-control" [(ngModel)]='selectedUser.name' name="surname" >
-        <input *ngIf="selectedUser" type="text" class="form-control" [(ngModel)]='selectedUser.firstname' name="firstname" >
+    <div *ngIf="selectedUser" class="col col-lg-9" style="vertical-align: center;">
+      <div class="row">
+        <div class="col col-sm-2">
+          <img src="/assets/images/users/{{selectedUser.photo}}" style="width: 100%;"/>
+        </div>
+        <div class="col col-sm-5 name" >
+          <input type="text" class="form-control" [(ngModel)]='selectedUser.name' name="surname" />
+        </div>
+        <div class="col col-sm-5 name" style="text-align: center;">
+          <input type="text" class="form-control" [(ngModel)]='selectedUser.firstname' name="firstname" />
+        </div>
       </div>
+
 
     </div>
   </div>
