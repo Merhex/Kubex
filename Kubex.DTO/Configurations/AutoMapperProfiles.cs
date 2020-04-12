@@ -18,6 +18,8 @@ namespace Kubex.DTO.Configurations
                 .ReverseMap();
             
             CreateMap<CreatePostDTO, Post>();
+
+            CreateMap<Post, PostToReturnDTO>();
         }
     }
 }

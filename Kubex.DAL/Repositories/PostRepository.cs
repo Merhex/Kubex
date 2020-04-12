@@ -14,7 +14,7 @@ namespace Kubex.DAL.Repositories
         public async Task<Post> FindByNameAsync(string name) 
         {
             var posts = await FindRange(p => p.Name == name);
-            return posts.SingleOrDefault();
+            return posts.FirstOrDefault();
         }
     }
 }
