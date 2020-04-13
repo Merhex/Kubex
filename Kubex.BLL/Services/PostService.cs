@@ -71,19 +71,14 @@ namespace Kubex.BLL.Services
                 throw new ApplicationException("Something went wrong adding new roles to the post.");
 
             foreach(var user in post.Users) 
-            {
-                var result = await RefreshUserPostRolesAsync(user.UserId);
-
-                if (! result.Succeeded)
-                    throw new ApplicationException(result.Errors.FirstOrDefault().Description);
-            }
+                await RefreshUserPostRolesAsync(user.UserId);
 
             var postToReturn = _mapper.Map<PostToReturnDTO>(post);
             
             return postToReturn;
         }
 
-        public async Task<IdentityResult> SetUserPostsAsync(UpdateUserPostsDTO dto)
+        public async Task<UserToReturnDTO> SetUserPostsAsync(UpdateUserPostsDTO dto)
         {
             var user = await _userManager.FindByNameAsync(dto.UserName);
 
@@ -117,15 +112,10 @@ namespace Kubex.BLL.Services
             if (! await _postRepository.SaveAll())
                 throw new ApplicationException("Something went wrong clearing the posts from the given user.");
     
-            var result = await RefreshUserPostRolesAsync(user.Id);
-
-            if (! result.Succeeded)
-                throw new ApplicationException(result.Errors.FirstOrDefault().Description);
-
-            return IdentityResult.Success;
+            return await RefreshUserPostRolesAsync(user.Id);
         }
 
-        private async Task<IdentityResult> RefreshUserPostRolesAsync(string userId)
+        public async Task<UserToReturnDTO> RefreshUserPostRolesAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -151,8 +141,10 @@ namespace Kubex.BLL.Services
 
             if (! result.Succeeded)
                 throw new ApplicationException(result.Errors.FirstOrDefault().Description);
+
+            var userToReturn = _mapper.Map<UserToReturnDTO>(user);
     
-            return IdentityResult.Success;
+            return userToReturn;
         }
 
         public async Task<IEnumerable<PostRole>> GetUserPostRolesAsync(string userName)
@@ -196,7 +188,7 @@ namespace Kubex.BLL.Services
             if (post == null)
                 throw new ApplicationException("Could not find post with given id.");
     
-            var currentPostUsers = (await GetPostUsersAsync(postId));
+            var currentPostUsers = await GetPostUsersAsync(postId);
 
             post.Roles.Clear();
             post.Users.Clear();
@@ -207,15 +199,10 @@ namespace Kubex.BLL.Services
     
             // Reset all the user roles:
             foreach (var user in currentPostUsers)
-            {
-                var result = await RefreshUserPostRolesAsync(user.Id);
-
-                if (! result.Succeeded)
-                    throw new ApplicationException(result.Errors.FirstOrDefault().Description);
-            }
+                await RefreshUserPostRolesAsync(user.Id);
         }
 
-        public async Task<IEnumerable<User>> GetPostUsersAsync(int postId)
+        private async Task<IEnumerable<User>> GetPostUsersAsync(int postId)
         {
             var post = await _postRepository.Find(postId);
 

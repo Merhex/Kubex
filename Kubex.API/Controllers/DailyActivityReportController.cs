@@ -7,10 +7,6 @@ namespace Kubex.API.Controllers
     [Route("dar")]
     public class DailyActivityReportController : ControllerBase
     {
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id) 
-        {
-            return Ok();
-        }
+        
     }
 }

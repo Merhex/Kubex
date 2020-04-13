@@ -9,6 +9,7 @@ namespace Kubex.DTO.Configurations
         public AutoMapperProfiles()
         {
             CreateMap<User, UserToReturnDTO>()
+                .ForMember(u => u.Roles, opt => opt.MapFrom<RolesResolver>())
                 .ReverseMap();
 
             CreateMap<UserRegisterDTO, User>()
