@@ -36,5 +36,60 @@
         "firstname": "Nadine",
         "photo": "U0006_NC.png"
       }
+    ],
+    "entry": [
+      {
+        "id": 1,
+        "parentid": null,
+        "hour": "2020-04-13T06:00:00.511Z",
+        "locaton": "B260 RSOC",
+        "description": "Agent start dienst",
+        "priority": "0",
+        "creauserid": 1,
+        "creatime": "2020-04-13T06:00:00.511Z",
+        "moduserid": null,
+        "modtime": null,
+        "mediacolledctionid": null
+      },
+      {
+        "id": 2,
+        "parentid": null,
+        "hour": "2020-04-13T06:05:00.511Z",
+        "locaton": "V100",
+        "description": "Alarmmelding BA Verdieping 1",
+        "priority": "0",
+        "creauserid": 1,
+        "creatime": "2020-04-13T06:00:00.511Z",
+        "moduserid": null,
+        "modtime": null,
+        "mediacolledctionid": null
+      },
+      {
+        "id": 3,
+        "parentid": null,
+        "hour": "2020-04-13T07:15:03.511Z",
+        "locaton": "B020",
+        "description": "Alarmmelding B020: 010200112500000456",
+        "priority": "0",
+        "creauserid": 2,
+        "creatime": "2020-04-13T06:00:00.511Z",
+        "moduserid": null,
+        "modtime": null,
+        "mediacolledctionid": null
+      },
+      {
+        "id": 4,
+        "parentid": 3,
+        "hour": "2020-04-13T07:17:35.511Z",
+        "locaton": null,
+        "description": "Brandweer meldt vertrek comandowagen met 2 personen.",
+        "priority": "0",
+        "creauserid": 2,
+        "creatime": "2020-04-13T06:00:00.511Z",
+        "moduserid": null,
+        "modtime": null,
+        "mediacolledctionid": null
+      }
+
     ]
   }

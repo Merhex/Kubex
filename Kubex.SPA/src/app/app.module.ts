@@ -4,6 +4,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
+import { ButtonModule } from 'primeng/button';
+import { ListboxModule } from 'primeng/listbox';
+import { AccordionModule } from 'primeng/accordion';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,9 +14,7 @@ import { NavComponent } from './nav/nav.component';
 import { UserComponent } from './user/user.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-
-import { ButtonModule } from 'primeng/button';
-import {ListboxModule} from 'primeng/listbox';
+import { DailyactivityreportComponent } from './dailyactivityreport/dailyactivityreport.component';
 
 @NgModule({
    declarations: [
@@ -21,7 +22,8 @@ import {ListboxModule} from 'primeng/listbox';
       NavComponent,
       UserComponent,
       HomeComponent,
-      LoginComponent
+      LoginComponent,
+      DailyactivityreportComponent
    ],
    imports: [
       BrowserModule,
@@ -31,7 +33,8 @@ import {ListboxModule} from 'primeng/listbox';
       ReactiveFormsModule,
       RouterModule,
       ButtonModule,
-      ListboxModule
+      ListboxModule,
+      AccordionModule
    ],
    providers: [],
    bootstrap: [

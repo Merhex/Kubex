@@ -1,0 +1,56 @@
+<main class="container">
+  <!-- Top -->
+  <div class="row top">
+    <!-- Title and post -->
+    <div class="col col-lg-8">
+      <div class="row">
+        <h1>Daily Activity Report</h1>
+      </div>
+      <div class="row">
+        <h5>Post</h5>
+      </div>
+    </div>
+
+    <!-- Date and reference number -->
+    <div class="col col-lg-4 colright">
+      <div class="row colright">
+        <h4 class="colright">Monday 01/01/2020</h4>
+      </div>
+      <div class="row colright">
+        <h5 class="colright">DAR-00-000</h5>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report body -->
+  <div class="row body">
+    <div class="record">
+      <div *ngFor="let entry of entries | async" class="container">
+        <div class="row">
+          <!-- <span>{{entry | json}}</span> -->
+          <!-- <form style="width: 100%;">
+            <i class="col col-lg-1 recordWarningIcon">{{entry.id}}</i>
+            <input class="col col-lg-1 recordTime" type="time" ngModel="entry.hour" />
+            <input class="col col-lg-9 recordDescription" type="text" [(ngModel)]="entry.description" />
+            <i class="col col-lg-1 recordFoldout">{{entry.parentid}}</i>
+          </form> -->
+          <p>{{entry | json}}</p>
+          <p>Id: {{entry.id}}</p>
+          <p>Descr: {{entry.description}}</p>
+        </div>
+      </div>
+
+    </div>
+    
+  </div>
+
+  <!-- Buttons -->
+  <div class="row bottom">
+    <div class="col col-lg-6">
+      <input type="button" value="Klik" >
+    </div>
+    <div class="col col-lg-6">
+      <input type="button" value="Klik" style="float: right;">
+    </div>
+  </div>
+</main>
