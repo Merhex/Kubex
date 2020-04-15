@@ -27,22 +27,24 @@
     <div class="record">
       <div *ngFor="let entry of entries | async" class="container">
         <div class="row">
-          <!-- <span>{{entry | json}}</span> -->
-          <!-- <form style="width: 100%;">
+          <form style="width: 100%;">
             <i class="col col-lg-1 recordWarningIcon">{{entry.id}}</i>
-            <input class="col col-lg-1 recordTime" type="time" ngModel="entry.hour" />
-            <input class="col col-lg-9 recordDescription" type="text" [(ngModel)]="entry.description" />
-            <i class="col col-lg-1 recordFoldout">{{entry.parentid}}</i>
-          </form> -->
-          <p>{{entry | json}}</p>
-          <p>Id: {{entry.id}}</p>
-          <p>Descr: {{entry.description}}</p>
+            <input class="col col-lg-1 recordTime" type="time" name="hour" [(ngModel)]="entry.hour" />
+            <input class="col col-lg-9 recordDescription" type="text" name="description" [(ngModel)]="entry.description" />
+            <span class="col col-lg-1 recordFoldout">
+              <i class="pi pi-angle-double-down"></i>
+            </span>
+          </form>
         </div>
       </div>
 
     </div>
-    
+
+
+
+
   </div>
+  
 
   <!-- Buttons -->
   <div class="row bottom">

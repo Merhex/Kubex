@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ButtonModule } from 'primeng/button';
 import { ListboxModule } from 'primeng/listbox';
@@ -34,7 +35,8 @@ import { DailyactivityreportComponent } from './dailyactivityreport/dailyactivit
       RouterModule,
       ButtonModule,
       ListboxModule,
-      AccordionModule
+      AccordionModule,
+      FontAwesomeModule
    ],
    providers: [],
    bootstrap: [
