@@ -16,6 +16,9 @@ import { UserComponent } from './user/user.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { DailyactivityreportComponent } from './dailyactivityreport/dailyactivityreport.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import {MatExpansionModule} from '@angular/material/expansion'; 
 
 @NgModule({
    declarations: [
@@ -36,7 +39,9 @@ import { DailyactivityreportComponent } from './dailyactivityreport/dailyactivit
       ButtonModule,
       ListboxModule,
       AccordionModule,
-      FontAwesomeModule
+      FontAwesomeModule,
+      BrowserAnimationsModule,
+      MatExpansionModule
    ],
    providers: [],
    bootstrap: [

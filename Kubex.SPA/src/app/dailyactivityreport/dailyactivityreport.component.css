@@ -1,9 +1,9 @@
 main {
     position: fixed;
     top: 50px;
-    background-color: magenta;
     height: 95vh;
     width: 100vw;
+    border: solid 1px red;
 }
 
 .top {
@@ -14,7 +14,6 @@ main {
 }
 
 .body {
-    background-color: mediumseagreen;
     /* Height = main - top - bottom */
     height: calc(95vh - 110px - 40px);
 }
@@ -34,7 +33,7 @@ main {
 .record {
     width: 100%;
     float: center;
-    margin: 1px;
+    margin: 5px;
 }
 
 .recordWarningIcon {

@@ -24,7 +24,7 @@
 
   <!-- Report body -->
   <div class="row body">
-    <div class="record">
+    <!-- <div class="record">
       <div *ngFor="let entry of entries | async" class="container">
         <div class="row">
           <form style="width: 100%;">
@@ -32,15 +32,61 @@
             <input class="col col-lg-1 recordTime" type="time" name="hour" [(ngModel)]="entry.hour" />
             <input class="col col-lg-9 recordDescription" type="text" name="description" [(ngModel)]="entry.description" />
             <span class="col col-lg-1 recordFoldout">
-              <i class="pi pi-angle-double-down"></i>
+              <i class="pi pi-angle-double-down" style="width: 10px;"></i>
             </span>
           </form>
         </div>
+        <div class="row">
+          <div class="col col-lg-12">
+            <app-child #child [parentid]="entry.parentid"></app-child>
+          </div>
+        </div>
       </div>
+    </div> -->
+<!-- 
+    <mat-expansion-panel *ngFor="let entry of entries | async" style="width: 100%;">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <div class="row">
+            <form style="width: 100%;">
+              <i class="col col-lg-1 recordWarningIcon">{{entry.id}}</i>
+              <input class="col col-lg-1 recordTime" type="time" name="hour" [(ngModel)]="entry.hour" />
+              <input class="col col-lg-9 recordDescription" type="text" name="description" [(ngModel)]="entry.description" />
+            </form>
+          </div>
+        </mat-panel-title>
+        <mat-panel-description>
+          This is a summary of the content
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+    
+      <p>This is the primary content of the panel.</p>
+    
+    </mat-expansion-panel> -->
 
-    </div>
 
 
+
+
+    <mat-accordion displayMode="flat" multi class="mat-table" *ngFor="let entry of entries | async" style="width: 100%;">
+      <section matSort class="mat-elevation-z2 mat-header-row">
+        <span class="mat-header-cell" mat-sort-header="vesselName">Hour</span>
+        <span class="mat-header-cell" mat-sort-header="vesselId">Location</span>
+        <span class="mat-header-cell" mat-sort-header="vesselStatus">Description</span>
+      </section>
+    
+      <mat-expansion-panel>
+        <mat-expansion-panel-header class="mat-row">
+          <span class="mat-cell">{{entry.hour}}</span>
+          <span class="mat-cell">{{entry.location}}</span>
+          <span class="mat-cell">{{entry.description}}</span>
+        </mat-expansion-panel-header>
+        <!-- <div><pre>{{item | json}}</pre></div> -->
+      </mat-expansion-panel>
+    
+    </mat-accordion>
+
+    
 
 
   </div>
