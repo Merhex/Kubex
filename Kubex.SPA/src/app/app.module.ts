@@ -18,7 +18,7 @@ import { LoginComponent } from './login/login.component';
 import { DailyactivityreportComponent } from './dailyactivityreport/dailyactivityreport.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {MatExpansionModule} from '@angular/material/expansion'; 
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
    declarations: [

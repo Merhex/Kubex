@@ -30,35 +30,9 @@ main {
     padding-top: 5px;
 }
 
-.record {
-    width: 100%;
-    float: center;
-    margin: 5px;
-}
-
-.recordWarningIcon {
-    width: 50px;
-    border: solid 1px black;
-}
-
-.recordTime {
-    max-width: 90px;
-    text-align: center;
-}
-
-/* .recordDescription {
-
-} */
-
-.recordFoldout {
-    max-width: 50px;
-    border: solid 1px black;
-}
-
-
 
 /* Most used smartphone screenres: 1080/750/720/1440/... */
-@media only screen and (max-width: 600px) {
+/* @media only screen and (max-width: 600px) {
     body {
       background-color: lightblue;
     }
@@ -68,4 +42,45 @@ main {
     body {
         background-color: lavender;
     }
+} */
+
+input {
+    border: transparent ;
+    border-bottom: grey solid 1px;
+    margin-right: 8px;
 }
+
+.mat-accordion .mat-header-row {
+    padding-left: 1.5rem;
+    padding-right: 2rem;
+    border-bottom: none;
+    width: 100%;
+  }
+  
+  .mat-expansion-panel-header.mat-row {
+    border-bottom: none;
+  }
+
+  .mat-table {
+    display: block;
+  }
+  
+  .mat-header-row {
+    min-height: 50px;
+  }
+  
+  .mat-row {
+    min-height: 40px;
+  }
+
+  .mat-row, .mat-header-row {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  .mat-cell, .mat-header-cell {
+    flex: 1;
+    overflow: visible;
+    word-wrap: break-word;
+  }
