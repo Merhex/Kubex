@@ -4,7 +4,7 @@ using AutoMapper;
 using Kubex.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace Kubex.DTO.Configurations
+namespace Kubex.DTO.Configurations.Resolvers
 {
     public class RolesResolver : IValueResolver<User, UserToReturnDTO, IEnumerable<string>>
     {

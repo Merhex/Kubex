@@ -99,6 +99,10 @@ namespace Kubex.API
             services.AddScoped<IZIPCodeRepository, ZIPCodeRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<ICompanyService, CompanyService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

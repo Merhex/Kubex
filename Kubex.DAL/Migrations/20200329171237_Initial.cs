@@ -38,7 +38,8 @@ namespace Kubex.DAL.Migrations
                 name: "Countries",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(nullable: false),
+                    Id = table.Column<byte>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

@@ -1,6 +1,8 @@
-using System.Collections.Generic;
 using AutoMapper;
+using Kubex.DTO.Configurations.Resolvers;
 using Kubex.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Kubex.DTO.Configurations
 {
@@ -12,15 +14,19 @@ namespace Kubex.DTO.Configurations
                 .ForMember(u => u.Roles, opt => opt.MapFrom<RolesResolver>())
                 .ReverseMap();
 
-            CreateMap<UserRegisterDTO, User>()
-                .ForMember(u => u.Address, opt => opt.MapFrom<AddressResolver>());
+            CreateMap<AddressDTO, Address>()
+                .ConvertUsing<AddressConverter>();
             
-            CreateMap<CreateCompanyDTO, Company>()
+            CreateMap<CompanyDTO, Company>()
                 .ReverseMap();
-            
-            CreateMap<CreatePostDTO, Post>();
 
-            CreateMap<Post, PostToReturnDTO>();
+            CreateMap<PostDTO, Post>()
+                .ReverseMap();
+
+            CreateMap<LocationDTO, Location>()
+                .ReverseMap();
+
+            CreateMap<UserRegisterDTO, User>();
         }
     }
 }

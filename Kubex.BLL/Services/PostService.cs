@@ -18,19 +18,22 @@ namespace Kubex.BLL.Services
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
+        private readonly IAddressRepository _addressRepository;
 
         public PostService(IPostRepository postRepository,
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
-            IMapper mapper)
+            IMapper mapper,
+            IAddressRepository addressRepository)
         {
             _roleManager = roleManager;
             _mapper = mapper;
+            _addressRepository = addressRepository;
             _userManager = userManager;
             _postRepository = postRepository;
         }
 
-        public async Task<PostToReturnDTO> CreatePostAsync(CreatePostDTO dto)
+        public async Task<PostDTO> CreatePostAsync(PostDTO dto)
         {
             var post = _mapper.Map<Post>(dto);
 
@@ -38,14 +41,14 @@ namespace Kubex.BLL.Services
 
             if (await _postRepository.SaveAll()) 
             {
-                var postToReturn = _mapper.Map<PostToReturnDTO>(post);
+                var postToReturn = _mapper.Map<PostDTO>(post);
                 return postToReturn;
             }
 
             throw new ApplicationException("Unable to create post.");
         }
 
-        public async Task<PostToReturnDTO> SetPostRolesAsync(ModifyPostRolesDTO dto) 
+        public async Task<PostDTO> SetPostRolesAsync(ModifyPostRolesDTO dto) 
         {
             var post = await _postRepository.Find(dto.Id);
             
@@ -73,7 +76,7 @@ namespace Kubex.BLL.Services
             foreach(var user in post.Users) 
                 await RefreshUserPostRolesAsync(user.UserId);
 
-            var postToReturn = _mapper.Map<PostToReturnDTO>(post);
+            var postToReturn = _mapper.Map<PostDTO>(post);
             
             return postToReturn;
         }
@@ -169,14 +172,14 @@ namespace Kubex.BLL.Services
             return userPosts;
         }
 
-        public async Task<PostToReturnDTO> GetPostAsync(int id) 
+        public async Task<PostDTO> GetPostAsync(int id) 
         {
             var post = await _postRepository.Find(id);
 
             if (post == null)
                 throw new ApplicationException("Could not find a post with the given id.");
             
-            var postToReturn = _mapper.Map<PostToReturnDTO>(post);
+            var postToReturn = _mapper.Map<PostDTO>(post);
 
             return postToReturn;
         }
@@ -218,7 +221,7 @@ namespace Kubex.BLL.Services
             return users;
         }
 
-        public async Task<PostToReturnDTO> UpdatePostAsync(UpdatePostDTO dto)
+        public async Task<PostDTO> UpdatePostAsync(UpdatePostDTO dto)
         {
             var post = await _postRepository.Find(dto.PostId);
 
@@ -238,7 +241,7 @@ namespace Kubex.BLL.Services
             if (! await _postRepository.SaveAll())
                 throw new ApplicationException("Could not update the given post.");
             
-            var postToReturn = _mapper.Map<PostToReturnDTO>(post);
+            var postToReturn = _mapper.Map<PostDTO>(post);
 
             return postToReturn;
         }

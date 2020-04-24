@@ -163,26 +163,10 @@ namespace Kubex.BLL.Services
         {
             var newUser = _mapper.Map<User>(dto);
 
-            var address = await _addressRepository
-                .FindRange
-                ( 
-                    a => a.Country.Name == dto.Country &&
-                    a.ZIP.Code == dto.ZIP &&
-                    a.Street.Name == dto.Street
-                );
-            
-            if (address != null)
-                newUser.Address = address.FirstOrDefault();
-
             var result = await _userManager.CreateAsync(newUser, dto.Password);
                    
             if (result.Succeeded)
             {
-                if (dto.isAgent)
-                    await _userManager.AddToRoleAsync(newUser, "Agent");
-                 if (dto.isCompany)
-                    await _userManager.AddToRoleAsync(newUser, "Company");
-                
                 var userToReturn = _mapper.Map<UserToReturnDTO>(newUser);
 
                 return userToReturn;
@@ -214,6 +198,9 @@ namespace Kubex.BLL.Services
         {
             if (dto == null)
                 return (false, "The data sent was invalid, please check the formatting or contact an administrator if you think this is an error.", null);
+
+            if (dto.Name == null)
+                return (false, "The name field in the data sent was empty.", null);
                 
             var user = await _userManager.FindByNameAsync(dto.Name);
 

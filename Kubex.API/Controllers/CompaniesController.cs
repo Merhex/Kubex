@@ -8,22 +8,23 @@ using Microsoft.AspNetCore.Mvc;
 namespace Kubex.API.Controllers
 {
     [ApiController]
-    [Authorize]    
+    [Authorize] 
     [Route("[controller]")]
-    public class PostController : ControllerBase
+    public class CompaniesController : ControllerBase
     {
-        private readonly IPostService _postService;
-        public PostController(IPostService postService)
+        private readonly ICompanyService _companyService;
+
+        public CompaniesController(ICompanyService companyService)
         {
-            _postService = postService;
+            _companyService = companyService;
         }
 
-        [HttpPost("create")]        
-        public async Task<IActionResult> Create(PostDTO dto)
+        [HttpPost("create")]
+        public async Task<IActionResult> Create(CompanyDTO dto)
         {
             try
             {
-                var post = await _postService.CreatePostAsync(dto);
+                var post = await _companyService.CreateAsync(dto);
 
                 return Ok(post);
             }

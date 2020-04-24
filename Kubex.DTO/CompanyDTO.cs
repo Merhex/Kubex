@@ -1,11 +1,9 @@
-using Kubex.Models;
-
 namespace Kubex.DTO
 {
-    public class CreateCompanyDTO
+    public class CompanyDTO
     {
         public string Name { get; set; }
         public string LogoUrl { get; set; }
-        public Address Address { get; set; }
+        public AddressDTO Address { get; set; }
     }
 }

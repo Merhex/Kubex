@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Threading.Tasks;
 using Kubex.DAL.Repositories.Interfaces;
 using Kubex.Models;
 
@@ -12,5 +14,10 @@ namespace Kubex.DAL.Repositories
             
         }
         
+        public async Task<Country> FindByNameAsync(string name) 
+        {
+            var country = await FindRange(x => x.Name == name);
+            return country.FirstOrDefault();
+        }
     }
 }
