@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ButtonModule } from 'primeng/button';
@@ -19,6 +20,7 @@ import { DailyactivityreportComponent } from './dailyactivityreport/dailyactivit
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
    declarations: [
@@ -37,11 +39,13 @@ import {MatExpansionModule} from '@angular/material/expansion';
       ReactiveFormsModule,
       RouterModule,
       ButtonModule,
+      FlexLayoutModule,
       ListboxModule,
       AccordionModule,
       FontAwesomeModule,
       BrowserAnimationsModule,
-      MatExpansionModule
+      MatExpansionModule,
+      MatInputModule
    ],
    providers: [],
    bootstrap: [

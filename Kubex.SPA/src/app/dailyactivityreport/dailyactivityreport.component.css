@@ -1,33 +1,32 @@
 main {
     position: fixed;
     top: 50px;
-    height: 95vh;
+    height: calc(100vh - 50px);
     width: 100vw;
-    border: solid 1px red;
 }
 
 .top {
-    background-color: rgb(87, 143, 226);
-    padding: 10px 25px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    height: 110px;
+  background-color: rgb(118, 164, 233);
+  padding: 10px 25px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 8vh;
 }
 
 .body {
-    /* Height = main - top - bottom */
-    height: calc(95vh - 110px - 40px);
+  /* Height = main - top - bottom */
+  height: calc(95vh - 8vh - 40px);
 }
 
 .bottom {
-    background-color: rgb(87, 143, 226);
-    height: 40px;
+  background-color: rgb(118, 164, 233);
+  height: 40px;
 }
 
 .colright {
-    width: 100%;
-    float: right;
-    text-align: right;
-    padding-top: 5px;
+  width: 100%;
+  float: right;
+  text-align: right;
+  padding-top: 5px;
 }
 
 
@@ -45,42 +44,44 @@ main {
 } */
 
 input {
-    border: transparent ;
-    border-bottom: grey solid 1px;
-    margin-right: 8px;
+  border: transparent ;
+  border-bottom: grey solid 1px;
+  margin-right: 8px;
 }
 
 .mat-accordion .mat-header-row {
-    padding-left: 1.5rem;
-    padding-right: 2rem;
-    border-bottom: none;
-    width: 100%;
-  }
-  
-  .mat-expansion-panel-header.mat-row {
-    border-bottom: none;
-  }
+  padding-left: 1.5rem;
+  padding-right: 2rem;
+  border-bottom: none;
+  width: 100%;
+}
 
-  .mat-table {
-    display: block;
-  }
-  
-  .mat-header-row {
-    min-height: 50px;
-  }
-  
-  .mat-row {
-    min-height: 40px;
-  }
+.mat-expansion-panel-header.mat-row {
+  border-bottom: none;
+}
 
-  .mat-row, .mat-header-row {
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-  }
-  
-  .mat-cell, .mat-header-cell {
-    flex: 1;
-    overflow: visible;
-    word-wrap: break-word;
-  }
+.mat-table {
+  display: block;
+}
+
+.mat-header-row {
+  min-height: 30px;
+}
+
+.mat-row {
+  min-height: 40px;
+}
+
+.mat-row, .mat-header-row {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.mat-cell, .mat-header-cell {
+  overflow: visible;
+}
+
+mat-expansion-panel {
+  width: 100%;
+}

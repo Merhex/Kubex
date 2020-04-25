@@ -1,4 +1,4 @@
-<main class="container">
+<main>
   <!-- Top -->
   <div class="row top">
     <!-- Title and post -->
@@ -25,19 +25,32 @@
   <!-- Report body -->
   <div class="row body">
     <mat-accordion displayMode="flat" multi class="mat-table col col-lg-12">
-      <section matSort class="mat-elevation-z2 mat-header-row">
-        <span class="mat-header-cell col col-lg-1" mat-sort-header="vesselName">Hour</span>
-        <span class="mat-header-cell col col-lg-2" mat-sort-header="vesselId">Location</span>
-        <span class="mat-header-cell col col-lg-9" mat-sort-header="vesselStatus">Description</span>
+      <section matSort class="mat-elevation-z2 mat-header-row container" fxLayout="row" fxLayout.xs="column">
+        <span class="mat-header-cell" mat-sort-header="vesselName" fxFlex="12%">Hour</span>
+        <span class="mat-header-cell" mat-sort-header="vesselId" fxFlex="18%">Location</span>
+        <span class="mat-header-cell" mat-sort-header="vesselStatus" fxFlex="70%">Description</span>
       </section>
     
-      <mat-expansion-panel *ngFor="let entry of entries | async" style="width: 100%;">
-        <mat-expansion-panel-header class="mat-row">
-          <input class="mat-cell col col-lg-1" type="time" [ngModel]="entry.hour">
-          <input class="mat-cell col col-lg-1" type="text" [ngModel]="entry.locaton">
-          <input class="mat-cell col col-lg-9" type="text" [ngModel]="entry.description">
+      <mat-expansion-panel *ngFor="let entry of entries | async">
+        <mat-expansion-panel-header class="mat-row container" fxLayout="row" fxLayout.xs="column">
+          <input class="mat-cell" type="time" [ngModel]="entry.hour | date: 'hh:mm'" fxFlex="12%">
+          <input class="mat-cell" type="text" [ngModel]="entry.locaton" fxFlex="18%">
+          <input class="mat-cell" type="text" [ngModel]="entry.description" fxFlex="70%">
         </mat-expansion-panel-header>
-        <div><pre>{{entry | json}}</pre></div>
+
+        <div class="mat-row container" *ngFor="let entry of entries | async" fxLayout="row" fxLayout.xs="column">
+          <input class="mat-cell" type="time" [ngModel]="entry.hour | date: 'hh:mm'" fxFlex="12%">
+          <input class="mat-cell" type="text" [ngModel]="entry.locaton" fxFlex="18%">
+          <mat-form-field class="mat-cell descr" fxFlex="70%">
+            <textarea matInput
+                      cdkTextareaAutosize
+                      #autosize="cdkTextareaAutosize"
+                      cdkAutosizeMinRows="1"
+                      cdkAutosizeMaxRows="5"
+                      [ngModel]="entry.description">
+                    </textarea>
+          </mat-form-field>
+        </div>
       </mat-expansion-panel>
     
     </mat-accordion>
