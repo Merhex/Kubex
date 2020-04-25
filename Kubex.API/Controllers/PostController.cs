@@ -18,19 +18,45 @@ namespace Kubex.API.Controllers
             _postService = postService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id) 
+        {
+            var post = await _postService.GetPostAsync(id);
+
+            return Ok(post);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id) 
+        {
+            await _postService.DeletePostAsync(id);
+
+            return Ok();
+        }
+
+
         [HttpPost("create")]        
         public async Task<IActionResult> Create(PostDTO dto)
         {
-            try
-            {
-                var post = await _postService.CreatePostAsync(dto);
+            var post = await _postService.CreatePostAsync(dto);
 
-                return Ok(post);
-            }
-            catch (ApplicationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(post);
+        }
+
+        [HttpPost("add")]
+        public async Task<IActionResult> AddUserToPosts(UpdateUserPostsDTO dto) 
+        {
+            var updatedUser = await _postService.SetUserPostsAsync(dto);
+
+            return Ok(updatedUser);
+        }
+
+        [HttpPost("modify")]
+        public async Task<IActionResult> ModifyPostRoles(ModifyPostRolesDTO dto) 
+        {
+            var post = await _postService.SetPostRolesAsync(dto);
+
+            return Ok(post);
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Kubex.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
@@ -19,71 +20,41 @@ namespace Kubex.API.Controllers
             _userService = userService;
         }
         
-        [Authorize]        
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            try
-            {
-                var requestingUser = HttpContext.User;
-                var users = await _userService.GetUsersAsync(requestingUser);
+            var requestingUser = HttpContext.User;
+            var users = await _userService.GetUsersAsync(requestingUser);
 
-                return Ok(users);
-            }
-            catch (ApplicationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(users);
         }
-
-        [Authorize]        
+       
         [HttpGet("{userName}", Name = "GetUser")]
         public async Task<IActionResult> Get(string userName)
         {
-            try
-            {
-                var user = await _userService.GetUserAsync(userName);
+            var user = await _userService.GetUserAsync(userName);
 
-                return Ok(user);
-            }
-            catch (ApplicationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(user);
         }
 
         [Authorize(Roles = "Administrator, Manager")]
         [HttpPost("{userName}/roles/add")]
-        public async Task<IActionResult> AddRole(string userName,  [FromBody] ModifyRolesDTO dto)
+        public async Task<IActionResult> AddRole(string userName, ModifyRolesDTO dto)
         {
-            try
-            {
-                dto.RequestingUser = HttpContext.User;
-                var user = await _userService.AddRoleToUserAsync(dto);
+            dto.RequestingUser = HttpContext.User;
+            var user = await _userService.AddRoleToUserAsync(dto);
 
-                return Ok(user);
-            }
-            catch (ApplicationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(user);
         }
 
         [Authorize(Roles = "Administrator, Manager")]
         [HttpPost("{userName}/roles/delete")]
-        public async Task<IActionResult> DeleteRole(string userName, [FromBody] ModifyRolesDTO dto)
+        public async Task<IActionResult> DeleteRole(string userName, ModifyRolesDTO dto)
         {
-            try
-            {
-                dto.RequestingUser = HttpContext.User;
-                var user = await _userService.RemoveRoleFromUserAsync(dto);
+            dto.RequestingUser = HttpContext.User;
+            var user = await _userService.RemoveRoleFromUserAsync(dto);
 
-                return Ok(user); 
-            }
-            catch (ApplicationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(user); 
         }
     }
 }

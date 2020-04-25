@@ -17,6 +17,9 @@ namespace Kubex.DTO.Configurations
             CreateMap<AddressDTO, Address>()
                 .ConvertUsing<AddressConverter>();
             
+            CreateMap<Address, AddressDTO>()
+                .ConvertUsing<AddressConverter>();
+
             CreateMap<CompanyDTO, Company>()
                 .ReverseMap();
 

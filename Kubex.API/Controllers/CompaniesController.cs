@@ -22,16 +22,9 @@ namespace Kubex.API.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create(CompanyDTO dto)
         {
-            try
-            {
-                var post = await _companyService.CreateAsync(dto);
+            var post = await _companyService.CreateAsync(dto);
 
-                return Ok(post);
-            }
-            catch (ApplicationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(post);
         }
     }
 }

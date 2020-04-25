@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Text;
 using AutoMapper;
+using Kubex.API.Middleware;
 using Kubex.BLL.Services;
 using Kubex.BLL.Services.Interfaces;
 using Kubex.DAL;
@@ -108,21 +109,35 @@ namespace Kubex.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsProduction()) 
             {
-                app.UseDeveloperExceptionPage();
+                app.UseMiddleware<ExceptionHandlingMiddleware>();
             }
-
-            app.UseExceptionHandler(builder => builder.Run(async context =>
+            else 
             {
-                var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
-                var exception = exceptionHandlerPathFeature.Error;
+                app.UseExceptionHandler(builder => builder.Run(async context => 
+                {
+                    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                    var exception = exceptionHandlerPathFeature.Error;
 
-                var result = JsonConvert.SerializeObject(new { error = exception.Message });
-                context.Response.ContentType = "application/json";
-                context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-                await context.Response.WriteAsync(result);
-            }));
+                    var result = JsonConvert.SerializeObject(new { error = exception.Message });
+                    context.Response.ContentType = "application/json";
+
+                    var status = exception switch
+                    {
+                        ApplicationException _ => context.Response.StatusCode = (int)HttpStatusCode.BadRequest,
+                        ArgumentNullException _ => context.Response.StatusCode = (int)HttpStatusCode.NotFound,
+                        _ => context.Response.StatusCode = (int)HttpStatusCode.InternalServerError
+                    };
+                    
+                    if (status == (int)HttpStatusCode.InternalServerError)
+                        await context.Response.WriteAsync(
+                            JsonConvert.SerializeObject(new { error = "An unexpected error happend. Please check your data formatting and contact the administrator if this error persists." })
+                        );
+                    else
+                        await context.Response.WriteAsync(result);
+                }));
+            }
 
             app.UseRouting();
 

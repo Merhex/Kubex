@@ -65,16 +65,15 @@ namespace Kubex.BLL.Services
 
         public async Task<UserToReturnDTO> AddRolesToUserAsync(ModifyRolesDTO dto)
         {
-            var check = await ValidateModifyRolesDTO(dto);
+            await ValidateModifyRolesDTO(dto);
 
-            if (! check.isValid) 
-                throw new ApplicationException(check.error);
+            var user = await _userManager.FindByNameAsync(dto.Name);
 
-            var result = await _userManager.AddToRolesAsync(check.user, dto.Roles);
+            var result = await _userManager.AddToRolesAsync(user, dto.Roles);
 
             if (result.Succeeded)
             {
-                var userToReturn = _mapper.Map<UserToReturnDTO>(check.user);
+                var userToReturn = _mapper.Map<UserToReturnDTO>(user);
 
                 return userToReturn;
             }
@@ -91,16 +90,15 @@ namespace Kubex.BLL.Services
 
         public async Task<UserToReturnDTO> RemoveRolesFromUserAsync(ModifyRolesDTO dto) 
         {
-            var check = await ValidateModifyRolesDTO(dto);
+            await ValidateModifyRolesDTO(dto);
 
-            if (! check.isValid) 
-                throw new ApplicationException(check.error);
+            var user = await _userManager.FindByNameAsync(dto.Name);
 
-            var result = await _userManager.RemoveFromRolesAsync(check.user, dto.Roles);
+            var result = await _userManager.RemoveFromRolesAsync(user, dto.Roles);
 
             if (result.Succeeded)
             {
-                var userToReturn = _mapper.Map<UserToReturnDTO>(check.user);
+                var userToReturn = _mapper.Map<UserToReturnDTO>(user);
 
                 return userToReturn;
             }
@@ -180,7 +178,7 @@ namespace Kubex.BLL.Services
             var user = await _userManager.FindByNameAsync(dto.UserName);
 
             if (user == null)
-                throw new ApplicationException("We could not find an account with that given username and password.");
+                throw new ArgumentNullException(null, "We could not find an account with that given username and password.");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
 
@@ -191,32 +189,32 @@ namespace Kubex.BLL.Services
                 return userToReturn;
             }
 
-            throw new ApplicationException("We could not find an account with that given username and password.");
+            throw new ArgumentNullException(null, "We could not find an account with that given username and password.");
         }
 
-        private async Task<(bool isValid, string error, User user)> ValidateModifyRolesDTO(ModifyRolesDTO dto) 
+        private async Task<bool> ValidateModifyRolesDTO(ModifyRolesDTO dto) 
         {
             if (dto == null)
-                return (false, "The data sent was invalid, please check the formatting or contact an administrator if you think this is an error.", null);
+                throw new ApplicationException("The data sent was invalid, please check the formatting or contact an administrator if you think this is an error.");
 
             if (dto.Name == null)
-                return (false, "The name field in the data sent was empty.", null);
+                throw new ApplicationException("The name field in the data sent was empty.");
                 
             var user = await _userManager.FindByNameAsync(dto.Name);
 
             if (user == null)
-                return (false, "Could not find a user with the given username", null);
+                throw new ArgumentNullException(null, "Could not find a user with the given name.");
 
             foreach (var role in dto.Roles)
             {
                 if (! await _roleManager.RoleExistsAsync(role))
-                    return (false, $"The given role: {role}, does not exist.", null);
+                    throw new ArgumentNullException(null, $"The given role: {role}, does not exist.");
                 
                 if (! dto.RequestingUser.IsInRole(role))
-                    return (false, $"You are not allowed to modify user {dto.Name}, to the given role: {role}.", null);
+                    throw new ApplicationException($"You are not allowed to modify user {dto.Name}, to the given role: {role}.");
             }
 
-            return (true, null, user);
+            return true;
         }
     }
 }

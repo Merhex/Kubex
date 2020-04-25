@@ -53,12 +53,15 @@ namespace Kubex.BLL.Services
             var post = await _postRepository.Find(dto.Id);
             
             if (post == null)
-                throw new ApplicationException("Could not find a post with the given id.");
-            
-            post.Roles.Clear();
+                throw new ArgumentNullException(null, "Could not find a post with the given id.");
 
-            if (! await _postRepository.SaveAll())
-                throw new ApplicationException("Something went wrong clearing the roles of the given post.");
+            if (post.Roles.Count != 0) 
+            {
+                post.Roles.Clear();
+
+                if (! await _postRepository.SaveAll())
+                    throw new ApplicationException("Something went wrong clearing the roles of the given post.");
+            }
 
             var newRoles = _roleManager.Roles.Where(r => dto.Roles.Any(n => n == r.Name));
             foreach (var role in newRoles)
@@ -86,7 +89,7 @@ namespace Kubex.BLL.Services
             var user = await _userManager.FindByNameAsync(dto.UserName);
 
             if (user == null)
-                throw new ApplicationException("Could not find a user with the given username.");
+                throw new ArgumentNullException(null, "Could not find a user with the given username.");
 
             // Clear current post membership:
             var currentPosts = await GetUserPostsAsync(user.Id);
@@ -98,8 +101,9 @@ namespace Kubex.BLL.Services
                 ));
             }
             
-            if (! await _postRepository.SaveAll())
-                throw new ApplicationException("Something went wrong clearing the posts from the given user.");
+            if(currentPosts.Count() != 0)
+                if (! await _postRepository.SaveAll())
+                    throw new ApplicationException("Something went wrong clearing the posts from the given user.");
     
             // Add the user to the new posts:
             foreach (var postId in dto.PostIds)
@@ -123,7 +127,7 @@ namespace Kubex.BLL.Services
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
-                throw new ApplicationException("Could not find a user with the given id.");
+                throw new ArgumentNullException(null, "Could not find a user with the given id.");
 
             // Remove user from previous roles:
             var oldUserRoles = await _userManager.GetRolesAsync(user);
@@ -150,9 +154,9 @@ namespace Kubex.BLL.Services
             return userToReturn;
         }
 
-        public async Task<IEnumerable<PostRole>> GetUserPostRolesAsync(string userName)
+        public async Task<IEnumerable<PostRole>> GetUserPostRolesAsync(string userId)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByIdAsync(userId);
 
             var userPosts = await GetUserPostsAsync(user.Id);
 
@@ -163,9 +167,9 @@ namespace Kubex.BLL.Services
             return userPostRoles;
         }
 
-        public async Task<IEnumerable<Post>> GetUserPostsAsync(string userName)
+        public async Task<IEnumerable<Post>> GetUserPostsAsync(string userId)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByIdAsync(userId);
 
             var userPosts = await _postRepository.FindRange(p => p.Users.Any(u => u.UserId == user.Id));
 
@@ -177,7 +181,7 @@ namespace Kubex.BLL.Services
             var post = await _postRepository.Find(id);
 
             if (post == null)
-                throw new ApplicationException("Could not find a post with the given id.");
+                throw new ArgumentNullException(null, "Could not find a post with the given id.");
             
             var postToReturn = _mapper.Map<PostDTO>(post);
 
@@ -189,7 +193,7 @@ namespace Kubex.BLL.Services
             var post = await _postRepository.Find(postId);
 
             if (post == null)
-                throw new ApplicationException("Could not find post with given id.");
+                throw new ArgumentNullException(null, "Could not find post with given id.");
     
             var currentPostUsers = await GetPostUsersAsync(postId);
 
@@ -226,7 +230,7 @@ namespace Kubex.BLL.Services
             var post = await _postRepository.Find(dto.PostId);
 
             if (post == null)
-                throw new ApplicationException("No post was found with the given id.");
+                throw new ArgumentNullException(null, "No post was found with the given id.");
 
             post.Address = dto.Address ?? post.Address;
             post.Company = dto.Company ?? post.Company;
