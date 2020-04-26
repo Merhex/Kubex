@@ -12,14 +12,14 @@
   </div>
 
   <!-- main row -->
-  <div fxLayout="row">
-    <mat-accordion displayMode="flat" multi class="mat-table col col-lg-12">
+  <div fxLayout="row" style="margin: 0 2.5%;">
+    <mat-accordion displayMode="flat" multi class="mat-table" fxFlex="100">
       <section matSort class="mat-elevation-z2 mat-header-row" fxLayout="row" fxLayout.xs="column">
         <span class="mat-header-cell" mat-sort-header="vesselName" fxFlex="6%">Hour</span>
         <span class="mat-header-cell" mat-sort-header="vesselId" fxFlex="14%">Location</span>
         <span class="mat-header-cell" mat-sort-header="vesselStatus" fxFlex="80%">Description</span>
       </section>
-    
+
       <mat-expansion-panel *ngFor="let entry of entries | async">
         <mat-expansion-panel-header class="mat-row" fxLayout="row" fxLayout.xs="column">
           <input class="mat-cell" type="time" [ngModel]="entry.hour | date: 'hh:mm'" fxFlex="6%">
@@ -41,7 +41,42 @@
                     </textarea>
           </mat-form-field>
         </div>
+        <!-- Empty line for entry -->
+        <mat-action-row class="mat-row" style="padding-left: 1rem;">
+          <input class="mat-cell" type="time" fxFlex="6%">
+          <input class="mat-cell" type="text" fxFlex="14%">
+          <mat-form-field class="mat-cell descr" fxFlex="80%">
+            <textarea matInput
+                      cdkTextareaAutosize
+                      #autosize="cdkTextareaAutosize"
+                      cdkAutosizeMinRows="1"
+                      cdkAutosizeMaxRows="5"
+                      style="padding: 0px;">
+                    </textarea>
+          </mat-form-field>
+          <button mat-mini-fab color="primary">
+            <mat-icon>send</mat-icon>
+          </button>
+        </mat-action-row>
       </mat-expansion-panel>
+
+      <!-- Empty line for entry -->
+      <mat-action-row class="mat-row" style="padding-left: 1rem;">
+        <input class="mat-cell" type="time" fxFlex="6%">
+        <input class="mat-cell" type="text" fxFlex="14%">
+        <mat-form-field class="mat-cell descr" fxFlex="80%">
+          <textarea matInput
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="5"
+                    style="padding: 0px;">
+                  </textarea>
+        </mat-form-field>
+        <button mat-mini-fab color="primary">
+          <mat-icon>send</mat-icon>
+        </button>
+      </mat-action-row>
     
     </mat-accordion>
   </div>

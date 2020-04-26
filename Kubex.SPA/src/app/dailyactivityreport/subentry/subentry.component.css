@@ -1,0 +1,35 @@
+input {
+    border: transparent ;
+    border-bottom: grey solid 1px;
+    margin-right: 8px;
+  }
+  
+  .mat-accordion .mat-header-row {
+    align-items: center;
+    padding: 0 2rem;
+    border-bottom: none;
+    margin-bottom: 5px;
+  }
+  
+  .mat-header-row {
+    min-height: 30px;
+  }
+  
+  .mat-row {
+    min-height: 40px;
+  }
+  
+  .mat-expansion-panel.mat-expanded {
+    background: rgb(243, 247, 253);
+    margin: 1rem 0;
+  }
+  
+  .mat-row, .mat-header-row {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  input, textarea {
+    background-color: transparent;
+  }

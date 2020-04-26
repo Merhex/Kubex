@@ -3,6 +3,7 @@ main {
     top: 50px;
     height: calc(100vh - 50px);
     width: 100vw;
+    overflow-y: scroll;
 }
 
 .top {
@@ -74,6 +75,7 @@ input {
   align-items: center;
   box-sizing: border-box;
 }
+
 input, textarea {
   background-color: transparent;
 }

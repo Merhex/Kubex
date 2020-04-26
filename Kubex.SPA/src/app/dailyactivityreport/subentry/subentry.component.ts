@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-subentry',
@@ -7,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SubentryComponent implements OnInit {
 
-  constructor() { }
+  entries: Observable<any> = this.http.get('http://localhost:3000/entry/');
+
+
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
   }

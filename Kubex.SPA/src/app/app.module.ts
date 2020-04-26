@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ButtonModule } from 'primeng/button';
@@ -17,10 +19,13 @@ import { UserComponent } from './user/user.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { DailyactivityreportComponent } from './dailyactivityreport/dailyactivityreport.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SubentryComponent } from './dailyactivityreport/subentry/subentry.component';
 
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
    declarations: [
@@ -29,7 +34,8 @@ import {MatInputModule} from '@angular/material/input';
       UserComponent,
       HomeComponent,
       LoginComponent,
-      DailyactivityreportComponent
+      DailyactivityreportComponent,
+      SubentryComponent
    ],
    imports: [
       BrowserModule,
@@ -45,7 +51,10 @@ import {MatInputModule} from '@angular/material/input';
       FontAwesomeModule,
       BrowserAnimationsModule,
       MatExpansionModule,
-      MatInputModule
+      MatInputModule,
+      MatButtonModule,
+      MatIconModule,
+      ScrollingModule
    ],
    providers: [],
    bootstrap: [
