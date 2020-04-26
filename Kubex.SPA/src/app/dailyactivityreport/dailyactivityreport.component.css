@@ -50,18 +50,10 @@ input {
 }
 
 .mat-accordion .mat-header-row {
-  padding-left: 1.5rem;
-  padding-right: 2rem;
+  align-items: center;
+  padding: 0 2rem;
   border-bottom: none;
-  width: 100%;
-}
-
-.mat-expansion-panel-header.mat-row {
-  border-bottom: none;
-}
-
-.mat-table {
-  display: block;
+  margin-bottom: 5px;
 }
 
 .mat-header-row {
@@ -72,16 +64,20 @@ input {
   min-height: 40px;
 }
 
+.mat-expansion-panel.mat-expanded {
+  background: rgb(243, 247, 253);
+  margin: 1rem 0;
+}
+
 .mat-row, .mat-header-row {
   display: flex;
   align-items: center;
   box-sizing: border-box;
 }
-
-.mat-cell, .mat-header-cell {
-  overflow: visible;
+input, textarea {
+  background-color: transparent;
 }
 
-mat-expansion-panel {
-  width: 100%;
+.mat-expansion-panel {
+  /* padding-left: 1rem; */
 }

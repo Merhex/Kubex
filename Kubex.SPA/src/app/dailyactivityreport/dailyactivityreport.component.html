@@ -1,70 +1,55 @@
-<main>
-  <!-- Top -->
-  <div class="row top">
-    <!-- Title and post -->
-    <div class="col col-lg-8">
-      <div class="row">
-        <h1>Daily Activity Report</h1>
-      </div>
-      <div class="row">
-        <h5>Post</h5>
-      </div>
+<main fxLayout="column" fxFlex="100">
+  <!-- top row -->
+  <div class="top" fxLayout="row" fxFlex="8">
+    <div fxLayout="column" fxFlex="60">
+      <h1>DAR</h1>
+      <h4>Post</h4>
     </div>
-
-    <!-- Date and reference number -->
-    <div class="col col-lg-4 colright">
-      <div class="row colright">
-        <h4 class="colright">Monday 01/01/2020</h4>
-      </div>
-      <div class="row colright">
-        <h5 class="colright">DAR-00-000</h5>
-      </div>
+    <div fxLayout="column" fxFlex style="text-align: right;">
+      <h1>Date</h1>
+      <h4>DarId</h4>
     </div>
   </div>
 
-  <!-- Report body -->
-  <div class="row body">
+  <!-- main row -->
+  <div fxLayout="row">
     <mat-accordion displayMode="flat" multi class="mat-table col col-lg-12">
-      <section matSort class="mat-elevation-z2 mat-header-row container" fxLayout="row" fxLayout.xs="column">
-        <span class="mat-header-cell" mat-sort-header="vesselName" fxFlex="12%">Hour</span>
-        <span class="mat-header-cell" mat-sort-header="vesselId" fxFlex="18%">Location</span>
-        <span class="mat-header-cell" mat-sort-header="vesselStatus" fxFlex="70%">Description</span>
+      <section matSort class="mat-elevation-z2 mat-header-row" fxLayout="row" fxLayout.xs="column">
+        <span class="mat-header-cell" mat-sort-header="vesselName" fxFlex="6%">Hour</span>
+        <span class="mat-header-cell" mat-sort-header="vesselId" fxFlex="14%">Location</span>
+        <span class="mat-header-cell" mat-sort-header="vesselStatus" fxFlex="80%">Description</span>
       </section>
     
       <mat-expansion-panel *ngFor="let entry of entries | async">
-        <mat-expansion-panel-header class="mat-row container" fxLayout="row" fxLayout.xs="column">
-          <input class="mat-cell" type="time" [ngModel]="entry.hour | date: 'hh:mm'" fxFlex="12%">
-          <input class="mat-cell" type="text" [ngModel]="entry.locaton" fxFlex="18%">
-          <input class="mat-cell" type="text" [ngModel]="entry.description" fxFlex="70%">
+        <mat-expansion-panel-header class="mat-row" fxLayout="row" fxLayout.xs="column">
+          <input class="mat-cell" type="time" [ngModel]="entry.hour | date: 'hh:mm'" fxFlex="6%">
+          <input class="mat-cell" type="text" [ngModel]="entry.locaton" fxFlex="14%">
+          <input class="mat-cell" type="text" [ngModel]="entry.description" fxFlex="80%">
         </mat-expansion-panel-header>
 
-        <div class="mat-row container" *ngFor="let entry of entries | async" fxLayout="row" fxLayout.xs="column">
-          <input class="mat-cell" type="time" [ngModel]="entry.hour | date: 'hh:mm'" fxFlex="12%">
-          <input class="mat-cell" type="text" [ngModel]="entry.locaton" fxFlex="18%">
-          <mat-form-field class="mat-cell descr" fxFlex="70%">
+        <div class="mat-row" *ngFor="let entry of entries | async" fxLayout="row" fxLayout.xs="column" style="padding-left: 1rem;">
+          <input class="mat-cell" type="time" [ngModel]="entry.hour | date: 'hh:mm'" fxFlex="6%">
+          <input class="mat-cell" type="text" [ngModel]="entry.locaton" fxFlex="14%">
+          <mat-form-field class="mat-cell descr" fxFlex="80%">
             <textarea matInput
                       cdkTextareaAutosize
                       #autosize="cdkTextareaAutosize"
                       cdkAutosizeMinRows="1"
                       cdkAutosizeMaxRows="5"
-                      [ngModel]="entry.description">
+                      [ngModel]="entry.description"
+                      style="padding: 0px;">
                     </textarea>
           </mat-form-field>
         </div>
       </mat-expansion-panel>
     
     </mat-accordion>
-
   </div>
-  
 
-  <!-- Buttons -->
-  <div class="row bottom">
-    <div class="col col-lg-6">
-      <input type="button" value="Klik" >
-    </div>
-    <div class="col col-lg-6">
-      <input type="button" value="Klik" style="float: right;">
-    </div>
+  <!-- button row -->
+  <div class="bottom" fxLayout="row" fxFlexOffset="auto">
+    <button>Test</button>
   </div>
+
+
 </main>
