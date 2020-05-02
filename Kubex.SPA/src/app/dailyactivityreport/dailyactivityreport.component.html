@@ -12,7 +12,7 @@
   </div>
 
   <!-- main row -->
-  <div fxLayout="row" style="margin: 0 2.5%;">
+  <div class="mainrow" fxLayout="row">
     <mat-accordion displayMode="flat" multi class="mat-table" fxFlex="100">
       <section matSort class="mat-elevation-z2 mat-header-row" fxLayout="row" fxLayout.xs="column">
         <span class="mat-header-cell" mat-sort-header="vesselName" fxFlex="6%">Hour</span>
@@ -22,61 +22,72 @@
 
       <mat-expansion-panel *ngFor="let entry of entries | async">
         <mat-expansion-panel-header class="mat-row" fxLayout="row" fxLayout.xs="column">
-          <input class="mat-cell" type="time" [ngModel]="entry.hour | date: 'hh:mm'" fxFlex="6%">
-          <input class="mat-cell" type="text" [ngModel]="entry.locaton" fxFlex="14%">
-          <input class="mat-cell" type="text" [ngModel]="entry.description" fxFlex="80%">
+          <input class="mat-cell" type="time" [ngModel]="entry.occuranceDate | date: 'hh:mm'" 
+                fxFlex="6%" 
+                fxFlex.lt-lg="8%">
+          <input class="mat-cell" type="text" [ngModel]="entry.location" fxFlex="12%">
+          <input class="mat-cell" type="text" [ngModel]="entry.description" fxFlex>
         </mat-expansion-panel-header>
-
+        <!-- Subentries -->
         <div class="mat-row" *ngFor="let entry of entries | async" fxLayout="row" fxLayout.xs="column" style="padding-left: 1rem;">
-          <input class="mat-cell" type="time" [ngModel]="entry.hour | date: 'hh:mm'" fxFlex="6%">
-          <input class="mat-cell" type="text" [ngModel]="entry.locaton" fxFlex="14%">
-          <mat-form-field class="mat-cell descr" fxFlex="80%">
+          <input class="mat-cell" type="time" [ngModel]="entry.occuranceDate | date: 'hh:mm'" 
+                fxFlex="6%" 
+                fxFlex.lt-lg="8%">
+          <input class="mat-cell" type="text" [ngModel]="entry.location" fxFlex="12%">
+          <mat-form-field class="mat-cell descr" fxFlex>
             <textarea matInput
                       cdkTextareaAutosize
-                      #autosize="cdkTextareaAutosize"
                       cdkAutosizeMinRows="1"
-                      cdkAutosizeMaxRows="5"
+                      cdkAutosizeMaxRows="40"
                       [ngModel]="entry.description"
                       style="padding: 0px;">
                     </textarea>
           </mat-form-field>
         </div>
-        <!-- Empty line for entry -->
-        <mat-action-row class="mat-row" style="padding-left: 1rem;">
-          <input class="mat-cell" type="time" fxFlex="6%">
-          <input class="mat-cell" type="text" fxFlex="14%">
-          <mat-form-field class="mat-cell descr" fxFlex="80%">
-            <textarea matInput
-                      cdkTextareaAutosize
-                      #autosize="cdkTextareaAutosize"
-                      cdkAutosizeMinRows="1"
-                      cdkAutosizeMaxRows="5"
-                      style="padding: 0px;">
-                    </textarea>
-          </mat-form-field>
-          <button mat-mini-fab color="primary">
-            <mat-icon>send</mat-icon>
-          </button>
+        <!-- Empty line for entry in subentries -->
+        <mat-action-row class="mat-row">
+          <form [formGroup] = "postSubEntry" (ngSubmit) = "onSubmitSub()">
+            <mat-form-field fxFlex="6%">
+              <input matInput type="time">
+            </mat-form-field>
+            <mat-form-field fxFlex="14%">
+              <input matInput type="text">
+            </mat-form-field>
+            <mat-form-field fxFlex>
+              <textarea matInput
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="40"
+                        style="padding: 0px;"></textarea>
+            </mat-form-field>
+            <button mat-mini-fab color="primary" type="submit">
+              <mat-icon>send</mat-icon>
+            </button>
+          </form>
         </mat-action-row>
       </mat-expansion-panel>
 
-      <!-- Empty line for entry -->
-      <mat-action-row class="mat-row" style="padding-left: 1rem;">
-        <input class="mat-cell" type="time" fxFlex="6%">
-        <input class="mat-cell" type="text" fxFlex="14%">
-        <mat-form-field class="mat-cell descr" fxFlex="80%">
-          <textarea matInput
-                    cdkTextareaAutosize
-                    #autosize="cdkTextareaAutosize"
-                    cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="5"
-                    style="padding: 0px;">
-                  </textarea>
-        </mat-form-field>
-        <button mat-mini-fab color="primary">
-          <mat-icon>send</mat-icon>
-        </button>
-      </mat-action-row>
+      <!-- Empty line for entry in main part -->
+      <div class="mat-row newEntry">
+        <form [formGroup] = "postEntry" (ngSubmit) = "onSubmit()">
+          <mat-form-field fxFlex="6%">
+            <input matInput type="time">
+          </mat-form-field>
+          <mat-form-field fxFlex="14%">
+            <input matInput type="text">
+          </mat-form-field>
+          <mat-form-field fxFlex>
+            <textarea matInput
+                      cdkTextareaAutosize
+                      cdkAutosizeMinRows="1"
+                      cdkAutosizeMaxRows="40"
+                      style="padding: 0px;"></textarea>
+          </mat-form-field>
+          <button mat-mini-fab color="primary" type="submit">
+            <mat-icon>send</mat-icon>
+          </button>
+        </form>
+      </div>
     
     </mat-accordion>
   </div>
