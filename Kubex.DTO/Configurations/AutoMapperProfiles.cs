@@ -1,8 +1,6 @@
 using AutoMapper;
 using Kubex.DTO.Configurations.Resolvers;
 using Kubex.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Kubex.DTO.Configurations
 {
@@ -46,7 +44,14 @@ namespace Kubex.DTO.Configurations
             CreateMap<DailyActivityReportDTO, DailyActivityReport>()
                 .ReverseMap();
 
-            CreateMap<Entry, EntryDTO>();
+            CreateMap<Entry, EntryDTO>()
+                .ForMember(x => x.EntryType, opt => opt.MapFrom<EntryTypeConverter>())
+                .ForMember(x => x.Priority, opt => opt.MapFrom<PriorityConverter>());
+            
+            CreateMap<EntryDTO, Entry>()
+                .ForMember(x => x.EntryType, opt => opt.MapFrom<EntryTypeConverter>())
+                .ForMember(x => x.Priority, opt => opt.MapFrom<PriorityConverter>());
+
         }
     }
 }

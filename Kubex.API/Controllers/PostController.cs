@@ -31,7 +31,7 @@ namespace Kubex.API.Controllers
         {
             await _postService.DeletePostAsync(id);
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpPost("create")]        

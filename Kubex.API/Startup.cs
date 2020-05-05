@@ -94,16 +94,22 @@ namespace Kubex.API
             
             services.AddAuthorization();
 
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IStreetRepository, StreetRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IZIPCodeRepository, ZIPCodeRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IMediaTypeRepository, MediaTypeRepository>();
+            services.AddScoped<IDailyActivityReportRepository, DailyActivityReportRepository>();
+            services.AddScoped<IPriorityRepository, PriorityRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
-            services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IEntryTypeRepository, EntryTypeRepository>();
+            services.AddScoped<IEntryRepository, EntryRepository>();
+            services.AddScoped<IDailyActivityReportService, DailyActivityReportService>();
             services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

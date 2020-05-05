@@ -13,21 +13,24 @@ namespace Kubex.BLL.Services
     {
         private readonly IMapper _mapper;
         private readonly IDailyActivityReportRepository _darRepository;
+        private readonly IEntryRepository _entryRepository;
 
         public DailyActivityReportService(IMapper mapper,
-            IDailyActivityReportRepository darRepository)
+            IDailyActivityReportRepository darRepository,
+            IEntryRepository entryRepository)
         {
+            _entryRepository = entryRepository;
             _mapper = mapper;
             _darRepository = darRepository;
         }
 
-        public async Task<DailyActivityReportDTO> CreateDAR() 
+        public async Task<DailyActivityReportDTO> CreateDailyActivityReportAsync()
         {
             var report = new DailyActivityReport { Date = DateTime.Now, Entries = new List<Entry>() };
 
             _darRepository.Add(report);
 
-            if (await _darRepository.SaveAll()) 
+            if (await _darRepository.SaveAll())
             {
                 var reportToReturn = _mapper.Map<DailyActivityReportDTO>(report);
 
@@ -35,6 +38,55 @@ namespace Kubex.BLL.Services
             }
 
             throw new ApplicationException("Something went wrong creating a new report.");
+        }
+
+        public async Task<DailyActivityReportDTO> AddEntryToDailyActivityReportAsync(AddEntryToDailyActivityReportDTO dto)
+        {
+            var entry = _mapper.Map<Entry>(dto.Entry);
+            var dar = await _darRepository.Find(dto.DailyActivityReport.Id);
+
+            if (dar == null)
+               throw new ArgumentNullException(null, "Could not find a Daily Activity Report with given id.");
+            
+            entry.DailyActivityReport = dar;
+            entry.OccuranceDate = DateTime.Now;
+            _entryRepository.Add(entry);
+
+            if (! await _entryRepository.SaveAll())
+                throw new ApplicationException("Something went wrong saving the entry to the database.");
+
+            dar.Entries.Add(entry);
+            _darRepository.Update(dar);
+
+            if (! await _darRepository.SaveAll())
+                throw new ApplicationException("Something went wrong adding the entry to the Daily Activity Report.");
+
+            var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
+            return darToReturn;
+        }
+
+        public async Task<DailyActivityReportDTO> GetDailyActivityReportAsync(int id)
+        {
+            var dar = await _darRepository.Find(id);
+
+            if (dar == null)
+                throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given id.");
+            
+            var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
+            return darToReturn;
+        }
+
+        public async Task DeleteDailyActivityReportAsync(int id) 
+        {
+            var dar = await _darRepository.Find(id);
+
+            if (dar == null)
+                throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given id.");
+
+            _darRepository.Remove(dar);
+
+            if (! await _darRepository.SaveAll())
+                throw new ApplicationException("Something went wrong deleting the Daily Activity Report.");
         }
     }
 }

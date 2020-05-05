@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Kubex.DTO
@@ -5,6 +6,7 @@ namespace Kubex.DTO
     public class EntryDTO
     {
         public int Id { get; set; }
+        public DateTime OccuranceDate { get; set; }
         public string Description { get; set; }
         public EntryDTO ParentEntry { get; set; }
         public DailyActivityReportDTO DailyActivityReport { get; set; }

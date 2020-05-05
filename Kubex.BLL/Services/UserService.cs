@@ -140,13 +140,21 @@ namespace Kubex.BLL.Services
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+            var securityToken = _configuration.GetSection("AppSettings:Token").Value;
+            if (securityToken == null)
+                throw new ArgumentNullException("securityToken", "The security token is not set. Please do so using AppSettings:Token in appSettings");
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityToken));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var expirery = _configuration.GetSection("AppSettings:TokenExpireryInSeconds").Value;
+            if (expirery == null)
+                throw new ArgumentNullException("expirery", "The JWT token expirery value is not set. Please do so using AppSettings:TokenExperiryInSeconds in appSettings");
 
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddSeconds(double.Parse(_configuration.GetSection("AppSettings:TokenExperiryInSeconds").Value)),
+                Expires = DateTime.Now.AddSeconds(double.Parse(expirery)),
                 SigningCredentials = credentials
             };
 
