@@ -34,7 +34,6 @@ namespace Kubex.API.Controllers
             return Ok();
         }
 
-
         [HttpPost("create")]        
         public async Task<IActionResult> Create(PostDTO dto)
         {
@@ -55,6 +54,14 @@ namespace Kubex.API.Controllers
         public async Task<IActionResult> ModifyPostRoles(ModifyPostRolesDTO dto) 
         {
             var post = await _postService.SetPostRolesAsync(dto);
+
+            return Ok(post);
+        }
+
+        [HttpPatch("update/{id}")]
+        public async Task<IActionResult> UpdatePost(int id, UpdatePostDTO dto) 
+        {
+            var post = await _postService.UpdatePostAsync(dto);
 
             return Ok(post);
         }

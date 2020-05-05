@@ -1,5 +1,3 @@
-using Kubex.Models;
-
 namespace Kubex.DTO
 {
     public class PostDTO

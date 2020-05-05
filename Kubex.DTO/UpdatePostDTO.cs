@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Kubex.Models;
 
 namespace Kubex.DTO
 {
@@ -7,10 +6,10 @@ namespace Kubex.DTO
     {
         public int PostId { get; set; }
         public string Name { get; set; }
-        public Address Address { get; set; }
-        public Location Location { get; set; }
-        public Company Company { get; set; }
-        public IEnumerable<User> Users { get; set; }
+        public AddressDTO Address { get; set; }
+        public LocationDTO Location { get; set; }
+        public CompanyDTO Company { get; set; }
+        public IEnumerable<string> UserNames { get; set; }
         public IEnumerable<string> Roles { get; set; }
     }
 }

@@ -6,6 +6,6 @@ namespace Kubex.BLL.Services.Interfaces
 {
     public interface IEntryService
     {
-         Task<Entry> CreateEntryInReport(CreatingEntryDTO dto);
+         Task<Entry> CreateEntryInReport(EntryDTO dto);
     }
 }

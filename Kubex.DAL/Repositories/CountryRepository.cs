@@ -9,10 +9,7 @@ namespace Kubex.DAL.Repositories
         : Repository<Country, byte>, ICountryRepository
     {
         public CountryRepository(DataContext context)
-            : base (context)
-        {
-            
-        }
+            : base (context) { }
         
         public async Task<Country> FindByNameAsync(string name) 
         {

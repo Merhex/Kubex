@@ -231,11 +231,23 @@ namespace Kubex.BLL.Services
 
             if (post == null)
                 throw new ArgumentNullException(null, "No post was found with the given id.");
+            
+            //Update address
+            post.Address = _mapper.Map<Address>(dto.Address);
 
-            post.Address = dto.Address ?? post.Address;
-            post.Company = dto.Company ?? post.Company;
-            post.Location = dto.Location ?? post.Location;
-            post.Name = dto.Name ?? post.Name;
+            //Update company
+            post.Company = _mapper.Map<Company>(dto.Company);
+
+            //Update location
+            post.Location = _mapper.Map<Location>(dto.Location);
+            
+            //Find all users
+            //Add the to userposts from post.Users
+            foreach(var username in dto.UserNames) 
+            {
+                var updateUserPostsDto = new UpdateUserPostsDTO { UserName = username, PostIds = new int[] { post.Id } };
+                await SetUserPostsAsync(updateUserPostsDto);   
+            }
 
             var modDto = new ModifyPostRolesDTO() { Id = dto.PostId, Roles = dto.Roles };
             await SetPostRolesAsync(modDto);

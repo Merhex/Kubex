@@ -30,6 +30,23 @@ namespace Kubex.DTO.Configurations
                 .ReverseMap();
 
             CreateMap<UserRegisterDTO, User>();
+            
+            CreateMap<string, EntryType>()
+                .ReverseMap()
+                .ConvertUsing<EntryTypeConverter>();
+
+            CreateMap<string, Priority>()
+                .ReverseMap()
+                .ConvertUsing<PriorityConverter>();
+
+            CreateMap<string, MediaType>()
+                .ReverseMap()
+                .ConvertUsing<MediaTypeConverter>();
+                
+            CreateMap<DailyActivityReportDTO, DailyActivityReport>()
+                .ReverseMap();
+
+            CreateMap<Entry, EntryDTO>();
         }
     }
 }
