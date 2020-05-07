@@ -103,5 +103,49 @@
         "modtime": null,
         "mediacolledctionid": null
       }
+    ],
+    "address": [
+      {
+        "id": 1,
+        "addressstreet": "Oosterwijkseweg",
+        "number": "52",
+        "zip": "2250",
+        "country": "Olen"
+      },
+      {
+        "id": 2,
+        "addressstreet": "Ergensstraat",
+        "number": "00",
+        "zip": "2560",
+        "country": "Nijlen"
+      },
+      {
+        "id": 3,
+        "addressstreet": "Noordseseweg",
+        "number": "30",
+        "zip": "2300",
+        "country": "Turnhout"
+      },
+      {
+        "id": 4,
+        "addressstreet": "Westerseweg",
+        "number": "1",
+        "zip": "2400",
+        "country": "Geel"
+      },
+      {
+        "id": 5,
+        "addressstreet": "Zuidstraat",
+        "number": "123",
+        "zip": "2150",
+        "country": "Borsbeek"
+      },
+      {
+        "id": 6,
+        "addressstreet": "OostWestThuisBestStraat",
+        "number": "5",
+        "zip": "9200",
+        "country": "Dendermonde"
+      }
     ]
   }

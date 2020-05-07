@@ -1,5 +1,5 @@
 <main fxLayout="column" fxFlex="100">
-  <!-- top row -->
+  <!-- header row -->
   <div class="top" fxLayout="row" fxFlex="8">
     <div fxLayout="column" fxFlex="60">
       <h1>DAR</h1>
@@ -28,6 +28,7 @@
           <input class="mat-cell" type="text" [ngModel]="entry.location" fxFlex="12%">
           <input class="mat-cell" type="text" [ngModel]="entry.description" fxFlex>
         </mat-expansion-panel-header>
+
         <!-- Subentries -->
         <div class="mat-row" *ngFor="let entry of entries | async" fxLayout="row" fxLayout.xs="column" style="padding-left: 1rem;">
           <input class="mat-cell" type="time" [ngModel]="entry.occuranceDate | date: 'hh:mm'" 
@@ -44,6 +45,7 @@
                     </textarea>
           </mat-form-field>
         </div>
+
         <!-- Empty line for entry in subentries -->
         <mat-action-row class="mat-row">
           <form [formGroup] = "postSubEntry" (ngSubmit) = "onSubmitSub()">
