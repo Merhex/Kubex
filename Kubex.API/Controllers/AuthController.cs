@@ -1,17 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
+using Kubex.BLL.Services.Interfaces;
 using Kubex.DTO;
-using Kubex.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Kubex.API.Controllers
 {
@@ -20,90 +12,36 @@ namespace Kubex.API.Controllers
     [Route("[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
+        private readonly IUserService _userService;
 
-        public AuthController(UserManager<User> userManager,
-            SignInManager<User> signInManager,
-            IMapper mapper,
-            IConfiguration configuration)
+        public AuthController(IUserService userService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _mapper = mapper;
-            _configuration = configuration;
+            _userService = userService;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterDTO dto)
         {
-            var newUser = _mapper.Map<User>(dto);
+            var newUser = await _userService.Register(dto);
 
-            var result = await _userManager.CreateAsync(newUser, dto.Password);
-
-            if (result.Succeeded)
-            {
-                var userToReturn = _mapper.Map<UserToReturnDTO>(newUser);
-
-                return Ok(new 
-                { 
-                    user = userToReturn
-                });
-            }
-
-            return BadRequest(result.Errors);
+            return CreatedAtRoute
+            (
+                "GetUser",
+                new { controller = "Users", userName = newUser.UserName },
+                newUser
+            );
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDTO dto)
         {
-            var user = await _userManager.FindByNameAsync(dto.UserName);
+            var user = await _userService.Login(dto);
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
-
-            if (result.Succeeded)
+            return Ok(new
             {
-                return Ok(new
-                {
-                    token = GenerateJwtToken(user).Result,
-                    user
-                });
-            }
-
-            return Unauthorized();
-        }
-
-        private async Task<string> GenerateJwtToken(User user)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName)
-            };
-
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var tokenDescriptor = new SecurityTokenDescriptor()
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(double.Parse(_configuration.GetSection("AppSettings:TokenExperiryInDays").Value)),
-                SigningCredentials = credentials
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
+                token = await _userService.GenerateJWTToken(dto),
+                user
+            });
         }
     }
 }

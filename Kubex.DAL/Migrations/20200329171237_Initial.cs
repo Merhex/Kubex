@@ -38,7 +38,8 @@ namespace Kubex.DAL.Migrations
                 name: "Countries",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(nullable: false),
+                    Id = table.Column<byte>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -63,7 +64,8 @@ namespace Kubex.DAL.Migrations
                 name: "EntryTypes",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(nullable: false),
+                    Id = table.Column<byte>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -75,7 +77,8 @@ namespace Kubex.DAL.Migrations
                 name: "LicenseTypes",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(nullable: false),
+                    Id = table.Column<byte>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<string>(nullable: true),
                     Duration = table.Column<TimeSpan>(nullable: false)
                 },
@@ -103,7 +106,8 @@ namespace Kubex.DAL.Migrations
                 name: "MediaTypes",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(nullable: false),
+                    Id = table.Column<byte>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -115,7 +119,8 @@ namespace Kubex.DAL.Migrations
                 name: "Priorities",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(nullable: false),
+                    Id = table.Column<byte>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Level = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -212,25 +217,25 @@ namespace Kubex.DAL.Migrations
                         column: x => x.EntryTypeId,
                         principalTable: "EntryTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Entries_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Entries_Entries_ParentEntryId",
                         column: x => x.ParentEntryId,
                         principalTable: "Entries",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Entries_Priorities_PriorityId",
                         column: x => x.PriorityId,
                         principalTable: "Priorities",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

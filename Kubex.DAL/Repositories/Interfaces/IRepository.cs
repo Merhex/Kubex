@@ -15,7 +15,7 @@ namespace Kubex.DAL.Repositories
         void Update(T entitiy);
         void UpdateRange(IEnumerable<T> entities);
         Task<T> Find(TKey key);
-        IAsyncEnumerable<T> FindRange(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<T>> FindRange(Expression<Func<T, bool>> predicate);
         Task<bool> SaveAll();
     }
 }

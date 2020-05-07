@@ -1,36 +1,39 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Kubex.DTO;
+using Kubex.DAL.Repositories.Interfaces;
 using Kubex.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kubex.DAL.Repositories
 {
-    public class EntryRepository : Repository<Entry, int>, IEntryRepository
+    public class EntryRepository
+        : Repository<Entry, int>, IEntryRepository
     {
-        public EntryRepository(DataContext context)
+
+        private readonly IEntryTypeRepository _entryTypeRepository;
+        private readonly IPriorityRepository _priorityRepository;
+
+        public EntryRepository(DataContext context,
+            IEntryTypeRepository entryTypeRepository,
+            IPriorityRepository priorityRepository)
             : base(context)
         {
-
+            _priorityRepository = priorityRepository;
+            _entryTypeRepository = entryTypeRepository;
         }
 
-        public Entry Create(CreatingEntryDTO dto)
+        public async Task<IEnumerable<Entry>> GetEntriesForDailyActivityReportAsync(int darId)
         {
-            var entry = new Entry() 
-            {
-                OccuranceDate = DateTime.Now,
-                Description = dto.Description,                
-                ParentEntry = dto.ParentEntry,
-                DailyActivityReport = dto.DailyActivityReport,
-                EntryType = dto.EntryType,
-                Priority = dto.Priority,
-                Location = dto.Location,
-                ChildEntries = dto.ChildEntries,
-                Media = dto.Media,
-            };
+            var entries = await FindRange(e => e.DailyActivityReportId == darId);
+            return entries;
+        }
 
-            Add(entry);
-
-            return entry;
+        public async Task<IEnumerable<Entry>> GetChildEntriesAsync(int entryId)
+        {
+            var childEntries = await FindRange(e => e.ParentEntryId == entryId);
+            return childEntries;
         }
     }
 }

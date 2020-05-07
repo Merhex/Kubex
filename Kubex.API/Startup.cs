@@ -1,23 +1,27 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
+using Kubex.API.Middleware;
+using Kubex.BLL.Services;
+using Kubex.BLL.Services.Interfaces;
 using Kubex.DAL;
+using Kubex.DAL.Repositories;
+using Kubex.DAL.Repositories.Interfaces;
+using Kubex.DTO.Configurations;
 using Kubex.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace Kubex.API
 {
@@ -61,16 +65,20 @@ namespace Kubex.API
                     = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
 
-            services.AddAutoMapper(typeof(Startup).Assembly);
-
-            services
-                .AddIdentity<User, IdentityRole>()
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+            
+            services.AddIdentityCore<User>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>()
                 .AddSignInManager<SignInManager<User>>()
-                .AddUserManager<UserManager<User>>();
+                .AddUserManager<UserManager<User>>()
+                .AddDefaultTokenProviders();
 
             services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddAuthentication(options => {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -78,19 +86,63 @@ namespace Kubex.API
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
                             .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
                         ValidateIssuer = false,
-                        ValidateAudience = false
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
             
             services.AddAuthorization();
+
+            services.AddScoped<IStreetRepository, StreetRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IZIPCodeRepository, ZIPCodeRepository>();
+            services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IMediaTypeRepository, MediaTypeRepository>();
+            services.AddScoped<IDailyActivityReportRepository, DailyActivityReportRepository>();
+            services.AddScoped<IPriorityRepository, PriorityRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IEntryTypeRepository, EntryTypeRepository>();
+            services.AddScoped<IEntryRepository, EntryRepository>();
+            services.AddScoped<IDailyActivityReportService, DailyActivityReportService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.IsProduction()) 
             {
-                app.UseDeveloperExceptionPage();
+                app.UseMiddleware<ExceptionHandlingMiddleware>();
+            }
+            else 
+            {
+                app.UseExceptionHandler(builder => builder.Run(async context => 
+                {
+                    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                    var exception = exceptionHandlerPathFeature.Error;
+
+                    var result = JsonConvert.SerializeObject(new { error = exception.Message });
+                    context.Response.ContentType = "application/json";
+
+                    var status = exception switch
+                    {
+                        ApplicationException _ => context.Response.StatusCode = (int)HttpStatusCode.BadRequest,
+                        ArgumentNullException _ => context.Response.StatusCode = (int)HttpStatusCode.NotFound,
+                        _ => context.Response.StatusCode = (int)HttpStatusCode.InternalServerError
+                    };
+                    
+                    if (status == (int)HttpStatusCode.InternalServerError)
+                        await context.Response.WriteAsync(
+                            JsonConvert.SerializeObject(new { error = "An unexpected error happend. Please check your data formatting and contact the administrator if this error persists." })
+                        );
+                    else
+                        await context.Response.WriteAsync(result);
+                }));
             }
 
             app.UseRouting();

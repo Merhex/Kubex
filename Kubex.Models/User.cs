@@ -9,14 +9,11 @@ namespace Kubex.Models
         public string LastName { get; set; }
         public string EmployeeNumber { get; set; }
 
-        public int RoletypeId { get; set; }
-        public virtual RoleType RoleType { get; set; }
-
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         public virtual Address Address { get; set; }
 
         public virtual ICollection<License> Licenses { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
-        public virtual ICollection<Team> Teams { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }
