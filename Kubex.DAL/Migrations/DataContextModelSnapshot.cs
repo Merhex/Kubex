@@ -70,6 +70,9 @@ namespace Kubex.DAL.Migrations
                     b.Property<string>("LogoUrl")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
@@ -337,6 +340,9 @@ namespace Kubex.DAL.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
@@ -345,7 +351,22 @@ namespace Kubex.DAL.Migrations
 
                     b.HasIndex("LocationId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("Kubex.Models.PostRole", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.HasKey("PostId", "RoleId");
+
+                    b.ToTable("PostRoles");
                 });
 
             modelBuilder.Entity("Kubex.Models.Priority", b =>
@@ -359,23 +380,6 @@ namespace Kubex.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Priorities");
-                });
-
-            modelBuilder.Entity("Kubex.Models.RoleType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<bool>("AgentRole")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RoleType");
                 });
 
             modelBuilder.Entity("Kubex.Models.Street", b =>
@@ -393,26 +397,6 @@ namespace Kubex.DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("Streets");
-                });
-
-            modelBuilder.Entity("Kubex.Models.Team", b =>
-                {
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<int>("RoleTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PostId", "UserId");
-
-                    b.HasIndex("RoleTypeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("Kubex.Models.User", b =>
@@ -491,6 +475,21 @@ namespace Kubex.DAL.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Kubex.Models.UserPost", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "PostId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("UserPosts");
                 });
 
             modelBuilder.Entity("Kubex.Models.ZIP", b =>
@@ -761,26 +760,18 @@ namespace Kubex.DAL.Migrations
                     b.HasOne("Kubex.Models.Location", "Location")
                         .WithMany("Posts")
                         .HasForeignKey("LocationId");
+
+                    b.HasOne("Kubex.Models.User", null)
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Kubex.Models.Team", b =>
+            modelBuilder.Entity("Kubex.Models.PostRole", b =>
                 {
                     b.HasOne("Kubex.Models.Post", "Post")
-                        .WithMany("Teams")
+                        .WithMany("Roles")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Kubex.Models.RoleType", "RoleType")
-                        .WithMany()
-                        .HasForeignKey("RoleTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Kubex.Models.User", "User")
-                        .WithMany("Teams")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -789,6 +780,21 @@ namespace Kubex.DAL.Migrations
                     b.HasOne("Kubex.Models.Address", "Address")
                         .WithMany("Users")
                         .HasForeignKey("AddressId");
+                });
+
+            modelBuilder.Entity("Kubex.Models.UserPost", b =>
+                {
+                    b.HasOne("Kubex.Models.Post", "Post")
+                        .WithMany("Users")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Kubex.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

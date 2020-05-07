@@ -32,9 +32,9 @@ namespace Kubex.DAL.Repositories
             return await _context.Set<T>().FindAsync(key);
         }
 
-        public async IAsyncEnumerable<T> FindRange(Expression<Func<T, bool>> predicate) 
+        public async Task<IEnumerable<T>> FindRange(Expression<Func<T, bool>> predicate) 
         {
-            yield return await _context.Set<T>().FirstOrDefaultAsync(predicate);
+            return await _context.Set<T>().Where(predicate).ToListAsync();
         }
 
         public void Remove(T entity)

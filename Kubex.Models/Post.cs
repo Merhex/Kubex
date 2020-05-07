@@ -17,6 +17,8 @@ namespace Kubex.Models
         public virtual Location Location { get; set; }
 
         public virtual ICollection<Contact> Contacts { get; set; }
-        public virtual ICollection<Team> Teams { get; set; }
+        
+        public virtual ICollection<UserPost> Users { get; set; }
+        public virtual ICollection<PostRole> Roles { get; set; }
     }
 }
