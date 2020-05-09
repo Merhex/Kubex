@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Entry } from '../_models/Entry';
+import { Entry } from '../_models/entry';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
