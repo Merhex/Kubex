@@ -11,7 +11,6 @@ namespace Kubex.DAL.Repositories
     public class EntryRepository
         : Repository<Entry, int>, IEntryRepository
     {
-
         private readonly IEntryTypeRepository _entryTypeRepository;
         private readonly IPriorityRepository _priorityRepository;
 

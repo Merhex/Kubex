@@ -38,7 +38,7 @@ namespace Kubex.API.Controllers
         }
 
         [Authorize(Roles = "Administrator, Manager")]
-        [HttpPost("{userName}/roles/add")]
+        [HttpPost("roles/add")]
         public async Task<IActionResult> AddRole(string userName, ModifyRolesDTO dto)
         {
             dto.RequestingUser = HttpContext.User;
@@ -48,7 +48,7 @@ namespace Kubex.API.Controllers
         }
 
         [Authorize(Roles = "Administrator, Manager")]
-        [HttpPost("{userName}/roles/delete")]
+        [HttpDelete("roles/delete")]
         public async Task<IActionResult> DeleteRole(string userName, ModifyRolesDTO dto)
         {
             dto.RequestingUser = HttpContext.User;
