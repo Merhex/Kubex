@@ -149,7 +149,7 @@ namespace Kubex.BLL.Services
 
             var expirery = _configuration.GetSection("AppSettings:TokenExpireryInSeconds").Value;
             if (expirery == null)
-                throw new ArgumentNullException("expirery", "The JWT token expirery value is not set. Please do so using AppSettings:TokenExperiryInSeconds in appSettings");
+                throw new ArgumentNullException("expirery", "The JWT token expirery value is not set. Please do so using AppSettings:TokenExpireryInSeconds in appSettings");
 
             var tokenDescriptor = new SecurityTokenDescriptor()
             {

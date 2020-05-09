@@ -40,29 +40,32 @@ namespace Kubex.BLL.Services
             throw new ApplicationException("Something went wrong creating a new report.");
         }
 
-        public async Task<DailyActivityReportDTO> AddEntryToDailyActivityReportAsync(AddEntryToDailyActivityReportDTO dto)
+        public async Task<DailyActivityReportDTO> AddEntryAsync(AddEntryToDailyActivityReportDTO dto)
         {
             var entry = _mapper.Map<Entry>(dto.Entry);
+            var dar = await _darRepository.Find(dto.DailyActivityReport.Id);
+            
+            if (dar == null)
+               throw new ArgumentNullException(null, "Could not find a Daily Activity Report with given id.");
+
+            return await AddEntryToDailyAcitivityReportAndUpdate(entry, dar);
+        }
+
+        public async Task<DailyActivityReportDTO> AddChildEntryAsync(AddEntryToDailyActivityReportDTO dto) 
+        {
+            var parentEntry = await _entryRepository.Find(dto.ParentEntry.Id);
             var dar = await _darRepository.Find(dto.DailyActivityReport.Id);
 
             if (dar == null)
                throw new ArgumentNullException(null, "Could not find a Daily Activity Report with given id.");
+            if (parentEntry == null)
+               throw new ArgumentNullException(null, "Could not find the parent entry with given id.");
+            if (parentEntry.DailyActivityReportId != dar.Id)
+                throw new ApplicationException("This parent entry does not belong to this Daily Activity Report.");
             
-            entry.DailyActivityReport = dar;
-            entry.OccuranceDate = DateTime.Now;
-            _entryRepository.Add(entry);
+            var childEntry = _mapper.Map<Entry>(dto.Entry);
 
-            if (! await _entryRepository.SaveAll())
-                throw new ApplicationException("Something went wrong saving the entry to the database.");
-
-            dar.Entries.Add(entry);
-            _darRepository.Update(dar);
-
-            if (! await _darRepository.SaveAll())
-                throw new ApplicationException("Something went wrong adding the entry to the Daily Activity Report.");
-
-            var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
-            return darToReturn;
+            return await AddEntryToDailyAcitivityReportAndUpdate(childEntry, dar, parentEntry);
         }
 
         public async Task<DailyActivityReportDTO> GetDailyActivityReportAsync(int id)
@@ -76,6 +79,28 @@ namespace Kubex.BLL.Services
             return darToReturn;
         }
 
+        public async Task DeleteEntryFromDailyActivityReportAsync(int entryId, int darId) 
+        {
+            var entry = await _entryRepository.Find(entryId);
+            var dar = await _darRepository.Find(darId);
+
+            if (entry == null)
+                throw new ArgumentNullException(null, "Could not find entry with the given id.");
+             if (dar == null)
+                throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given id.");
+
+            dar.Entries.Remove(entry);
+            _darRepository.Update(dar);
+
+            if (! await _darRepository.SaveAll())
+                throw new ApplicationException("Something went wrong removing the entry from the Daily Activity Report.");
+            
+            _entryRepository.Remove(entry);
+
+            if (! await _entryRepository.SaveAll())
+                throw new ApplicationException("Something went wrong removing the entry from the Daily Activity Report.");
+        }
+
         public async Task DeleteDailyActivityReportAsync(int id) 
         {
             var dar = await _darRepository.Find(id);
@@ -87,6 +112,29 @@ namespace Kubex.BLL.Services
 
             if (! await _darRepository.SaveAll())
                 throw new ApplicationException("Something went wrong deleting the Daily Activity Report.");
+        }
+
+        private async Task<DailyActivityReportDTO> AddEntryToDailyAcitivityReportAndUpdate(Entry entry, DailyActivityReport dar, Entry parent = null) 
+        {
+            entry.ParentEntry = parent;
+            entry.DailyActivityReport = dar;
+            entry.OccuranceDate = DateTime.Now;
+
+            _entryRepository.Add(entry);
+            
+            if (! await _entryRepository.SaveAll())
+                throw new ApplicationException("Something went wrong saving the entry to the database.");
+            
+            if (parent == null)
+                dar.Entries.Add(entry);
+
+            _darRepository.Update(dar);
+
+            if (! await _darRepository.SaveAll())
+                throw new ApplicationException("Something went wrong adding the entry to the Daily Activity Report.");
+
+            var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
+            return darToReturn;
         }
     }
 }

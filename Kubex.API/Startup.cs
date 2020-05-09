@@ -94,6 +94,8 @@ namespace Kubex.API
             
             services.AddAuthorization();
 
+            services.AddCors();
+
             services.AddScoped<IStreetRepository, StreetRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IZIPCodeRepository, ZIPCodeRepository>();
@@ -144,6 +146,12 @@ namespace Kubex.API
                         await context.Response.WriteAsync(result);
                 }));
             }
+
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+            );
 
             app.UseRouting();
 
