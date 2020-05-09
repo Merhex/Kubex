@@ -26,7 +26,7 @@ export class AccountService {
     login(username, password) {
         return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, { username, password })
             .pipe(map(user => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
+                // Sla User en JWT token op in lokale storage: Houd u ingeloged bij refresh
                 localStorage.setItem('user', JSON.stringify(user));
                 this.userSubject.next(user);
                 return user;
@@ -34,14 +34,14 @@ export class AccountService {
     }
 
     logout() {
-        // remove user from local storage and set current user to null
+        // Verwijder User uit lokale storage
         localStorage.removeItem('user');
         this.userSubject.next(null);
         this.router.navigate(['/account/login']);
     }
 
     register(user: User) {
-        return this.http.post(`${environment.apiUrl}/users/register`, user);
+        return this.http.post(`${environment.apiUrl}/auth/register`, user);
     }
 
     getAll() {
@@ -55,13 +55,11 @@ export class AccountService {
     update(id, params) {
         return this.http.put(`${environment.apiUrl}/users/${id}`, params)
             .pipe(map(x => {
-                // update stored user if the logged in user updated their own record
+                // User in lokale storage updaten met nieuwe data
                 if (id === this.userValue.id) {
-                    // update local storage
                     const user = { ...this.userValue, ...params };
                     localStorage.setItem('user', JSON.stringify(user));
 
-                    // publish updated user to subscribers
                     this.userSubject.next(user);
                 }
                 return x;
@@ -71,7 +69,7 @@ export class AccountService {
     delete(id: number) {
         return this.http.delete(`${environment.apiUrl}/users/${id}`)
             .pipe(map(x => {
-                // auto logout if the logged in user deleted their own record
+                // Wanneer User wordt verwijderd, ook meteen uitloggen
                 if (id === this.userValue.id) {
                     this.logout();
                 }

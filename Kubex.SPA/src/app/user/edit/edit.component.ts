@@ -27,8 +27,8 @@ export class AddEditComponent implements OnInit {
   ngOnInit() {
       this.id = this.route.snapshot.params['id'];
       this.isAddMode = !this.id;
-      
-      // password not required in edit mode
+
+      // Wanneer in edit-mode: geen ww vereist
       const passwordValidators = [Validators.minLength(6)];
       if (this.isAddMode) {
           passwordValidators.push(Validators.required);
@@ -58,10 +58,8 @@ export class AddEditComponent implements OnInit {
   onSubmit() {
       this.submitted = true;
 
-      // reset alerts on submit
       this.alertService.clear();
 
-      // stop here if form is invalid
       if (this.form.invalid) {
           return;
       }

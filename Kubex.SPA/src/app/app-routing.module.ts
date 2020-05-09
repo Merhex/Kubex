@@ -11,7 +11,7 @@ const routes: Routes = [
     { path: 'users', loadChildren: usersModule, canActivate: [AuthGuard] },
     { path: 'account', loadChildren: accountModule },
 
-    // otherwise redirect to home
+    // Alle andere paden verwijzen naar Home
     { path: '**', redirectTo: '' }
 ];
 

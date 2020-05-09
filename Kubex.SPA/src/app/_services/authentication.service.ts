@@ -26,7 +26,7 @@ export class AuthenticationService {
   login(username, password) {
       return this.http.post<any>(`${this.baseUrl}/auth/login`, { username, password })
           .pipe(map(user => {
-              // store user details and jwt token in local storage to keep user logged in between page refreshes
+              // Sla User en JWT token op in lokale storage: Houd u ingeloged bij refresh
               localStorage.setItem('currentUser', JSON.stringify(user));
               this.currentUserSubject.next(user);
               return user;
@@ -34,7 +34,7 @@ export class AuthenticationService {
   }
 
   logout() {
-      // remove user from local storage and set current user to null
+      // Verwijder User van lokale storage en zet User op null
       localStorage.removeItem('currentUser');
       this.currentUserSubject.next(null);
   }

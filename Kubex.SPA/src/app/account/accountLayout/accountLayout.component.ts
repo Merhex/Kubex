@@ -8,7 +8,7 @@ export class AccountLayoutComponent {
         private router: Router,
         private accountService: AccountService
     ) {
-        // redirect to home if already logged in
+        // Naar home verwijzen indien ingeloged
         if (this.accountService.userValue) {
             this.router.navigate(['/']);
         }
