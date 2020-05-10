@@ -24,7 +24,7 @@ export class AccountService {
     }
 
     login(username, password) {
-        return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, { username, password })
+        return this.http.post<User>(`${environment.apiUrl}/auth/login`, { username, password })
             .pipe(map(user => {
                 // Sla User en JWT token op in lokale storage: Houd u ingeloged bij refresh
                 localStorage.setItem('user', JSON.stringify(user));
