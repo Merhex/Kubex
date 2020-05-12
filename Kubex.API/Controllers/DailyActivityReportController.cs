@@ -59,5 +59,13 @@ namespace Kubex.API.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{darId}/{entryId}")]
+        public async Task<IActionResult> DeleteEntryFromDAR(int darId, int entryId) 
+        {
+            await _darService.DeleteEntryFromDailyActivityReportAsync(entryId, darId);
+
+            return NoContent();
+        }
     }
 }
