@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kubex.BLL.Services.Interfaces;
@@ -88,16 +89,14 @@ namespace Kubex.BLL.Services
                 throw new ArgumentNullException(null, "Could not find entry with the given id.");
              if (dar == null)
                 throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given id.");
+            
+            if (entry.DailyActivityReportId != dar.Id)
+                throw new ApplicationException("This entry does not belong to the Daily Activity Report.");
 
             dar.Entries.Remove(entry);
             _darRepository.Update(dar);
 
             if (! await _darRepository.SaveAll())
-                throw new ApplicationException("Something went wrong removing the entry from the Daily Activity Report.");
-            
-            _entryRepository.Remove(entry);
-
-            if (! await _entryRepository.SaveAll())
                 throw new ApplicationException("Something went wrong removing the entry from the Daily Activity Report.");
         }
 
@@ -120,18 +119,19 @@ namespace Kubex.BLL.Services
             entry.DailyActivityReport = dar;
             entry.OccuranceDate = DateTime.Now;
 
+            if (parent == null) 
+                dar.Entries.Add(entry);
+            else 
+                parent.ChildEntries.Add(entry);
+
             _entryRepository.Add(entry);
-            
+
             if (! await _entryRepository.SaveAll())
                 throw new ApplicationException("Something went wrong saving the entry to the database.");
-            
+
             if (parent == null)
-                dar.Entries.Add(entry);
-
-            _darRepository.Update(dar);
-
-            if (! await _darRepository.SaveAll())
-                throw new ApplicationException("Something went wrong adding the entry to the Daily Activity Report.");
+                if (! await _darRepository.SaveAll())
+                    throw new ApplicationException("Something went wrong adding the entry to the Daily Activity Report.");
 
             var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
             return darToReturn;
