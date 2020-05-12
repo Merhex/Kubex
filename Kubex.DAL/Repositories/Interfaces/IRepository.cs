@@ -17,5 +17,6 @@ namespace Kubex.DAL.Repositories
         Task<T> Find(TKey key);
         Task<IEnumerable<T>> FindRange(Expression<Func<T, bool>> predicate);
         Task<bool> SaveAll();
+        void Attach(T entitity);
     }
 }
