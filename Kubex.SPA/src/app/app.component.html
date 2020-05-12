@@ -4,6 +4,7 @@
 <!-- nav -->
 <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
     <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/dar" routerLinkActive="router-link-active" >D.A.R.</a>
         <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Users</a>
         <a class="nav-item nav-link" (click)="logout()">Logout</a>

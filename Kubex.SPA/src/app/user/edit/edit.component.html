@@ -37,6 +37,38 @@
             </div>
         </div>
     </div>
+    <div class="form-row">
+        <div class="form-group col">
+            <label for="streetname">Streetname</label>
+            <input type="text" formControlName="streetname" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.streetname.errors }" />
+            <div *ngIf="submitted && f.streetname.errors" class="invalid-feedback">
+                <div *ngIf="f.streetname.errors.required">Streetname is required</div>
+            </div>
+        </div>
+        <div class="form-group col">
+            <label for="housenumber">Housenumber</label>
+            <input type="text" formControlName="housenumber" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.housenumber.errors }" />
+            <div *ngIf="submitted && f.housenumber.errors" class="invalid-feedback">
+                <div *ngIf="f.housenumber.errors.required">Housenumber is required</div>
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col">
+            <label for="postalcode">Postal code</label>
+            <input type="text" formControlName="postalcode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.postalcode.errors }" />
+            <div *ngIf="submitted && f.postalcode.errors" class="invalid-feedback">
+                <div *ngIf="f.postalcode.errors.required">Postal code is required</div>
+            </div>
+        </div>
+        <div class="form-group col">
+            <label for="city">City</label>
+            <input type="text" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.city.errors }" />
+            <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                <div *ngIf="f.city.errors.required">City is required</div>
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <button [disabled]="loading" class="btn btn-primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>

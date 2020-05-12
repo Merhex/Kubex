@@ -14,8 +14,6 @@ export class UserComponent implements OnInit {
   // @Output() outputUser = new EventEmitter<any>();
   selectedUser: User = null;
 
-  // users: Observable<any> = this.http.get('http://localhost:3000/users/');
-  // users: Observable<any> = this.http.get('api/users');
   users: User[];
 
   displayUser(userId) {
