@@ -19,12 +19,12 @@ namespace Kubex.DAL.Repositories
 
         public void Add(T entity)
         {
-            _context.Add<T>(entity);
+            _context.Set<T>().Add(entity);
         }
 
         public void AddRange(IEnumerable<T> entities) 
         {
-            _context.AddRange(entities);
+            _context.Set<T>().AddRange(entities);
         }
 
         public async Task<T> Find(TKey key)
@@ -39,27 +39,32 @@ namespace Kubex.DAL.Repositories
 
         public void Remove(T entity)
         {
-            _context.Remove<T>(entity);
+            _context.Set<T>().Remove(entity);
         }
 
         public void RemoveRange(IEnumerable<T> entities) 
         {
-            _context.RemoveRange(entities);
+            _context.Set<T>().RemoveRange(entities);
         }
 
         public void Update(T entity) 
         {
-            _context.Update<T>(entity);
+            _context.Set<T>().Update(entity);
         }
 
         public void UpdateRange(IEnumerable<T> entities) 
         {
-            _context.UpdateRange(entities);
+            _context.Set<T>().UpdateRange(entities);
         }
 
         public async Task<bool> SaveAll()
         {
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public void Attach(T entitity) 
+        {
+            _context.Set<T>().Attach(entitity);
         }
     }
 }

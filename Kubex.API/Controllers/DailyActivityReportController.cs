@@ -42,12 +42,7 @@ namespace Kubex.API.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> AddEntry(AddEntryToDailyActivityReportDTO dto) 
         {
-            var dar = new DailyActivityReportDTO { };
-
-            if (dto.ParentEntry != null)
-                dar = await _darService.AddChildEntryAsync(dto);
-            else
-                dar = await _darService.AddEntryAsync(dto);
+            var dar = await _darService.AddEntryAsync(dto);
             
             return Ok(dar);
         }
@@ -56,6 +51,14 @@ namespace Kubex.API.Controllers
         public async Task<IActionResult> DeleteDAR(int id) 
         {
             await _darService.DeleteDailyActivityReportAsync(id);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{darId}/{entryId}")]
+        public async Task<IActionResult> DeleteEntryFromDAR(int darId, int entryId) 
+        {
+            await _darService.DeleteEntryFromDailyActivityReportAsync(entryId, darId);
 
             return NoContent();
         }
