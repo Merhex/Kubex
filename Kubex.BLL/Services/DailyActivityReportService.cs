@@ -7,6 +7,7 @@ using Kubex.BLL.Services.Interfaces;
 using Kubex.DAL.Repositories.Interfaces;
 using Kubex.DTO;
 using Kubex.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kubex.BLL.Services
 {
@@ -75,8 +76,15 @@ namespace Kubex.BLL.Services
 
             if (dar == null)
                 throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given id.");
+
+            var entries =  await _entryRepository
+                .FindRange(x => x.ParentEntry == null && x.DailyActivityReportId == dar.Id);
             
             var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
+            var darEntries = _mapper.Map<ICollection<EntryDTO>>(entries);
+
+            darToReturn.Entries = darEntries;
+
             return darToReturn;
         }
 
@@ -129,11 +137,14 @@ namespace Kubex.BLL.Services
             if (! await _entryRepository.SaveAll())
                 throw new ApplicationException("Something went wrong saving the entry to the database.");
 
-            if (parent == null)
-                if (! await _darRepository.SaveAll())
-                    throw new ApplicationException("Something went wrong adding the entry to the Daily Activity Report.");
-
+            var entries = await _entryRepository
+                .FindRange(x => x.ParentEntry == null && x.DailyActivityReportId == dar.Id);
+            
             var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
+            var darEntries = _mapper.Map<ICollection<EntryDTO>>(entries);
+
+            darToReturn.Entries = darEntries;
+            
             return darToReturn;
         }
     }

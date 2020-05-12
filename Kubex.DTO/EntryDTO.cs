@@ -9,7 +9,6 @@ namespace Kubex.DTO
         public DateTime OccuranceDate { get; set; }
         public string Description { get; set; }
         public EntryDTO ParentEntry { get; set; }
-        public DailyActivityReportDTO DailyActivityReport { get; set; }
         public string EntryType { get; set; }
         public string Priority { get; set; }
         public LocationDTO Location { get; set; }
