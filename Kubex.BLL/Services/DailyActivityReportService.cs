@@ -44,6 +44,9 @@ namespace Kubex.BLL.Services
 
         public async Task<DailyActivityReportDTO> AddEntryAsync(AddEntryToDailyActivityReportDTO dto)
         {
+            if (dto.ParentEntry != null)
+                return await AddChildEntryAsync(dto);
+        
             var entry = _mapper.Map<Entry>(dto.Entry);
             var dar = await _darRepository.Find(dto.DailyActivityReport.Id);
             

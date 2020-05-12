@@ -42,12 +42,7 @@ namespace Kubex.API.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> AddEntry(AddEntryToDailyActivityReportDTO dto) 
         {
-            var dar = new DailyActivityReportDTO { };
-
-            if (dto.ParentEntry != null)
-                dar = await _darService.AddChildEntryAsync(dto);
-            else
-                dar = await _darService.AddEntryAsync(dto);
+            var dar = await _darService.AddEntryAsync(dto);
             
             return Ok(dar);
         }
