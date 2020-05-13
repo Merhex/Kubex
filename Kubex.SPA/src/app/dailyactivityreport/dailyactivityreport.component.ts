@@ -13,33 +13,44 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class DailyactivityreportComponent implements OnInit {
 
   // entries: Observable<Entry[]> = this.http.get<Entry[]>('http://localhost:3000/entry/');
+  // detail: Observable<Entry>;
+  // postEntry: FormGroup;
+  // postSubEntry: FormGroup;
+
+  // dar: DailyActivityReport;
+  // date: Date;
+  // id: number;
+  // entries: Array<Entry>;
+
+
+  // constructor(private dailyactivityreportService: DailyactivityreportService) {
+  //   this.dailyactivityreportService.getDar(1).subscribe(dar => {
+  //     this.date = dar.date;
+  //     this.id = dar.id;
+  //     this.entries = dar.entries;
+  //   });
+  // }
+
+  // ngOnInit() {
+  // }
+
+  entries: Observable<Entry[]> = this.http.get<Entry[]>('http://localhost:3000/entry/');
   detail: Observable<Entry>;
   postEntry: FormGroup;
   postSubEntry: FormGroup;
 
-  dar: DailyActivityReport;
-  date: Date;
-  id: number;
-  entries: Array<Entry>;
-
-
-  constructor(private dailyactivityreportService: DailyactivityreportService) {
-    this.dailyactivityreportService.getDar(1).subscribe(dar => {
-      this.date = dar.date;
-      this.id = dar.id;
-      this.entries = dar.entries;
-    });
-  }
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
   }
 
-  
+  GetEntries(): Observable<Entry[]> {
+    return this.http.get<Entry[]>('http://localhost:3000/entry/');
+  }
 
-  
-  // GetEntries(): Observable<Entry[]> {
-  //   return this.http.get<Entry[]>('http://localhost:3000/entry/');
-  // }
+  onSubmit() {}
+
+  onSubmitSub() {}
 
   // GetDetail(parentId: BigInteger) {
   //   return this.http.get<Entry[]>('http://localhost:3000/entry/');
@@ -61,9 +72,5 @@ export class DailyactivityreportComponent implements OnInit {
   //   }
   //   );
   // }
-
-  // onSubmit() {}
-
-  // onSubmitSub() {}
 
 }
