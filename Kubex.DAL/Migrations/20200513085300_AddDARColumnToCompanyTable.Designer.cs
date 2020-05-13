@@ -3,14 +3,16 @@ using System;
 using Kubex.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kubex.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200513085300_AddDARColumnToCompanyTable")]
+    partial class AddDARColumnToCompanyTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,7 +156,7 @@ namespace Kubex.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CompanyId")
+                    b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -692,11 +694,9 @@ namespace Kubex.DAL.Migrations
 
             modelBuilder.Entity("Kubex.Models.DailyActivityReport", b =>
                 {
-                    b.HasOne("Kubex.Models.Company", "Company")
+                    b.HasOne("Kubex.Models.Company", null)
                         .WithMany("DailyActivityReports")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
                 });
 
             modelBuilder.Entity("Kubex.Models.Entry", b =>

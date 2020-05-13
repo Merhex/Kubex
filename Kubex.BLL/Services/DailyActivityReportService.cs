@@ -45,23 +45,16 @@ namespace Kubex.BLL.Services
         public async Task<DailyActivityReportDTO> AddEntryAsync(AddEntryToDailyActivityReportDTO dto)
         {
             var entry = _mapper.Map<Entry>(dto.Entry);
-            var dar = await _darRepository.Find(dto.DailyActivityReport.Id);
-            
-            if (dar == null)
-               throw new ArgumentNullException(null, "Could not find a Daily Activity Report with given id.");
+            var dar = await FindDailyActivityReport(dto.DailyActivityReport.Id);
 
             return await AddEntryToDailyAcitivityReportAndUpdate(entry, dar);
         }
 
         public async Task<DailyActivityReportDTO> AddChildEntryAsync(AddEntryToDailyActivityReportDTO dto) 
         {
-            var parentEntry = await _entryRepository.Find(dto.ParentEntry.Id);
-            var dar = await _darRepository.Find(dto.DailyActivityReport.Id);
+            var parentEntry = await FindEntry(dto.ParentEntry.Id);
+            var dar = await FindDailyActivityReport(dto.DailyActivityReport.Id);
 
-            if (dar == null)
-               throw new ArgumentNullException(null, "Could not find a Daily Activity Report with given id.");
-            if (parentEntry == null)
-               throw new ArgumentNullException(null, "Could not find the parent entry with given id.");
             if (parentEntry.DailyActivityReportId != dar.Id)
                 throw new ApplicationException("This parent entry does not belong to this Daily Activity Report.");
             
@@ -70,12 +63,9 @@ namespace Kubex.BLL.Services
             return await AddEntryToDailyAcitivityReportAndUpdate(childEntry, dar, parentEntry);
         }
 
-        public async Task<DailyActivityReportDTO> GetDailyActivityReportAsync(int id)
+        public async Task<DailyActivityReportDTO> GetDailyActivityReportAsync(int darId)
         {
-            var dar = await _darRepository.Find(id);
-
-            if (dar == null)
-                throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given id.");
+            var dar = await FindDailyActivityReport(darId);
 
             var entries =  await _entryRepository
                 .FindRange(x => x.ParentEntry == null && x.DailyActivityReportId == dar.Id);
@@ -90,13 +80,8 @@ namespace Kubex.BLL.Services
 
         public async Task DeleteEntryFromDailyActivityReportAsync(int entryId, int darId) 
         {
-            var entry = await _entryRepository.Find(entryId);
-            var dar = await _darRepository.Find(darId);
-
-            if (entry == null)
-                throw new ArgumentNullException(null, "Could not find entry with the given id.");
-             if (dar == null)
-                throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given id.");
+            var entry = await FindEntry(entryId);
+            var dar = await FindDailyActivityReport(darId);
             
             if (entry.DailyActivityReportId != dar.Id)
                 throw new ApplicationException("This entry does not belong to the Daily Activity Report.");
@@ -108,12 +93,9 @@ namespace Kubex.BLL.Services
                 throw new ApplicationException("Something went wrong removing the entry from the Daily Activity Report.");
         }
 
-        public async Task DeleteDailyActivityReportAsync(int id) 
+        public async Task DeleteDailyActivityReportAsync(int darId) 
         {
-            var dar = await _darRepository.Find(id);
-
-            if (dar == null)
-                throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given id.");
+            var dar = await FindDailyActivityReport(darId);
 
             _darRepository.Remove(dar);
 
@@ -147,5 +129,13 @@ namespace Kubex.BLL.Services
             
             return darToReturn;
         }
+
+        private async Task<Entry> FindEntry(int entryId) => 
+            await _entryRepository.Find(entryId) 
+            ?? throw new ArgumentNullException(null, "Could not find an entry with the given id.");
+
+        private async Task<DailyActivityReport> FindDailyActivityReport(int darId) => 
+            await _darRepository.Find(darId) 
+            ?? throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given id.");
     }
 }
