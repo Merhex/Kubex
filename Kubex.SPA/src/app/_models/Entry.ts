@@ -7,4 +7,5 @@ export class Entry {
     entryTypeId: number;
     priorityId: number;
     location: number;
+    childEntries: Array<Entry>;
 }
