@@ -20,5 +20,6 @@ namespace Kubex.Models
         
         public virtual ICollection<UserPost> Users { get; set; }
         public virtual ICollection<PostRole> Roles { get; set; }
+        public virtual ICollection<DailyActivityReport> DailyActivityReports { get; set; }
     }
 }

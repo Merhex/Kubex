@@ -50,10 +50,7 @@ namespace Kubex.BLL.Services
 
         public async Task<PostDTO> SetPostRolesAsync(ModifyPostRolesDTO dto) 
         {
-            var post = await _postRepository.Find(dto.Id);
-            
-            if (post == null)
-                throw new ArgumentNullException(null, "Could not find a post with the given id.");
+            var post = await FindPostAsync(dto.Id);
 
             if (post.Roles.Count != 0) 
             {
@@ -108,7 +105,7 @@ namespace Kubex.BLL.Services
             // Add the user to the new posts:
             foreach (var postId in dto.PostIds)
             {
-                var newPost = await _postRepository.Find(postId);
+                var newPost = await FindPostAsync(postId);
                 newPost.Users.Add(new UserPost 
                 { 
                     UserId = user.Id, 
@@ -178,10 +175,7 @@ namespace Kubex.BLL.Services
 
         public async Task<PostDTO> GetPostAsync(int id) 
         {
-            var post = await _postRepository.Find(id);
-
-            if (post == null)
-                throw new ArgumentNullException(null, "Could not find a post with the given id.");
+            var post = await FindPostAsync(id);
             
             var postToReturn = _mapper.Map<PostDTO>(post);
 
@@ -190,10 +184,7 @@ namespace Kubex.BLL.Services
 
         public async Task DeletePostAsync(int postId)
         {
-            var post = await _postRepository.Find(postId);
-
-            if (post == null)
-                throw new ArgumentNullException(null, "Could not find post with given id.");
+            var post = await FindPostAsync(postId);
     
             var currentPostUsers = await GetPostUsersAsync(postId);
 
@@ -211,7 +202,7 @@ namespace Kubex.BLL.Services
 
         private async Task<IEnumerable<User>> GetPostUsersAsync(int postId)
         {
-            var post = await _postRepository.Find(postId);
+            var post = await FindPostAsync(postId);
 
             var users = new List<User>();
             foreach (var u in post.Users)
@@ -225,12 +216,9 @@ namespace Kubex.BLL.Services
             return users;
         }
 
-        public async Task<PostDTO> UpdatePostAsync(UpdatePostDTO dto)
+        public async Task UpdatePostAsync(UpdatePostDTO dto)
         {
-            var post = await _postRepository.Find(dto.PostId);
-
-            if (post == null)
-                throw new ArgumentNullException(null, "No post was found with the given id.");
+            var post = await FindPostAsync(dto.PostId);
             
             //Update address
             post.Address = _mapper.Map<Address>(dto.Address);
@@ -256,10 +244,6 @@ namespace Kubex.BLL.Services
 
             if (! await _postRepository.SaveAll())
                 throw new ApplicationException("Could not update the given post.");
-            
-            var postToReturn = _mapper.Map<PostDTO>(post);
-
-            return postToReturn;
         }
 
         public async Task<UserToReturnDTO> ClearUserFromPosts(string userName)
@@ -276,5 +260,29 @@ namespace Kubex.BLL.Services
 
             return userToReturn;
         }
+
+        public async Task<IEnumerable<DailyActivityReportDTO>> GetDailyActivityReportsForPostAsync(int postId)
+        {
+            var post = await FindPostAsync(postId);
+
+            var reports = _mapper.Map<IEnumerable<DailyActivityReportDTO>>(post.DailyActivityReports);
+            return reports;
+        }
+
+        public async Task<DailyActivityReportDTO> GetDailyActivityReportFromPostAsync(int postId, int darId) 
+        {
+            var post = await FindPostAsync(postId);
+            var dar = post.DailyActivityReports.FirstOrDefault(x => x.Id == darId);
+
+            if (dar == null)
+                throw new ArgumentNullException(null, "There is no Daily Activity Report found in this post with given Daily Activity Report id.");
+            
+            var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
+            return darToReturn;
+        }
+
+        private async Task<Post> FindPostAsync(int id) =>
+            await _postRepository.Find(id)
+            ?? throw new ArgumentNullException("Could not find a post with the given id.");
     }
 }

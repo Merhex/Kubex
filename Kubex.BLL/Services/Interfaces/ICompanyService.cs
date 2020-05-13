@@ -10,8 +10,5 @@ namespace Kubex.BLL.Services.Interfaces
          Task<CompanyDTO> GetCompanyAsync(int companyId);
          Task UpdateCompanyAsync(CompanyDTO dto);
          Task DeleteCompanyAsync(int companyId);
-         Task<DailyActivityReportDTO> GetDailyActivityReportFromCompanyAsync(int companyId, int darId);
-         Task<IEnumerable<DailyActivityReportDTO>> GetDailyActivityReportsForCompanyAsync(int companyId);
-
     }
 }

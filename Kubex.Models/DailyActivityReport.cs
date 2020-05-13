@@ -8,8 +8,8 @@ namespace Kubex.Models
         public int Id { get; set; }
 
         public DateTime Date { get; set; }
-        public int CompanyId { get; set; }
-        public virtual Company Company { get; set; }
+        public int PostId { get; set; }
+        public virtual Post Post { get; set; }
 
         public virtual ICollection<Entry> Entries { get; set; }
     }

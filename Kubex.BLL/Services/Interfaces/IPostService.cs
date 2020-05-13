@@ -15,7 +15,9 @@ namespace Kubex.BLL.Services.Interfaces
         Task<IEnumerable<Post>> GetUserPostsAsync(string userName);
         Task<PostDTO> GetPostAsync(int id);
         Task DeletePostAsync(int postId);
-        Task<PostDTO> UpdatePostAsync(UpdatePostDTO dto);
+        Task UpdatePostAsync(UpdatePostDTO dto);
         Task<UserToReturnDTO> ClearUserFromPosts(string userName);
+        Task<DailyActivityReportDTO> GetDailyActivityReportFromPostAsync(int postId, int darId);
+        Task<IEnumerable<DailyActivityReportDTO>> GetDailyActivityReportsForPostAsync(int postId);
     }
 }

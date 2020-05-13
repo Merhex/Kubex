@@ -8,6 +8,5 @@ namespace Kubex.DTO
         public string Name { get; set; }
         public string LogoUrl { get; set; }
         public AddressDTO Address { get; set; }
-        public IEnumerable<DailyActivityReportDTO> DailyActivityReports { get; set; }
     }
 }

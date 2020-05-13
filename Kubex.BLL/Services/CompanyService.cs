@@ -44,25 +44,25 @@ namespace Kubex.BLL.Services
             return companyToReturn;
         }
 
-        public async Task<IEnumerable<DailyActivityReportDTO>> GetDailyActivityReportsForCompanyAsync(int companyId)
-        {
-            var company = await FindCompanyAsync(companyId);
+        // public async Task<IEnumerable<DailyActivityReportDTO>> GetDailyActivityReportsForCompanyAsync(int companyId)
+        // {
+        //     var company = await FindCompanyAsync(companyId);
 
-            var reports = _mapper.Map<IEnumerable<DailyActivityReportDTO>>(company.DailyActivityReports);
-            return reports;
-        }
+        //     var reports = _mapper.Map<IEnumerable<DailyActivityReportDTO>>(company.DailyActivityReports);
+        //     return reports;
+        // }
 
-        public async Task<DailyActivityReportDTO> GetDailyActivityReportFromCompanyAsync(int companyId, int darId) 
-        {
-            var company = await FindCompanyAsync(companyId);
-            var dar = company.DailyActivityReports.FirstOrDefault(x => x.Id == darId);
+        // public async Task<DailyActivityReportDTO> GetDailyActivityReportFromCompanyAsync(int companyId, int darId) 
+        // {
+        //     var company = await FindCompanyAsync(companyId);
+        //     var dar = company.DailyActivityReports.FirstOrDefault(x => x.Id == darId);
 
-            if (dar == null)
-                throw new ArgumentNullException(null, "There is no Daily Activity Report found in this company with given Daily Activity Report id.");
+        //     if (dar == null)
+        //         throw new ArgumentNullException(null, "There is no Daily Activity Report found in this company with given Daily Activity Report id.");
             
-            var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
-            return darToReturn;
-        }
+        //     var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
+        //     return darToReturn;
+        // }
 
         public async Task DeleteCompanyAsync(int companyId) 
         {

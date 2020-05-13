@@ -35,23 +35,7 @@ namespace Kubex.API.Controllers
             return Ok(company);
         }
 
-        [HttpGet("{id}/reports")]
-        public async Task<IActionResult> GetDailyActivityReportsForCompany(int id) 
-        {
-            var reports = await _companyService.GetDailyActivityReportsForCompanyAsync(id);
-
-            return Ok(reports);
-        }
-
-        [HttpGet("{companyId}/reports/{darId}")]
-        public async Task<IActionResult> GetDailyActivityReportFromCompany(int companyId, int darId) 
-        {
-            var report = await _companyService.GetDailyActivityReportFromCompanyAsync(companyId, darId);
-
-            return Ok(report);
-        }
-
-        [HttpPut]
+        [HttpPatch]
         public async Task<IActionResult> UpdateCompany(CompanyDTO dto) 
         {
             await _companyService.UpdateCompanyAsync(dto);
