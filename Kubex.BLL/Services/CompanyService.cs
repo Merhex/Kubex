@@ -74,7 +74,7 @@ namespace Kubex.BLL.Services
                 throw new ApplicationException("Something went wrong deleting the company.");
         }
 
-        public async Task<CompanyDTO> UpdateCompanyAsync(CompanyDTO dto) 
+        public async Task UpdateCompanyAsync(CompanyDTO dto) 
         {
             var company = await FindCompanyAsync(dto.Id);
             var newCompany = _mapper.Map<Company>(dto);
@@ -83,8 +83,6 @@ namespace Kubex.BLL.Services
 
             if (! await _companyRepository.SaveAll())
                 throw new ApplicationException("Something went wrong updating the company");
-            
-            return dto;
         }
 
         private async Task<Company> FindCompanyAsync(int companyId) => 
