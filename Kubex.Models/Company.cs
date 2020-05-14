@@ -12,6 +12,7 @@ namespace Kubex.Models
         public int? AddressId { get; set; }
         public virtual Address Address { get; set; }
 
+        public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Contact> Contacts { get; set; }
     }
 }
