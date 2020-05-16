@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Kubex.BLL.Services.Interfaces;
 using Kubex.DTO;
@@ -27,10 +28,10 @@ namespace Kubex.API.Controllers
             return Ok(dar);
         }
 
-        [HttpGet("date={date}")]
-        public async Task<IActionResult> GetDARbyDate(DateTime date) 
+        [HttpGet("last")]
+        public async Task<IActionResult> GetLastDAR() 
         {
-            var dar = await _darService.GetDailyActivityReportByDateAsync(date);
+            var dar = await _darService.GetLastDailyActivityReportAsync();
 
             return Ok(dar);
         }

@@ -91,10 +91,10 @@ namespace Kubex.BLL.Services
             return darToReturn;
         }
 
-        public async Task<DailyActivityReportDTO> GetDailyActivityReportByDateAsync(DateTime date)
+        public async Task<DailyActivityReportDTO> GetLastDailyActivityReportAsync()
         {
-            var result = await _darRepository.FindRange(x => x.Date == date);
-            var dar = result.FirstOrDefault();
+            var result = await _darRepository.FindRange(x => x.Id > -1);
+            var dar = result.LastOrDefault();
             var id = dar.Id;
 
             if (dar == null)

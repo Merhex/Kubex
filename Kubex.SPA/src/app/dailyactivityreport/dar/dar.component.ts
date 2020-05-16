@@ -23,9 +23,11 @@ export class DarComponent implements OnInit {
   constructor(private dailyactivityreportService: DailyactivityreportService) {
     this.dar = new DailyActivityReport();
 
-    this.dailyactivityreportService.getDarByDate(new Date()).subscribe(dar => {
-      this.dar = dar;
-      this.entries = dar.entries as Entry[];
+    // Probeer de DAR op datum van vandaag op te halen
+    this.dailyactivityreportService.getLastDar()
+      .subscribe(dar => {
+        this.dar = dar;
+        this.entries = dar.entries as Entry[];
     });
   }
 
@@ -36,9 +38,11 @@ export class DarComponent implements OnInit {
   onSubmitSub() {}
 
   createDar() {
-    this.dailyactivityreportService.createDar().subscribe(dar => {
-      this.dar = dar;
-      this.entries = dar.entries as Entry[];
+    console.log('clickedyclik');
+    this.dailyactivityreportService.createDar()
+      .subscribe(dar => {
+        this.dar = dar;
+        this.entries = dar.entries as Entry[];
     });
   }
 

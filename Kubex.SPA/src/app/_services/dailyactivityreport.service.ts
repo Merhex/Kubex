@@ -9,20 +9,20 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DailyactivityreportService {
-  baseUrl = environment.apiUrl;
+  baseUrl = environment.apiUrl + '/dar/';
 
   constructor(private http: HttpClient) {}
 
   getDarById(id: number): Observable<DailyActivityReport> {
-    return this.http.get<DailyActivityReport>(this.baseUrl + 'dailyactivityreport/' + id);
+    return this.http.get<DailyActivityReport>(this.baseUrl + id);
   }
 
-  getDarByDate(date: Date): Observable<DailyActivityReport> {
-    return this.http.get<DailyActivityReport>(this.baseUrl + 'dailyactivityreport/date=' + date);
+  getLastDar(): Observable<DailyActivityReport> {
+    return this.http.get<DailyActivityReport>(this.baseUrl + 'last');
   }
 
   createDar(): Observable<DailyActivityReport> {
-    return this.http.get<DailyActivityReport>(this.baseUrl + 'create/');
+    return this.http.post<DailyActivityReport>(this.baseUrl + 'create', {});
   }
 
 }
