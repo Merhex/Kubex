@@ -1,3 +1,4 @@
+import { UserRegister } from './../_models/userRegister';
 import { User } from './../_models/user';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -40,7 +41,7 @@ export class AccountService {
         this.router.navigate(['/account/login']);
     }
 
-    register(user: User) {
+    register(user: UserRegister) {
         return this.http.post(`${environment.apiUrl}/auth/register`, user);
     }
 
@@ -48,15 +49,15 @@ export class AccountService {
         return this.http.get<User[]>(`${environment.apiUrl}/users`);
     }
 
-    getById(id: number) {
-        return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
+    getByUserName(userName: string) {
+        return this.http.get<User>(`${environment.apiUrl}/users/${userName}`);
     }
 
-    update(id, params) {
-        return this.http.put(`${environment.apiUrl}/users/${id}`, params)
+    update(userName, params) {
+        return this.http.put(`${environment.apiUrl}/users/${userName}`, params)
             .pipe(map(x => {
                 // User in lokale storage updaten met nieuwe data
-                if (id === this.userValue.id) {
+                if (userName === this.userValue.userName) {
                     const user = { ...this.userValue, ...params };
                     localStorage.setItem('user', JSON.stringify(user));
 

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { AccountService } from 'src/app/_services';
+import { User } from 'src/app/_models';
 
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {
-    users = null;
+    users = Array<User>();
 
     constructor(private accountService: AccountService) {}
 

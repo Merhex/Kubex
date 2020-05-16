@@ -1,7 +1,4 @@
-<!-- <app-nav></app-nav>
-<router-outlet></router-outlet> -->
-
-<!-- nav -->
+<!-- navigation -->
 <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
     <div class="navbar-nav">
         <a class="nav-item nav-link" routerLink="/dar" routerLinkActive="router-link-active" >D.A.R.</a>
@@ -11,7 +8,7 @@
     </div>
 </nav>
 
-<!-- main app container -->
+<!-- main app -->
 <div class="app-container" [ngClass]="{ 'bg-light': user }">
     <alert></alert>
     <router-outlet></router-outlet>

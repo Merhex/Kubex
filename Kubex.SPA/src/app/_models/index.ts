@@ -1,5 +1,7 @@
 export * from './entry';
 export * from './user';
+export * from './userLogin';
+export * from './userRegister';
 export * from './alert';
 export * from './dailyActivityReport';
 export * from './address';

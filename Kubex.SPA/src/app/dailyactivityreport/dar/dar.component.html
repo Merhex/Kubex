@@ -1,0 +1,122 @@
+<main fxLayout="column" fxFlex="100">
+    <!-- header row -->
+    <div class="top" fxLayout="row" fxFlex="8">
+      <div fxLayout="column" fxFlex="60">
+        <h1>Post</h1>
+
+        <!-- DAR Menu -->
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>dehaze</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (onclick)="createDar()">
+            <mat-icon>add_circle</mat-icon>
+            <span>Create new DAR</span>
+          </button>
+          <!-- <button mat-menu-item disabled>
+            <mat-icon>voicemail</mat-icon>
+            <span>Check voice mail</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>notifications_off</mat-icon>
+            <span>Disable alerts</span>
+          </button> -->
+        </mat-menu>
+        <!-- End of Dar Menu -->
+      </div>
+      <div fxLayout="column" fxFlex style="text-align: right;">
+        <h1>Date</h1>
+        <h4>{{dar.id}}</h4>
+      </div>
+    </div>
+  
+    <!-- main row -->
+    <div class="mainrow" fxLayout="row">
+      <mat-accordion displayMode="flat" multi class="mat-table" fxFlex="100">
+        <section matSort class="mat-elevation-z2 mat-header-row" fxLayout="row" fxLayout.xs="column">
+          <span class="mat-header-cell" mat-sort-header="vesselName" fxFlex="6%">Hour</span>
+          <span class="mat-header-cell" mat-sort-header="vesselId" fxFlex="14%">Location</span>
+          <span class="mat-header-cell" mat-sort-header="vesselStatus" fxFlex="80%">Description</span>
+        </section>
+  
+        <mat-expansion-panel *ngFor="let entry of entries">
+          <mat-expansion-panel-header class="mat-row" fxLayout="row" fxLayout.xs="column">
+            <input class="mat-cell" type="time" [ngModel]="entry.occuranceDate | date: 'hh:mm'" 
+                  fxFlex="6%" 
+                  fxFlex.lt-lg="8%">
+            <input class="mat-cell" type="text" [ngModel]="entry.location" fxFlex="12%">
+            <input class="mat-cell" type="text" [ngModel]="entry.description" fxFlex>
+          </mat-expansion-panel-header>
+  
+          <!-- Subentries -->
+          <div class="mat-row" *ngFor="let entry of entries" fxLayout="row" fxLayout.xs="column" style="padding-left: 1rem;">
+            <input class="mat-cell" type="time" [ngModel]="entry.occuranceDate | date: 'hh:mm'" 
+                  fxFlex="6%" 
+                  fxFlex.lt-lg="8%">
+            <input class="mat-cell" type="text" [ngModel]="entry.location" fxFlex="12%">
+            <mat-form-field class="mat-cell descr" fxFlex>
+              <textarea matInput
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="40"
+                        [ngModel]="entry.description"
+                        style="padding: 0px;">
+                      </textarea>
+            </mat-form-field>
+          </div>
+  
+          <!-- Empty line for entry in subentries -->
+          <mat-action-row class="mat-row">
+            <form [formGroup] = "postSubEntry" (ngSubmit) = "onSubmitSub()">
+              <mat-form-field fxFlex="6%">
+                <input matInput type="time">
+              </mat-form-field>
+              <mat-form-field fxFlex="14%">
+                <input matInput type="text">
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <textarea matInput
+                          cdkTextareaAutosize
+                          cdkAutosizeMinRows="1"
+                          cdkAutosizeMaxRows="40"
+                          style="padding: 0px;"></textarea>
+              </mat-form-field>
+              <button mat-mini-fab color="primary" type="submit">
+                <mat-icon>send</mat-icon>
+              </button>
+            </form>
+          </mat-action-row>
+        </mat-expansion-panel>
+  
+        <!-- Empty line for entry in main part -->
+        <div *ngIf="!dar==null" class="mat-row newEntry">
+          <form [formGroup] = "postEntry" (ngSubmit) = "onSubmit()">
+            <mat-form-field fxFlex="6%">
+              <input matInput type="time">
+            </mat-form-field>
+            <mat-form-field fxFlex="14%">
+              <input matInput type="text">
+            </mat-form-field>
+            <mat-form-field fxFlex>
+              <textarea matInput
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="40"
+                        style="padding: 0px;"></textarea>
+            </mat-form-field>
+            <button mat-mini-fab color="primary" type="submit">
+              <mat-icon>send</mat-icon>
+            </button>
+          </form>
+        </div>
+      
+      </mat-accordion>
+    </div>
+  
+    <!-- button row -->
+    <div class="bottom" fxLayout="row" fxFlexOffset="auto">
+      <button>Test</button>
+    </div>
+  
+  
+  </main>

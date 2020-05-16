@@ -13,8 +13,16 @@ export class DailyactivityreportService {
 
   constructor(private http: HttpClient) {}
 
-  getDar(id: number): Observable<DailyActivityReport> {
+  getDarById(id: number): Observable<DailyActivityReport> {
     return this.http.get<DailyActivityReport>(this.baseUrl + 'dailyactivityreport/' + id);
+  }
+
+  getDarByDate(date: Date): Observable<DailyActivityReport> {
+    return this.http.get<DailyActivityReport>(this.baseUrl + 'dailyactivityreport/date=' + date);
+  }
+
+  createDar(): Observable<DailyActivityReport> {
+    return this.http.get<DailyActivityReport>(this.baseUrl + 'create/');
   }
 
 }

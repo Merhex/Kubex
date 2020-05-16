@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Kubex.BLL.Services.Interfaces;
 using Kubex.DTO;
@@ -19,9 +20,17 @@ namespace Kubex.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetDAR(int id) 
+        public async Task<IActionResult> GetDARbyId(int id) 
         {
             var dar = await _darService.GetDailyActivityReportAsync(id);
+
+            return Ok(dar);
+        }
+
+        [HttpGet("date={date}")]
+        public async Task<IActionResult> GetDARbyDate(DateTime date) 
+        {
+            var dar = await _darService.GetDailyActivityReportByDateAsync(date);
 
             return Ok(dar);
         }

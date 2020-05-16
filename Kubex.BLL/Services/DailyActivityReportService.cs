@@ -91,6 +91,26 @@ namespace Kubex.BLL.Services
             return darToReturn;
         }
 
+        public async Task<DailyActivityReportDTO> GetDailyActivityReportByDateAsync(DateTime date)
+        {
+            var result = await _darRepository.FindRange(x => x.Date == date);
+            var dar = result.FirstOrDefault();
+            var id = dar.Id;
+
+            if (dar == null)
+                throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given date.");
+
+            var entries =  await _entryRepository
+                .FindRange(x => x.ParentEntry == null && x.DailyActivityReportId == dar.Id);
+            
+            var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
+            var darEntries = _mapper.Map<ICollection<EntryDTO>>(entries);
+
+            darToReturn.Entries = darEntries;
+
+            return darToReturn;
+        }
+
         public async Task DeleteEntryFromDailyActivityReportAsync(int entryId, int darId) 
         {
             var entry = await _entryRepository.Find(entryId);
