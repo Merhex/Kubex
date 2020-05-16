@@ -34,7 +34,7 @@ export class AddEditComponent implements OnInit {
       this.userName = this.route.snapshot.params.username;
       this.isAddMode = !this.userName;
 
-      // Wanneer in edit-mode: geen ww vereist
+      // Wachtwoord moet minstens 6 karakters hebben
       const passwordValidators = [Validators.minLength(6)];
 
       // Alleen wanneer we registreren is een wachtwoord vereist

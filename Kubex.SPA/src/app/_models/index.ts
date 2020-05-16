@@ -1,4 +1,5 @@
 export * from './entry';
+export * from './entryAdd';
 export * from './user';
 export * from './userLogin';
 export * from './userRegister';

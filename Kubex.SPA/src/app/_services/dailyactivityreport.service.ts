@@ -2,7 +2,7 @@ import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { DailyActivityReport } from '../_models';
+import { DailyActivityReport, EntryAdd } from '../_models';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -23,6 +23,10 @@ export class DailyactivityreportService {
 
   createDar(): Observable<DailyActivityReport> {
     return this.http.post<DailyActivityReport>(this.baseUrl + 'create', {});
+  }
+
+  addEntry(entry: EntryAdd): Observable<DailyActivityReport> {
+    return this.http.post<DailyActivityReport>(this.baseUrl + 'add', entry);
   }
 
 }

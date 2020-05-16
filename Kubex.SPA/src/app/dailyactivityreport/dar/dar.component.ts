@@ -1,7 +1,6 @@
 import { DailyactivityreportService } from 'src/app/_services';
-import { DailyActivityReport, Entry } from 'src/app/_models';
+import { DailyActivityReport, Entry, EntryAdd } from 'src/app/_models';
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -13,37 +12,82 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class DarComponent implements OnInit {
   postEntry: FormGroup;
   postSubEntry: FormGroup;
-  dar: DailyActivityReport;
+  dar = new DailyActivityReport();
   date: Date;
   id: number;
   entries: Entry[];
   detail: Observable<Entry>;
 
 
-  constructor(private dailyactivityreportService: DailyactivityreportService) {
-    this.dar = new DailyActivityReport();
+  constructor(
+    private dailyactivityreportService: DailyactivityreportService,
+    private formBuilder: FormBuilder
+  ) {}
 
-    // Probeer de DAR op datum van vandaag op te halen
+  // Convenience getter voor de formulier velden
+  get e() { return this.postEntry.controls; }
+  get s() { return this.postEntry.controls; }
+
+  ngOnInit() {
+    // Haal de laatste DAR op
     this.dailyactivityreportService.getLastDar()
-      .subscribe(dar => {
+      .subscribe((dar: DailyActivityReport) => {
         this.dar = dar;
         this.entries = dar.entries as Entry[];
+        console.log(dar);
     });
+
+    // Set forms
+    this.postEntry = this.formBuilder.group({
+      entryTime: [''],
+      entryLocation: [''],
+      entryDescription: ['']
+    });
+    this.postSubEntry = this.formBuilder.group({
+      subEntryTime: [''],
+      subEntryLocation: [''],
+      subEntryDescription: ['']
+    });
+
+    console.log('id = ' + this.dar.id);
   }
 
-  ngOnInit() {}
+  onSubmit() {
+    // Maak de entry klaar voor verzenden
+    const entry = new Entry();
+    const entryAdd = new EntryAdd();
 
-  onSubmit() {}
+    entry.occuranceDate = this.e.entryTime.value;
+    entry.location = this.e.entryLocation.value;
+    entry.description = this.e.entryDescription.value;
+
+    entryAdd.DailyActivityReport = this.dar;
+    entryAdd.parentEntry = null;
+    entryAdd.entry = entry;
+
+    // Voeg een entry in het dar in
+    this.dailyactivityreportService.addEntry(entryAdd)
+      .subscribe((dar: DailyActivityReport) => {
+        this.dar = dar;
+        this.entries = dar.entries as Entry[];
+        console.log(dar);
+    });
+
+    console.log('verzonden: ' + this.dar.entries);
+  }
 
   onSubmitSub() {}
 
   createDar() {
     console.log('clickedyclik');
-    this.dailyactivityreportService.createDar()
-      .subscribe(dar => {
-        this.dar = dar;
-        this.entries = dar.entries as Entry[];
-    });
+    // this.dailyactivityreportService.createDar()
+    //   .subscribe(dar => {
+    //     this.dar = dar;
+    //     this.entries = dar.entries as Entry[];
+    // });
+
+    console.log(this.dar);
+    console.log(this.entries);
   }
 
   // GetDetail(parentId: BigInteger) {
