@@ -10,3 +10,4 @@ export * from './company';
 export * from './post';
 export * from './postRole';
 export * from './postUser';
+export * from './location';

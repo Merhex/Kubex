@@ -25,8 +25,8 @@
         <!-- End of Dar Menu -->
       </div>
       <div fxLayout="column" fxFlex style="text-align: right;">
-        <h1>Date</h1>
-        <h4>{{dar.id}}</h4>
+        <h1>{{dar.date | date: 'dd/MM/yyyy'}}</h1>
+        <h4>Id: {{dar.id}}</h4>
       </div>
     </div>
   
@@ -67,11 +67,11 @@
   
           <!-- Empty line for entry in subentries -->
           <mat-action-row class="mat-row">
-            <form [formGroup] = "postSubEntry" (ngSubmit) = "onSubmitSub()">
-              <mat-form-field fxFlex="6%">
+            <form [formGroup] = "postSubEntry" (ngSubmit)="onSubmitSub()">
+              <mat-form-field fxFlex="8%">
                 <input matInput type="time" formControlName="subEntryTime">
               </mat-form-field>
-              <mat-form-field fxFlex="14%">
+              <mat-form-field fxFlex="12%">
                 <input matInput type="text" formControlName="subEntryLocation">
               </mat-form-field>
               <mat-form-field fxFlex>
@@ -91,11 +91,11 @@
   
         <!-- Empty line for entry in main part -->
         <div class="mat-row newEntry">
-          <form [formGroup] = "postEntry" (ngSubmit) = "onSubmit()">
-            <mat-form-field fxFlex="6%">
+          <form [formGroup] = "postEntry" (ngSubmit)="onSubmit()">
+            <mat-form-field fxFlex="8%">
               <input matInput type="time" formControlName="entryTime">
             </mat-form-field>
-            <mat-form-field fxFlex="14%">
+            <mat-form-field fxFlex="12%">
               <input matInput type="text" formControlName="entryLocation">
             </mat-form-field>
             <mat-form-field fxFlex>

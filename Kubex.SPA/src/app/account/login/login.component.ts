@@ -25,11 +25,11 @@ export class LoginComponent implements OnInit {
             password: ['', Validators.required]
         });
 
-        // get return url from route parameters or default to '/'
+        // Haal URL uit de route parameters, indien niets gevonden naar default (/)
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
-    // convenience getter for easy access to form fields
+    // Convenience getter voor de formulier velden
     get f() { return this.form.controls; }
 
     onSubmit() {

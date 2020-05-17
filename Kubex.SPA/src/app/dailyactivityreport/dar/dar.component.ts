@@ -1,5 +1,5 @@
 import { DailyactivityreportService } from 'src/app/_services';
-import { DailyActivityReport, Entry, EntryAdd } from 'src/app/_models';
+import { DailyActivityReport, Entry, EntryAdd, Location } from 'src/app/_models';
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -53,13 +53,26 @@ export class DarComponent implements OnInit {
   }
 
   onSubmit() {
+    // Zet ingegeven tijd om naar DateTime object
+    const data = this.e.entryTime.value;
+    const hours = data.substring(0, 2);
+    const minutes = data.substring(3);
+
+    const time = new Date();
+    time.setHours(hours, minutes, 0);
+
     // Maak de entry klaar voor verzenden
     const entry = new Entry();
     const entryAdd = new EntryAdd();
+    const location = new Location();
 
-    entry.occuranceDate = this.e.entryTime.value;
+    location.name = this.e.entryLocation.value;
+
+    entry.occuranceDate = time;
     entry.location = this.e.entryLocation.value;
     entry.description = this.e.entryDescription.value;
+    entry.priority = 'Low';
+    entry.location = location;
 
     entryAdd.DailyActivityReport = this.dar;
     entryAdd.parentEntry = null;

@@ -1,11 +1,14 @@
+import { Priority } from './priority';
+import { Location } from './location';
+import { DailyActivityReport } from './dailyActivityReport';
+
 export class Entry {
-    id: number;
+    id?: number;
     occuranceDate: Date;
     description: string;
-    parentEntryId: number;
-    dailyActivityReportId: number;
-    entryTypeId: number;
-    priorityId: number;
-    location: number;
-    childEntries: Array<Entry>;
+    parentEntry?: Entry;
+    dailyActivityReport?: DailyActivityReport;
+    priority: string;
+    location: Location
+    childEntries?: Array<Entry>;
 }
