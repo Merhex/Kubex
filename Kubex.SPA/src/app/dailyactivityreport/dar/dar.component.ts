@@ -72,6 +72,7 @@ export class DarComponent implements OnInit {
     entry.location = this.e.entryLocation.value;
     entry.description = this.e.entryDescription.value;
     entry.priority = 'Low';
+    entry.entryType = 'Log';
     entry.location = location;
 
     entryAdd.DailyActivityReport = this.dar;
@@ -85,43 +86,50 @@ export class DarComponent implements OnInit {
         this.entries = dar.entries as Entry[];
         console.log(dar);
     });
-
-    console.log('verzonden: ' + this.dar.entries);
   }
 
-  onSubmitSub() {}
+  onSubmitSub(parentEntry: Entry) {
+    // Zet ingegeven tijd om naar DateTime object
+    const data = this.s.entryTime.value;
+    const hours = data.substring(0, 2);
+    const minutes = data.substring(3);
+
+    const time = new Date();
+    time.setHours(hours, minutes, 0);
+
+    // Maak de entry klaar voor verzenden
+    const subEntry = new Entry();
+    const subEntryAdd = new EntryAdd();
+    const location = new Location();
+
+    location.name = this.s.entryLocation.value;
+
+    subEntry.occuranceDate = time;
+    subEntry.location = this.s.entryLocation.value;
+    subEntry.description = this.s.entryDescription.value;
+    subEntry.priority = 'Low';
+    subEntry.entryType = 'Log';
+    subEntry.location = location;
+
+    subEntryAdd.DailyActivityReport = this.dar;
+    subEntryAdd.parentEntry = parentEntry;
+    subEntryAdd.entry = subEntry;
+
+    // Voeg een entry in het dar in
+    this.dailyactivityreportService.addEntry(subEntryAdd)
+      .subscribe((dar: DailyActivityReport) => {
+        this.dar = dar;
+        this.entries = dar.entries as Entry[];
+        console.log(dar);
+    });
+  }
 
   createDar() {
-    console.log('clickedyclik');
-    // this.dailyactivityreportService.createDar()
-    //   .subscribe(dar => {
-    //     this.dar = dar;
-    //     this.entries = dar.entries as Entry[];
-    // });
-
-    console.log(this.dar);
-    console.log(this.entries);
+    this.dailyactivityreportService.createDar()
+      .subscribe(dar => {
+        this.dar = dar;
+        this.entries = dar.entries as Entry[];
+    });
   }
-
-  // GetDetail(parentId: BigInteger) {
-  //   return this.http.get<Entry[]>('http://localhost:3000/entry/');
-  // }
-
-  // SendDetail() {
-  //   this.http.post('http://localhost:3000/entry/', {
-  //     id: 5,
-  //     parentid: null,
-  //     occuranceDate: '2020-04-13T07:17:35.511Z',
-  //     location: null,
-  //     description: 'This is a first test',
-  //     priorityId: 0,
-  //     creauserid: 1,
-  //     creatime: Date.now,
-  //     moduserid: 1,
-  //     modtime: Date.now,
-  //     mediacolledctionid: null
-  //   }
-  //   );
-  // }
 
 }

@@ -9,6 +9,7 @@ export class Entry {
     parentEntry?: Entry;
     dailyActivityReport?: DailyActivityReport;
     priority: string;
+    entryType: string;
     location: Location
     childEntries?: Array<Entry>;
 }
