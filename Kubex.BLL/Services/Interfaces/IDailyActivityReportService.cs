@@ -10,7 +10,6 @@ namespace Kubex.BLL.Services.Interfaces
         Task<DailyActivityReportDTO> GetDailyActivityReportAsync(int darId);
         Task DeleteDailyActivityReportAsync(int darId);
         Task DeleteEntryFromDailyActivityReportAsync(int entryId, int darId);
-        Task<DailyActivityReportDTO> AddChildEntryAsync(AddEntryToDailyActivityReportDTO dto);
-
+        Task UpdateEntryInDailyActivityReportAsync(AddEntryToDailyActivityReportDTO dto);
     }
 }

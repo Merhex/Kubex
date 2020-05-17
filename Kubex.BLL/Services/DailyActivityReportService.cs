@@ -42,13 +42,16 @@ namespace Kubex.BLL.Services
 
         public async Task<DailyActivityReportDTO> AddEntryAsync(AddEntryToDailyActivityReportDTO dto)
         {
+            if (dto.ParentEntry != null)
+                return await AddChildEntryAsync(dto);
+
             var entry = _mapper.Map<Entry>(dto.Entry);
             var dar = await FindDailyActivityReport(dto.DailyActivityReport.Id);
 
-            return await AddEntryToDailyAcitivityReportAndUpdate(entry, dar);
+            return await AddEntryToDailyActivityReportAndUpdate(entry, dar);
         }
 
-        public async Task<DailyActivityReportDTO> AddChildEntryAsync(AddEntryToDailyActivityReportDTO dto) 
+        private async Task<DailyActivityReportDTO> AddChildEntryAsync(AddEntryToDailyActivityReportDTO dto) 
         {
             var parentEntry = await FindEntry(dto.ParentEntry.Id);
             var dar = await FindDailyActivityReport(dto.DailyActivityReport.Id);
@@ -58,7 +61,36 @@ namespace Kubex.BLL.Services
             
             var childEntry = _mapper.Map<Entry>(dto.Entry);
 
-            return await AddEntryToDailyAcitivityReportAndUpdate(childEntry, dar, parentEntry);
+            return await AddEntryToDailyActivityReportAndUpdate(childEntry, dar, parentEntry);
+        }
+
+        private async Task<DailyActivityReportDTO> AddEntryToDailyActivityReportAndUpdate(Entry entry, DailyActivityReport dar, Entry parent = null) 
+        {
+            entry.ParentEntry = parent;
+            entry.DailyActivityReport = dar;
+
+            if (entry.OccuranceDate == null)
+                entry.OccuranceDate = DateTime.Now;
+
+            if (parent == null) 
+                dar.Entries.Add(entry);
+            else 
+                parent.ChildEntries.Add(entry);
+
+            _entryRepository.Add(entry);
+
+            if (! await _entryRepository.SaveAll())
+                throw new ApplicationException("Something went wrong saving the entry to the database.");
+
+            var entries = await _entryRepository
+                .FindRange(x => x.ParentEntry == null && x.DailyActivityReportId == dar.Id);
+            
+            var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
+            var darEntries = _mapper.Map<ICollection<EntryDTO>>(entries);
+
+            darToReturn.Entries = darEntries;
+            
+            return darToReturn;
         }
 
         public async Task<DailyActivityReportDTO> GetDailyActivityReportAsync(int darId)
@@ -101,7 +133,7 @@ namespace Kubex.BLL.Services
                 throw new ApplicationException("Something went wrong deleting the Daily Activity Report.");
         }
         
-        public async Task<DailyActivityReportDTO> UpdateEntryInDailyActivityReportAsync(AddEntryToDailyActivityReportDTO dto) 
+        public async Task UpdateEntryInDailyActivityReportAsync(AddEntryToDailyActivityReportDTO dto) 
         {
             var dar = await FindDailyActivityReport(dto.DailyActivityReport.Id);
             var entry = await FindEntry(dto.Entry.Id);
@@ -114,37 +146,6 @@ namespace Kubex.BLL.Services
 
             if (! await _entryRepository.SaveAll())
                 throw new ApplicationException("Something went wrong, could not update the given entry.");
-            
-            return await GetDailyActivityReportAsync(dar.Id);
-        }
-
-        private async Task<DailyActivityReportDTO> AddEntryToDailyAcitivityReportAndUpdate(Entry entry, DailyActivityReport dar, Entry parent = null) 
-        {
-            entry.ParentEntry = parent;
-            entry.DailyActivityReport = dar;
-
-            if (entry.OccuranceDate == null)
-                entry.OccuranceDate = DateTime.Now;
-
-            if (parent == null) 
-                dar.Entries.Add(entry);
-            else 
-                parent.ChildEntries.Add(entry);
-
-            _entryRepository.Add(entry);
-
-            if (! await _entryRepository.SaveAll())
-                throw new ApplicationException("Something went wrong saving the entry to the database.");
-
-            var entries = await _entryRepository
-                .FindRange(x => x.ParentEntry == null && x.DailyActivityReportId == dar.Id);
-            
-            var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
-            var darEntries = _mapper.Map<ICollection<EntryDTO>>(entries);
-
-            darToReturn.Entries = darEntries;
-            
-            return darToReturn;
         }
 
         private async Task<Entry> FindEntry(int entryId) => 
