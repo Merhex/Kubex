@@ -1,16 +1,19 @@
-<main fxLayout="column" fxFlex="100" style="border: solid black 1px; width: 100%; display: block;">
-  <div *ngFor="let entry of entries | async" class="mat-row"  fxLayout="row" fxLayout.xs="column" style="padding-left: 1rem; width: 100%;">
-    <input class="mat-cell" type="time" [ngModel]="entry.hour | date: 'hh:mm'" fxFlex="6%">
-    <input class="mat-cell" type="text" [ngModel]="entry.locaton" fxFlex="14%">
-    <mat-form-field class="mat-cell descr" fxFlex="80%">
-      <textarea matInput
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="1"
-                cdkAutosizeMaxRows="5"
-                [ngModel]="entry.description"
-                style="padding: 0px;">
-              </textarea>
-    </mat-form-field>
-  </div>
-</main>
+<!-- <form [formGroup] = "postSubEntry" (ngSubmit)="onSubmit(entry)">
+  <mat-form-field fxFlex="8%">
+    <input matInput type="time" formControlName="subEntryTime">
+  </mat-form-field>
+  <mat-form-field fxFlex="12%">
+    <input matInput type="text" formControlName="subEntryLocation">
+  </mat-form-field>
+  <mat-form-field fxFlex>
+    <textarea matInput
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="40"
+              style="padding: 0px;"
+              formControlName="subEntryDescription"></textarea>
+  </mat-form-field>
+  <button mat-mini-fab color="primary" type="submit">
+    <mat-icon>send</mat-icon>
+  </button>
+</form> -->

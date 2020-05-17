@@ -26,7 +26,7 @@ export class DarComponent implements OnInit {
 
   // Convenience getter voor de formulier velden
   get e() { return this.postEntry.controls; }
-  get s() { return this.postEntry.controls; }
+  get s() { return this.postSubEntry.controls; }
 
   ngOnInit() {
     // Haal de laatste DAR op
@@ -90,7 +90,7 @@ export class DarComponent implements OnInit {
 
   onSubmitSub(parentEntry: Entry) {
     // Zet ingegeven tijd om naar DateTime object
-    const data = this.s.entryTime.value;
+    const data = this.s.subEntryTime.value;
     const hours = data.substring(0, 2);
     const minutes = data.substring(3);
 
@@ -102,11 +102,10 @@ export class DarComponent implements OnInit {
     const subEntryAdd = new EntryAdd();
     const location = new Location();
 
-    location.name = this.s.entryLocation.value;
+    location.name = this.s.subEntryLocation.value;
 
     subEntry.occuranceDate = time;
-    subEntry.location = this.s.entryLocation.value;
-    subEntry.description = this.s.entryDescription.value;
+    subEntry.description = this.s.subEntryDescription.value;
     subEntry.priority = 'Low';
     subEntry.entryType = 'Log';
     subEntry.location = location;
@@ -114,6 +113,10 @@ export class DarComponent implements OnInit {
     subEntryAdd.DailyActivityReport = this.dar;
     subEntryAdd.parentEntry = parentEntry;
     subEntryAdd.entry = subEntry;
+
+    console.log('loc:' + location.name);
+    console.log('des:' + subEntry.description);
+    console.log('tim:' + subEntry.occuranceDate);
 
     // Voeg een entry in het dar in
     this.dailyactivityreportService.addEntry(subEntryAdd)

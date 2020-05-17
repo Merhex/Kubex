@@ -20,7 +20,6 @@ import { AlertComponent } from './alert/alert.component';
 import { AccountComponent } from './account/account.component';
 import { HomeComponent } from './home/home.component';
 import { DailyactivityreportComponent } from './dailyactivityreport/dailyactivityreport.component';
-import { SubentryComponent } from './dailyactivityreport/subentry/subentry.component';
 
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatInputModule} from '@angular/material/input';
@@ -35,7 +34,6 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
       UserComponent,
       HomeComponent,
       DailyactivityreportComponent,
-      SubentryComponent,
       AlertComponent,
       AccountComponent
    ],
