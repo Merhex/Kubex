@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kubex.BLL.Services.Interfaces;
 using Kubex.DAL.Repositories.Interfaces;
 using Kubex.DTO;
 using Kubex.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Kubex.BLL.Services
 {
@@ -102,12 +100,31 @@ namespace Kubex.BLL.Services
             if (! await _darRepository.SaveAll())
                 throw new ApplicationException("Something went wrong deleting the Daily Activity Report.");
         }
+        
+        public async Task<DailyActivityReportDTO> UpdateEntryInDailyActivityReportAsync(AddEntryToDailyActivityReportDTO dto) 
+        {
+            var dar = await FindDailyActivityReport(dto.DailyActivityReport.Id);
+            var entry = await FindEntry(dto.Entry.Id);
+            var updatedEntry = _mapper.Map<Entry>(dto.Entry);
+
+            if (entry.DailyActivityReport.Id != dar.Id)
+                throw new ApplicationException("This entry does not belong to the given Daily Activity Report.");
+            
+            _mapper.Map(updatedEntry, entry);
+
+            if (! await _entryRepository.SaveAll())
+                throw new ApplicationException("Something went wrong, could not update the given entry.");
+            
+            return await GetDailyActivityReportAsync(dar.Id);
+        }
 
         private async Task<DailyActivityReportDTO> AddEntryToDailyAcitivityReportAndUpdate(Entry entry, DailyActivityReport dar, Entry parent = null) 
         {
             entry.ParentEntry = parent;
             entry.DailyActivityReport = dar;
-            entry.OccuranceDate = DateTime.Now;
+
+            if (entry.OccuranceDate == null)
+                entry.OccuranceDate = DateTime.Now;
 
             if (parent == null) 
                 dar.Entries.Add(entry);

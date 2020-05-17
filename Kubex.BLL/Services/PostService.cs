@@ -218,29 +218,22 @@ namespace Kubex.BLL.Services
 
         public async Task UpdatePostAsync(UpdatePostDTO dto)
         {
-            var post = await FindPostAsync(dto.PostId);
-            
-            //Update address
-            post.Address = _mapper.Map<Address>(dto.Address);
+            var post = await FindPostAsync(dto.Post.Id);
+            var updatedPost = _mapper.Map<Post>(dto.Post);
 
-            //Update company
-            post.Company = _mapper.Map<Company>(dto.Company);
-
-            //Update location
-            post.Location = _mapper.Map<Location>(dto.Location);
+            //Update the values for the post
+            _mapper.Map(updatedPost, post);
             
-            //Find all users
-            //Add the to userposts from post.Users
+            //Update the users set to the given post.
             foreach(var username in dto.UserNames) 
             {
                 var updateUserPostsDto = new UpdateUserPostsDTO { UserName = username, PostIds = new int[] { post.Id } };
                 await SetUserPostsAsync(updateUserPostsDto);   
             }
 
-            var modDto = new ModifyPostRolesDTO() { Id = dto.PostId, Roles = dto.Roles };
+            //Update the roles given to the post.
+            var modDto = new ModifyPostRolesDTO() { Id = dto.Post.Id, Roles = dto.Roles };
             await SetPostRolesAsync(modDto);
-            
-            _postRepository.Update(post);
 
             if (! await _postRepository.SaveAll())
                 throw new ApplicationException("Could not update the given post.");
