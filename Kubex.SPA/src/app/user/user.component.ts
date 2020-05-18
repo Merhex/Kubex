@@ -10,8 +10,6 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  // @Input() inputUser: UserlistComponent;
-  // @Output() outputUser = new EventEmitter<any>();
   selectedUser: User = null;
 
   users: User[];

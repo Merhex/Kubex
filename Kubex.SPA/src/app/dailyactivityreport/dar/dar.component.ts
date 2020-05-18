@@ -1,8 +1,9 @@
-import { DailyactivityreportService } from 'src/app/_services';
+import { DailyactivityreportService, AlertService } from 'src/app/_services';
 import { DailyActivityReport, Entry, EntryAdd, Location } from 'src/app/_models';
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dar',
@@ -10,6 +11,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./dar.component.css']
 })
 export class DarComponent implements OnInit {
+  lastDarId: number;
+  isDisabledNext: boolean;
+  isDisabledPrevious: boolean;
   postEntry: FormGroup;
   postSubEntry: FormGroup;
   dar = new DailyActivityReport();
@@ -21,7 +25,8 @@ export class DarComponent implements OnInit {
 
   constructor(
     private dailyactivityreportService: DailyactivityreportService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private alertService: AlertService
   ) {}
 
   // Convenience getter voor de formulier velden
@@ -31,10 +36,18 @@ export class DarComponent implements OnInit {
   ngOnInit() {
     // Haal de laatste DAR op
     this.dailyactivityreportService.getLastDar()
-      .subscribe((dar: DailyActivityReport) => {
-        this.dar = dar;
-        this.entries = dar.entries as Entry[];
-        console.log(dar);
+      .subscribe(
+        (dar: DailyActivityReport) => {
+          this.dar = dar;
+          this.entries = dar.entries as Entry[];
+          this.lastDarId = dar.id;
+          this.alertService.clear();
+          // Deactiveer buttons
+          this.isDisabledNext = true;
+          if (dar.id === 1) { this.isDisabledPrevious = true; }
+        },
+        error => {
+          this.alertService.error(error);
     });
 
     // Set forms
@@ -81,11 +94,17 @@ export class DarComponent implements OnInit {
 
     // Voeg een entry in het dar in
     this.dailyactivityreportService.addEntry(entryAdd)
-      .subscribe((dar: DailyActivityReport) => {
-        this.dar = dar;
-        this.entries = dar.entries as Entry[];
-        console.log(dar);
+      .subscribe(
+        (dar: DailyActivityReport) => {
+          this.dar = dar;
+          this.entries = dar.entries as Entry[];
+          this.alertService.clear();
+        },
+        error => {
+          this.alertService.error(error);
     });
+
+    this.postEntry.reset();
   }
 
   onSubmitSub(parentEntry: Entry) {
@@ -120,18 +139,82 @@ export class DarComponent implements OnInit {
 
     // Voeg een entry in het dar in
     this.dailyactivityreportService.addEntry(subEntryAdd)
-      .subscribe((dar: DailyActivityReport) => {
-        this.dar = dar;
-        this.entries = dar.entries as Entry[];
-        console.log(dar);
+      .subscribe(
+        (dar: DailyActivityReport) => {
+          this.dar = dar;
+          this.entries = dar.entries as Entry[];
+          this.alertService.clear();
+        },
+        error => {
+          this.alertService.error(error);
     });
+
+    this.postSubEntry.reset();
   }
 
   createDar() {
     this.dailyactivityreportService.createDar()
-      .subscribe(dar => {
-        this.dar = dar;
-        this.entries = dar.entries as Entry[];
+      .subscribe(
+        (dar: DailyActivityReport) => {
+          this.dar = dar;
+          this.entries = dar.entries as Entry[];
+          this.alertService.clear();
+          this.lastDarId = dar.id;
+          this.isDisabledNext = true;
+        },
+        error => {
+          this.alertService.error(error);
+    });
+  }
+
+  gotoPreviousDar() {
+    this.isDisabledNext = false;
+    this.isDisabledPrevious = false;
+
+    this.dailyactivityreportService.getDarById(this.dar.id - 1)
+      .subscribe(
+        (dar: DailyActivityReport) => {
+          this.dar = dar;
+          this.entries = dar.entries as Entry[];
+          this.alertService.clear();
+          if (dar.id === 1) { this.isDisabledPrevious = true; }
+        },
+        error => {
+          this.alertService.error(error);
+    });
+  }
+
+  gotoNextDar() {
+    this.isDisabledNext = false;
+    this.isDisabledPrevious = false;
+
+    this.dailyactivityreportService.getDarById(this.dar.id + 1)
+      .subscribe(
+        (dar: DailyActivityReport) => {
+          this.dar = dar;
+          this.entries = dar.entries as Entry[];
+          this.alertService.clear();
+          if (dar.id === this.lastDarId) { this.isDisabledNext = true; }
+        },
+        error => {
+          this.alertService.error(error);
+    });
+  }
+
+  gotoTodaysDar() {
+    this.isDisabledNext = false;
+    this.isDisabledPrevious = false;
+
+    this.dailyactivityreportService.getDarById(this.lastDarId)
+      .subscribe(
+        (dar: DailyActivityReport) => {
+          this.dar = dar;
+          this.entries = dar.entries as Entry[];
+          this.alertService.clear();
+          if (dar.id === this.lastDarId) { this.isDisabledNext = true; }
+        },
+        error => {
+          this.alertService.error(error);
     });
   }
 

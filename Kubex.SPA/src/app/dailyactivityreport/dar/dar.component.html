@@ -13,14 +13,18 @@
             <mat-icon>add_circle</mat-icon>
             <span>Create new DAR</span>
           </button>
-          <!-- <button mat-menu-item disabled>
-            <mat-icon>voicemail</mat-icon>
-            <span>Check voice mail</span>
+          <button mat-menu-item (click)="gotoTodaysDar()">
+            <mat-icon>calendar_today</mat-icon>
+            <span>Go to todays DAR</span>
           </button>
-          <button mat-menu-item>
-            <mat-icon>notifications_off</mat-icon>
-            <span>Disable alerts</span>
-          </button> -->
+          <button mat-menu-item [disabled]="isDisabledPrevious" (click)="gotoPreviousDar()">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+            <span>Go to previous DAR</span>
+          </button>
+          <button mat-menu-item [disabled]="isDisabledNext" (click)="gotoNextDar()">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+            <span>Go to next DAR</span>
+          </button>
         </mat-menu>
         <!-- End of Dar Menu -->
       </div>
@@ -116,11 +120,4 @@
       
       </mat-accordion>
     </div>
-  
-    <!-- button row -->
-    <div class="bottom" fxLayout="row" fxFlexOffset="auto">
-      <button>Test</button>
-    </div>
-  
-  
   </main>
