@@ -50,6 +50,14 @@ namespace Kubex.API.Controllers
             return Ok(updatedUser);
         }
 
+        [HttpPost("clear/{userName}")]
+        public async Task<IActionResult> ClearPostsFromUser(string userName) 
+        {
+            var user = await _postService.ClearUserFromPosts(userName);
+
+            return Ok(user);
+        }
+
         [HttpPost("modify")]
         public async Task<IActionResult> ModifyPostRoles(ModifyPostRolesDTO dto) 
         {
@@ -61,9 +69,25 @@ namespace Kubex.API.Controllers
         [HttpPatch("update/{id}")]
         public async Task<IActionResult> UpdatePost(int id, UpdatePostDTO dto) 
         {
-            var post = await _postService.UpdatePostAsync(dto);
+            await _postService.UpdatePostAsync(dto);
 
-            return Ok(post);
+            return NoContent();
+        }
+
+        [HttpGet("{id}/reports")]
+        public async Task<IActionResult> GetDailyActivityReportsForCompany(int id) 
+        {
+            var reports = await _postService.GetDailyActivityReportsForPostAsync(id);
+
+            return Ok(reports);
+        }
+
+        [HttpGet("{postId}/reports/{darId}")]
+        public async Task<IActionResult> GetDailyActivityReportFromCompany(int postId, int darId) 
+        {
+            var report = await _postService.GetDailyActivityReportFromPostAsync(postId, darId);
+
+            return Ok(report);
         }
     }
 }
