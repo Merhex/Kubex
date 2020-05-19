@@ -27,6 +27,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import { PostModule } from './posts/post.module';
 
 @NgModule({
    declarations: [
@@ -35,7 +36,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
       HomeComponent,
       DailyactivityreportComponent,
       AlertComponent,
-      AccountComponent
+      AccountComponent,
    ],
    imports: [
       BrowserModule,
@@ -55,7 +56,8 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
       MatButtonModule,
       MatIconModule,
       MatMenuModule,
-      ScrollingModule
+      ScrollingModule,
+      PostModule
    ],
    providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
