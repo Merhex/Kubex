@@ -48,7 +48,7 @@ export class AddEditComponent implements OnInit {
           userName: ['', Validators.required],
           password: ['', passwordValidators],
           street: ['', Validators.required],
-          houseNumber: [''],
+          houseNumber: ['', Validators.required],
           appartementBus: [''],
           zip: ['', Validators.required],
           country: ['', Validators.required]

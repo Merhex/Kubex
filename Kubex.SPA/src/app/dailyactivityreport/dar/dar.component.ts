@@ -61,8 +61,6 @@ export class DarComponent implements OnInit {
       subEntryLocation: [''],
       subEntryDescription: ['']
     });
-
-    console.log('id = ' + this.dar.id);
   }
 
   onSubmit() {
@@ -132,10 +130,6 @@ export class DarComponent implements OnInit {
     subEntryAdd.DailyActivityReport = this.dar;
     subEntryAdd.parentEntry = parentEntry;
     subEntryAdd.entry = subEntry;
-
-    console.log('loc:' + location.name);
-    console.log('des:' + subEntry.description);
-    console.log('tim:' + subEntry.occuranceDate);
 
     // Voeg een entry in het dar in
     this.dailyactivityreportService.addEntry(subEntryAdd)
