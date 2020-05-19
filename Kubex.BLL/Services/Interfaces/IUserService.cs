@@ -15,6 +15,7 @@ namespace Kubex.BLL.Services.Interfaces
          Task<UserToReturnDTO> RemoveRolesFromUserAsync(ModifyRolesDTO dto);
          Task<UserToReturnDTO> Register(UserRegisterDTO dto);
          Task<UserToReturnDTO> Login(UserLoginDTO dto);
+         Task UpdateUserAsync(UserRegisterDTO dto);
          Task<string> GenerateJWTToken(UserLoginDTO dto);
     }
 }

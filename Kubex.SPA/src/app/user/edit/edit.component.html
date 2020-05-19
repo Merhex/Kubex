@@ -47,10 +47,11 @@
         </div>
         <div class="form-group col">
             <label for="houseNumber">Housenumber</label>
-            <input type="text" formControlName="houseNumber" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.houseNumber.errors }" />
-            <div *ngIf="submitted && f.houseNumber.errors" class="invalid-feedback">
-                <div *ngIf="f.houseNumber.errors.required">Housenumber is required</div>
-            </div>
+            <input type="number" min= "1" formControlName="houseNumber" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.houseNumber.errors }" />
+        </div>
+        <div class="form-group col">
+            <label for="appartementBus">Appartement bus</label>
+            <input type="text" formControlName="appartementBus" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.appartementBus.errors }" />
         </div>
     </div>
     <div class="form-row">

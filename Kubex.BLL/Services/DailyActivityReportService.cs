@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kubex.BLL.Services.Interfaces;
@@ -112,8 +113,7 @@ namespace Kubex.BLL.Services
         {
             var result = await _darRepository.FindRange(x => x.Id > -1);
             var dar = result.LastOrDefault();
-            var id = dar.Id;
-
+            
             if (dar == null)
                 throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given date.");
 

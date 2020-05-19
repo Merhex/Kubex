@@ -56,5 +56,13 @@ namespace Kubex.API.Controllers
 
             return Ok(user); 
         }
+
+        [HttpPut("{userName}")]
+        public async Task<IActionResult> UpdateUser(UserRegisterDTO dto) 
+        {
+            await _userService.UpdateUserAsync(dto);
+
+            return NoContent();
+        }
     }
 }

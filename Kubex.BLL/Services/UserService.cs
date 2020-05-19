@@ -170,6 +170,8 @@ namespace Kubex.BLL.Services
                    
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(newUser, "User");
+
                 var userToReturn = _mapper.Map<UserToReturnDTO>(newUser);
 
                 return userToReturn;
@@ -192,6 +194,15 @@ namespace Kubex.BLL.Services
             }
 
             throw new ArgumentNullException(null, "We could not find an account with that given username and password.");
+        }
+
+        public async Task UpdateUserAsync(UserRegisterDTO dto) 
+        {
+            var user = await FindUserAsync(dto.UserName);
+
+            _mapper.Map(dto, user);
+
+            await _userManager.UpdateAsync(user);
         }
 
         private async Task<bool> ValidateModifyRolesDTO(ModifyRolesDTO dto) 

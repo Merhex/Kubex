@@ -5,7 +5,6 @@ using Kubex.BLL.Services.Interfaces;
 using Kubex.DAL.Repositories.Interfaces;
 using Kubex.DTO;
 using Kubex.Models;
-using Kubex.Models.Extensions;
 
 namespace Kubex.BLL.Services
 {

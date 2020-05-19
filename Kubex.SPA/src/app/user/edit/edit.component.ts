@@ -48,7 +48,8 @@ export class AddEditComponent implements OnInit {
           userName: ['', Validators.required],
           password: ['', passwordValidators],
           street: ['', Validators.required],
-          houseNumber: ['', Validators.required],
+          houseNumber: [''],
+          appartementBus: [''],
           zip: ['', Validators.required],
           country: ['', Validators.required]
       });
@@ -66,6 +67,7 @@ export class AddEditComponent implements OnInit {
                   this.f.houseNumber.setValue(user.address.houseNumber);
                   this.f.zip.setValue(user.address.zip);
                   this.f.country.setValue(user.address.country);
+                  this.f.appartementBus.setValue(user.address.appartementBus);
               });
       }
   }
@@ -87,49 +89,64 @@ export class AddEditComponent implements OnInit {
   }
 
   private createUser() {
-      const userRegister = new UserRegister();
-      const addressRegister = new Address();
+    const address = this.getAddressFromForm();
+    const userRegister = this.getUserRegisterFromForm();
 
-      // We steken de form data in de nieuwe User.
-      userRegister.firstName = this.f.firstName.value;
-      userRegister.lastName = this.f.lastName.value;
-      userRegister.userName = this.f.userName.value;
-      userRegister.password = this.f.password.value;
-
-      // Zelfde voor het nieuwe Address
-      addressRegister.street = this.f.street.value;
-      addressRegister.houseNumber = this.f.houseNumber.value;
-      addressRegister.zip = this.f.zip.value;
-      addressRegister.country = this.f.country.value;
-
-      // We koppelen het Address aan de User
-      userRegister.address = addressRegister;
+    userRegister.address = address;
 
       // We sturen onze User naar de accountService voor registratie
-      this.accountService.register(userRegister)
-          .pipe(first())
-          .subscribe(
-              data => {
-                  this.alertService.success('User added successfully', { keepAfterRouteChange: true });
-                  this.router.navigate(['.', { relativeTo: this.route }]);
-              },
-              error => {
-                  this.alertService.error(error);
-                  this.loading = false;
-              });
+    this.accountService.register(userRegister)
+        .pipe(first())
+        .subscribe(
+            data => {
+                this.alertService.success('User added successfully', { keepAfterRouteChange: true });
+                this.router.navigate(['.', { relativeTo: this.route }]);
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
   }
 
   private updateUser() {
-      this.accountService.update(this.userName, this.form.value)
-          .pipe(first())
-          .subscribe(
-              data => {
-                  this.alertService.success('Update successful', { keepAfterRouteChange: true });
-                  this.router.navigate(['..', { relativeTo: this.route }]);
-              },
-              error => {
-                  this.alertService.error(error);
-                  this.loading = false;
-              });
+    const address = this.getAddressFromForm();
+    const userRegister = this.getUserRegisterFromForm();
+
+    userRegister.address = address;
+
+    this.accountService.update(this.userName, userRegister)
+        .pipe(first())
+        .subscribe(
+            data => {
+                this.alertService.success('Update successful', { keepAfterRouteChange: true });
+                this.router.navigate(['..', { relativeTo: this.route }]);
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
+  }
+
+  private getAddressFromForm(): Address {
+      const address = new Address();
+
+      address.street = this.f.street.value;
+      address.houseNumber = this.f.houseNumber.value;
+      address.zip = this.f.zip.value;
+      address.country = this.f.country.value;
+      address.appartementBus = this.f.appartementBus.value;
+
+      return address;
+  }
+
+  private getUserRegisterFromForm(): UserRegister {
+    const userRegister = new UserRegister();
+
+    userRegister.firstName = this.f.firstName.value;
+    userRegister.lastName = this.f.lastName.value;
+    userRegister.userName = this.f.userName.value;
+    userRegister.password = this.f.password.value;
+
+    return userRegister;
   }
 }
