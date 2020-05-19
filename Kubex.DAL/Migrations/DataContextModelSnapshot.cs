@@ -64,6 +64,9 @@ namespace Kubex.DAL.Migrations
                     b.Property<int?>("AddressId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CustomerNumber")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("LogoUrl")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 

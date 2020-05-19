@@ -85,6 +85,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 typings
+todolist.txt
 
 # System Files
 .DS_Store

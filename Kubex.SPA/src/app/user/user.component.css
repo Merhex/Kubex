@@ -1,0 +1,51 @@
+html, body {
+    height: 100%;
+}
+
+.container {
+    margin-top: 80px;
+}
+
+.userlist div {
+    /* width: 15%;
+    min-width: 240px; */
+    /* max-width: 500px; */
+    margin: 0;
+    max-height: 90%;
+    background-color: slategray;
+    border: 1px solid grey;
+    padding: 10px;
+}
+
+.userlist div:hover {
+    background-color: hotpink;
+}
+
+.item img {
+    width: 50px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.item span {
+    margin-left: 15px;
+    font-size: 1.25rem;
+    vertical-align: middle;
+}
+
+.main {
+    height: 100%;
+}
+
+.name {
+    margin: 4% 0 4% 0;
+}
+
+.footer {
+    position: fixed;
+    margin-bottom: 10px;
+}
+
+.saveUser {
+    margin-right: 10px;
+}
