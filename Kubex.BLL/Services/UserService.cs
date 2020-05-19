@@ -203,6 +203,14 @@ namespace Kubex.BLL.Services
             _mapper.Map(dto, user);
 
             await _userManager.UpdateAsync(user);
+
+            if (! string.IsNullOrWhiteSpace(dto.Password)) 
+            {
+                var result = await _userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.Password);
+
+                if (! result.Succeeded)
+                    throw new ApplicationException($"Could not update the password. {result.Errors.FirstOrDefault().Description}");
+            }
         }
 
         private async Task<bool> ValidateModifyRolesDTO(ModifyRolesDTO dto) 

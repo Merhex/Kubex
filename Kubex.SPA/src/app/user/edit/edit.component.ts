@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService, AlertService } from 'src/app/_services';
 import { first } from 'rxjs/operators';
 import { User, Address, UserRegister } from 'src/app/_models';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-edit',
@@ -56,6 +57,8 @@ export class AddEditComponent implements OnInit {
 
       // In edit mode moeten de velden worden opgevuld met de data in DB
       if (!this.isAddMode) {
+          this.form.addControl('currentPassword', new FormControl('', passwordValidators));
+
           this.accountService.getByUserName(this.userName)
               .pipe(first())
               .subscribe(user => {
@@ -75,12 +78,8 @@ export class AddEditComponent implements OnInit {
   onSubmit() {
       this.submitted = true;
       this.alertService.clear();
-
-      if (this.form.invalid) {
-          return;
-      }
-
       this.loading = true;
+
       if (this.isAddMode) {
           this.createUser();
       } else {
@@ -94,7 +93,7 @@ export class AddEditComponent implements OnInit {
 
     userRegister.address = address;
 
-      // We sturen onze User naar de accountService voor registratie
+        // We sturen onze User naar de accountService voor registratie
     this.accountService.register(userRegister)
         .pipe(first())
         .subscribe(
@@ -146,6 +145,10 @@ export class AddEditComponent implements OnInit {
     userRegister.lastName = this.f.lastName.value;
     userRegister.userName = this.f.userName.value;
     userRegister.password = this.f.password.value;
+
+    if (!this.isAddMode) {
+        userRegister.currentPassword = this.f.currentPassword.value;
+    }
 
     return userRegister;
   }
