@@ -67,11 +67,11 @@ export class AccountService {
             }));
     }
 
-    delete(id: number) {
-        return this.http.delete(`${environment.apiUrl}/users/${id}`)
+    delete(userName: string) {
+        return this.http.delete(`${environment.apiUrl}/users/${userName}`)
             .pipe(map(x => {
                 // Wanneer User wordt verwijderd, ook meteen uitloggen
-                if (id === this.userValue.id) {
+                if (userName === this.userValue.userName) {
                     this.logout();
                 }
                 return x;

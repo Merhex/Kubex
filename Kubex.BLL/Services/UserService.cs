@@ -235,8 +235,18 @@ namespace Kubex.BLL.Services
             return true;
         }
 
+        public async Task DeleteUserAsync(string userName)
+        {
+            var user = await FindUserAsync(userName);
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (! result.Succeeded)
+                throw new ApplicationException($"Could not delete the given user. {result.Errors.FirstOrDefault().Description}");
+        }
+
         public async Task<User> FindUserAsync(string userName) => 
             await _userManager.FindByNameAsync(userName)
-            ?? throw new ArgumentNullException("Could not find a user with the given username.");
+            ?? throw new ArgumentNullException(null, "Could not find a user with the given username.");
     }
 }
