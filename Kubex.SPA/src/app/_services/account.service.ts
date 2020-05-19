@@ -35,7 +35,7 @@ export class AccountService {
     }
 
     logout() {
-        // Verwijder User uit lokale storage
+        // Verwijder huidige User uit lokale storage
         localStorage.removeItem('user');
         this.userSubject.next(null);
         this.router.navigate(['/account/login']);
@@ -70,7 +70,7 @@ export class AccountService {
     delete(id: number) {
         return this.http.delete(`${environment.apiUrl}/users/${id}`)
             .pipe(map(x => {
-                // Wanneer User wordt verwijderd, ook meteen uitloggen
+                // Wanneer huidige User wordt verwijderd, ook meteen uitloggen
                 if (id === this.userValue.id) {
                     this.logout();
                 }

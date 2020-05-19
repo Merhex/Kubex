@@ -8,8 +8,6 @@ const routes: Routes = [
         path: '', component: DailyactivityreportLayoutComponent,
         children: [
             { path: '', component: DarComponent }
-            // { path: 'add', component: AddEditComponent },
-            // { path: 'edit/:id', component: AddEditComponent }
         ]
     }
 ];
