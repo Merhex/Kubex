@@ -44,7 +44,7 @@ namespace Kubex.BLL.Services
         {
             if (dto.ParentEntry != null)
                 return await AddChildEntryAsync(dto);
-
+        
             var entry = _mapper.Map<Entry>(dto.Entry);
             var dar = await FindDailyActivityReport(dto.DailyActivityReport.Id);
 
@@ -96,6 +96,26 @@ namespace Kubex.BLL.Services
         public async Task<DailyActivityReportDTO> GetDailyActivityReportAsync(int darId)
         {
             var dar = await FindDailyActivityReport(darId);
+
+            var entries =  await _entryRepository
+                .FindRange(x => x.ParentEntry == null && x.DailyActivityReportId == dar.Id);
+            
+            var darToReturn = _mapper.Map<DailyActivityReportDTO>(dar);
+            var darEntries = _mapper.Map<ICollection<EntryDTO>>(entries);
+
+            darToReturn.Entries = darEntries;
+
+            return darToReturn;
+        }
+
+        public async Task<DailyActivityReportDTO> GetLastDailyActivityReportAsync()
+        {
+            var result = await _darRepository.FindRange(x => x.Id > -1);
+            var dar = result.LastOrDefault();
+            var id = dar.Id;
+
+            if (dar == null)
+                throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given date.");
 
             var entries =  await _entryRepository
                 .FindRange(x => x.ParentEntry == null && x.DailyActivityReportId == dar.Id);

@@ -1,9 +1,10 @@
+import { User } from './../_models';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User } from '../_models/user';
+import { useAnimation } from '@angular/animations';
 
 
 @Injectable({
@@ -37,5 +38,9 @@ export class AuthenticationService {
       // Verwijder User van lokale storage en zet User op null
       localStorage.removeItem('currentUser');
       this.currentUserSubject.next(null);
+  }
+
+  register(user: User) {
+      this.http.post<User>(`${this.baseUrl}/auth/register`, { user });
   }
 }

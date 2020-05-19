@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService, AlertService } from 'src/app/_services';
 import { first } from 'rxjs/operators';
+import { User, Address, UserRegister } from 'src/app/_models';
 
 @Component({
   selector: 'app-edit',
@@ -15,6 +16,8 @@ export class AddEditComponent implements OnInit {
   isAddMode: boolean;
   loading = false;
   submitted = false;
+  userName: string;
+  user = new User();
 
   constructor(
       private formBuilder: FormBuilder,
@@ -24,12 +27,17 @@ export class AddEditComponent implements OnInit {
       private alertService: AlertService
   ) {}
 
-  ngOnInit() {
-      this.id = this.route.snapshot.params['id'];
-      this.isAddMode = !this.id;
+  // Convenience getter voor de formulier velden
+  get f() { return this.form.controls; }
 
-      // Wanneer in edit-mode: geen ww vereist
+  ngOnInit() {
+      this.userName = this.route.snapshot.params.username;
+      this.isAddMode = !this.userName;
+
+      // Wachtwoord moet minstens 6 karakters hebben
       const passwordValidators = [Validators.minLength(6)];
+
+      // Alleen wanneer we registreren is een wachtwoord vereist
       if (this.isAddMode) {
           passwordValidators.push(Validators.required);
       }
@@ -37,27 +45,33 @@ export class AddEditComponent implements OnInit {
       this.form = this.formBuilder.group({
           firstName: ['', Validators.required],
           lastName: ['', Validators.required],
-          username: ['', Validators.required],
-          password: ['', passwordValidators]
+          userName: ['', Validators.required],
+          password: ['', passwordValidators],
+          street: ['', Validators.required],
+          houseNumber: ['', Validators.required],
+          zip: ['', Validators.required],
+          country: ['', Validators.required]
       });
 
+      // In edit mode moeten de velden worden opgevuld met de data in DB
       if (!this.isAddMode) {
-          this.accountService.getById(this.id)
+          this.accountService.getByUserName(this.userName)
               .pipe(first())
-              .subscribe(x => {
-                  this.f.firstName.setValue(x.firstName);
-                  this.f.lastName.setValue(x.lastName);
-                  this.f.username.setValue(x.username);
+              .subscribe(user => {
+                  // Opvullen van de velden dmv de convenience getter
+                  this.f.firstName.setValue(user.firstName);
+                  this.f.lastName.setValue(user.lastName);
+                  this.f.userName.setValue(user.userName);
+                  this.f.street.setValue(user.address.street);
+                  this.f.houseNumber.setValue(user.address.houseNumber);
+                  this.f.zip.setValue(user.address.zip);
+                  this.f.country.setValue(user.address.country);
               });
       }
   }
 
-  // convenience getter for easy access to form fields
-  get f() { return this.form.controls; }
-
   onSubmit() {
       this.submitted = true;
-
       this.alertService.clear();
 
       if (this.form.invalid) {
@@ -73,7 +87,26 @@ export class AddEditComponent implements OnInit {
   }
 
   private createUser() {
-      this.accountService.register(this.form.value)
+      const userRegister = new UserRegister();
+      const addressRegister = new Address();
+
+      // We steken de form data in de nieuwe User.
+      userRegister.firstName = this.f.firstName.value;
+      userRegister.lastName = this.f.lastName.value;
+      userRegister.userName = this.f.userName.value;
+      userRegister.password = this.f.password.value;
+
+      // Zelfde voor het nieuwe Address
+      addressRegister.street = this.f.street.value;
+      addressRegister.houseNumber = this.f.houseNumber.value;
+      addressRegister.zip = this.f.zip.value;
+      addressRegister.country = this.f.country.value;
+
+      // We koppelen het Address aan de User
+      userRegister.address = addressRegister;
+
+      // We sturen onze User naar de accountService voor registratie
+      this.accountService.register(userRegister)
           .pipe(first())
           .subscribe(
               data => {
@@ -87,7 +120,7 @@ export class AddEditComponent implements OnInit {
   }
 
   private updateUser() {
-      this.accountService.update(this.id, this.form.value)
+      this.accountService.update(this.userName, this.form.value)
           .pipe(first())
           .subscribe(
               data => {

@@ -1,9 +1,14 @@
+import { Address } from '.';
+
+
 export class User {
-    id: number;
-    username: string;
-    password: string;
+    id?: number;
+    userName: string;
+    password?: string;
     firstName: string;
     lastName: string;
-    addressId: number;
+    address: Address;
+    roles: Array<string>;
     token: string;
+    isDeleting?: boolean;
 }

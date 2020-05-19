@@ -11,10 +11,6 @@ main {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.top, .bottom {
-  /* background-color: rgb(118, 164, 233); */
-}
-
 form {
   width: 100%;
   padding: 5px;

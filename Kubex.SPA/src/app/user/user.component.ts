@@ -10,12 +10,8 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  // @Input() inputUser: UserlistComponent;
-  // @Output() outputUser = new EventEmitter<any>();
   selectedUser: User = null;
 
-  // users: Observable<any> = this.http.get('http://localhost:3000/users/');
-  // users: Observable<any> = this.http.get('api/users');
   users: User[];
 
   displayUser(userId) {

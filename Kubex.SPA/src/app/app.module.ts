@@ -15,28 +15,25 @@ import { AccordionModule } from 'primeng/accordion';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavComponent } from './nav/nav.component';
 import { UserComponent } from './user/user.component';
 import { AlertComponent } from './alert/alert.component';
 import { AccountComponent } from './account/account.component';
 import { HomeComponent } from './home/home.component';
 import { DailyactivityreportComponent } from './dailyactivityreport/dailyactivityreport.component';
-import { SubentryComponent } from './dailyactivityreport/subentry/subentry.component';
 
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
    declarations: [
       AppComponent,
-      NavComponent,
       UserComponent,
       HomeComponent,
       DailyactivityreportComponent,
-      SubentryComponent,
       AlertComponent,
       AccountComponent
    ],
@@ -57,6 +54,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
       MatInputModule,
       MatButtonModule,
       MatIconModule,
+      MatMenuModule,
       ScrollingModule
    ],
    providers: [
