@@ -5,6 +5,10 @@ import { AccountService, AlertService } from 'src/app/_services';
 import { first } from 'rxjs/operators';
 import { User, Address, UserRegister } from 'src/app/_models';
 
+import {Location, Appearance, GermanAddress} from '@angular-material-extensions/google-maps-autocomplete';
+// import {} from '@types/googlemaps';
+import PlaceResult = google.maps.places.PlaceResult;
+
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
@@ -18,6 +22,20 @@ export class AddEditComponent implements OnInit {
   submitted = false;
   userName: string;
   user = new User();
+  addressFormGroup: FormGroup;
+  addressValue: Address = {
+      country: 'Belgium',
+      street: 'You street',
+      houseNumber: 0,
+      zip: '2200'
+  };
+
+  // Google Places attributes
+  public appearance = Appearance;
+  public zoom: number;
+  public latitude: number;
+  public longitude: number;
+  public selectedAddress: PlaceResult;
 
   constructor(
       private formBuilder: FormBuilder,
@@ -33,6 +51,10 @@ export class AddEditComponent implements OnInit {
   ngOnInit() {
       this.userName = this.route.snapshot.params.username;
       this.isAddMode = !this.userName;
+
+      this.zoom = 10;
+      this.latitude = 52.520008;
+      this.longitude = 13.404954;
 
       // Wachtwoord moet minstens 6 karakters hebben
       const passwordValidators = [Validators.minLength(6)];
@@ -132,4 +154,20 @@ export class AddEditComponent implements OnInit {
                   this.loading = false;
               });
   }
+
+  // Google Maps
+  onAutocompleteSelected(result: PlaceResult) {
+    console.log('onAutocompleteSelected: ', result);
+  }
+
+  onLocationSelected(location: Location) {
+    console.log('onLocationSelected: ', location);
+    this.latitude = location.latitude;
+    this.longitude = location.longitude;
+  }
+
+  onGermanAddressMapped($event: GermanAddress) {
+    console.log('onGermanAddressMapped', $event);
+  }
+
 }

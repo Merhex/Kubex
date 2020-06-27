@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -27,6 +28,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
    declarations: [
@@ -55,7 +58,12 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
       MatButtonModule,
       MatIconModule,
       MatMenuModule,
-      ScrollingModule
+      ScrollingModule,
+      MatGoogleMapsAutocompleteModule,
+      AgmCoreModule.forRoot({
+         apiKey: environment.mapKey,
+         libraries: ['places']
+      })
    ],
    providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

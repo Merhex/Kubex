@@ -1,0 +1,39 @@
+<div class="container" fxLayout="column" fxLayoutAlign="center">
+
+  <!-- <div fxFlex>
+    <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+      <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+    </agm-map>
+  </div> -->
+  <form [formGroup]="addressFormGroup">
+    <!-- Dit is Search Google Maps searchbox -->
+    <mat-search-google-maps-autocomplete appearance="outline"
+                                          country="be"
+                                          type="address"
+                                          formControlName="address"
+                                          [showVicinity]="true"
+                                          [readonly]="true"
+                                          (onAutocompleteSelected)="onAutocompleteSelected($event)"
+                                          (onLocationSelected)="onLocationSelected($event)"
+                                          (onGermanAddressMapped)="onGermanAddressMapped($event)">
+                                          >
+    </mat-search-google-maps-autocomplete>
+
+    <agm-map [latitude]="latitude" [zoom]="zoom" [longitude]="longitude" style="height: 300px;">
+      <agm-marker  [latitude]="latitude" [longitude]="longitude"></agm-marker>
+    </agm-map>
+  </form>
+</div>
+
+<!-- Dit is Google Maps searchbox -->
+<mat-google-maps-autocomplete  country="be"
+                               type="address"
+                               appearance="outline"
+                               (onAutocompleteSelected)="onAutocompleteSelected($event)"
+                               (onLocationSelected)="onLocationSelected($event)"
+                               (onGermanAddressMapped)="onGermanAddressMapped($event)">
+</mat-google-maps-autocomplete>
+
+<!-- <agm-map [latitude]="latitude" [zoom]="zoom" [longitude]="longitude" style="height: 300px;">
+    <agm-marker  [latitude]="latitude" [longitude]="longitude"></agm-marker>
+  </agm-map> -->
