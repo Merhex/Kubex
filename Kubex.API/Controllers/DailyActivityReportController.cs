@@ -57,6 +57,14 @@ namespace Kubex.API.Controllers
             return Ok(dar);
         }
 
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateEntryInDailyActivityReport(AddEntryToDailyActivityReportDTO dto) 
+        {
+            await _darService.UpdateEntryInDailyActivityReportAsync(dto);
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDAR(int id) 
         {

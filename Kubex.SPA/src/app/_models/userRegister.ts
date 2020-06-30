@@ -4,5 +4,6 @@ export class UserRegister {
     lastName: string;
     userName: string;
     password: string;
+    currentPassword: string;
     address: Address;
 }

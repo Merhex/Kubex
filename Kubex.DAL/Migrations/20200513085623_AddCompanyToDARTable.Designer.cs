@@ -3,14 +3,16 @@ using System;
 using Kubex.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kubex.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200513085623_AddCompanyToDARTable")]
+    partial class AddCompanyToDARTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,19 +28,19 @@ namespace Kubex.DAL.Migrations
                     b.Property<string>("AppartementBus")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
-                    b.Property<int?>("CountryId")
+                    b.Property<int>("CountryId")
                         .HasColumnType("int");
 
                     b.Property<byte?>("CountryId1")
                         .HasColumnType("tinyint unsigned");
 
-                    b.Property<int?>("HouseNumber")
+                    b.Property<int>("HouseNumber")
                         .HasColumnType("int");
 
-                    b.Property<int?>("StreetId")
+                    b.Property<int>("StreetId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ZIPId")
+                    b.Property<int>("ZIPId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -63,9 +65,6 @@ namespace Kubex.DAL.Migrations
 
                     b.Property<int?>("AddressId")
                         .HasColumnType("int");
-
-                    b.Property<string>("CustomerNumber")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("LogoUrl")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -157,15 +156,15 @@ namespace Kubex.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("DailyActivityReports");
                 });
@@ -650,11 +649,15 @@ namespace Kubex.DAL.Migrations
 
                     b.HasOne("Kubex.Models.Street", "Street")
                         .WithMany("Addresses")
-                        .HasForeignKey("StreetId");
+                        .HasForeignKey("StreetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Kubex.Models.ZIP", "ZIP")
                         .WithMany("Addresses")
-                        .HasForeignKey("ZIPId");
+                        .HasForeignKey("ZIPId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Kubex.Models.Company", b =>
@@ -691,9 +694,9 @@ namespace Kubex.DAL.Migrations
 
             modelBuilder.Entity("Kubex.Models.DailyActivityReport", b =>
                 {
-                    b.HasOne("Kubex.Models.Post", "Post")
+                    b.HasOne("Kubex.Models.Company", "Company")
                         .WithMany("DailyActivityReports")
-                        .HasForeignKey("PostId")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -764,7 +767,7 @@ namespace Kubex.DAL.Migrations
                         .HasForeignKey("AddressId");
 
                     b.HasOne("Kubex.Models.Company", "Company")
-                        .WithMany("Posts")
+                        .WithMany()
                         .HasForeignKey("CompanyId");
 
                     b.HasOne("Kubex.Models.Location", "Location")

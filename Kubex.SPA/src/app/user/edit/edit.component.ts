@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService, AlertService } from 'src/app/_services';
 import { first } from 'rxjs/operators';
 import { User, Address, UserRegister } from 'src/app/_models';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-edit',
@@ -48,13 +49,16 @@ export class AddEditComponent implements OnInit {
           userName: ['', Validators.required],
           password: ['', passwordValidators],
           street: ['', Validators.required],
-          houseNumber: ['', Validators.required],
+          houseNumber: [''],
+          appartementBus: [''],
           zip: ['', Validators.required],
           country: ['', Validators.required]
       });
 
       // In edit mode moeten de velden worden opgevuld met de data in DB
       if (!this.isAddMode) {
+          this.form.addControl('currentPassword', new FormControl('', passwordValidators));
+
           this.accountService.getByUserName(this.userName)
               .pipe(first())
               .subscribe(user => {
@@ -66,6 +70,7 @@ export class AddEditComponent implements OnInit {
                   this.f.houseNumber.setValue(user.address.houseNumber);
                   this.f.zip.setValue(user.address.zip);
                   this.f.country.setValue(user.address.country);
+                  this.f.appartementBus.setValue(user.address.appartementBus);
               });
       }
   }
@@ -73,12 +78,8 @@ export class AddEditComponent implements OnInit {
   onSubmit() {
       this.submitted = true;
       this.alertService.clear();
-
-      if (this.form.invalid) {
-          return;
-      }
-
       this.loading = true;
+
       if (this.isAddMode) {
           this.createUser();
       } else {
@@ -87,49 +88,68 @@ export class AddEditComponent implements OnInit {
   }
 
   private createUser() {
-      const userRegister = new UserRegister();
-      const addressRegister = new Address();
+    const address = this.getAddressFromForm();
+    const userRegister = this.getUserRegisterFromForm();
 
-      // We steken de form data in de nieuwe User.
-      userRegister.firstName = this.f.firstName.value;
-      userRegister.lastName = this.f.lastName.value;
-      userRegister.userName = this.f.userName.value;
-      userRegister.password = this.f.password.value;
+    userRegister.address = address;
 
-      // Zelfde voor het nieuwe Address
-      addressRegister.street = this.f.street.value;
-      addressRegister.houseNumber = this.f.houseNumber.value;
-      addressRegister.zip = this.f.zip.value;
-      addressRegister.country = this.f.country.value;
-
-      // We koppelen het Address aan de User
-      userRegister.address = addressRegister;
-
-      // We sturen onze User naar de accountService voor registratie
-      this.accountService.register(userRegister)
-          .pipe(first())
-          .subscribe(
-              data => {
-                  this.alertService.success('User added successfully', { keepAfterRouteChange: true });
-                  this.router.navigate(['.', { relativeTo: this.route }]);
-              },
-              error => {
-                  this.alertService.error(error);
-                  this.loading = false;
-              });
+        // We sturen onze User naar de accountService voor registratie
+    this.accountService.register(userRegister)
+        .pipe(first())
+        .subscribe(
+            data => {
+                this.alertService.success('User added successfully', { keepAfterRouteChange: true });
+                this.router.navigate(['.', { relativeTo: this.route }]);
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
   }
 
   private updateUser() {
-      this.accountService.update(this.userName, this.form.value)
-          .pipe(first())
-          .subscribe(
-              data => {
-                  this.alertService.success('Update successful', { keepAfterRouteChange: true });
-                  this.router.navigate(['..', { relativeTo: this.route }]);
-              },
-              error => {
-                  this.alertService.error(error);
-                  this.loading = false;
-              });
+    const address = this.getAddressFromForm();
+    const userRegister = this.getUserRegisterFromForm();
+
+    userRegister.address = address;
+
+    this.accountService.update(this.userName, userRegister)
+        .pipe(first())
+        .subscribe(
+            data => {
+                this.alertService.success('Update successful', { keepAfterRouteChange: true });
+                this.router.navigate(['..', { relativeTo: this.route }]);
+            },
+            error => {
+                this.alertService.error(error);
+                this.loading = false;
+            });
+  }
+
+  private getAddressFromForm(): Address {
+      const address = new Address();
+
+      address.street = this.f.street.value;
+      address.houseNumber = this.f.houseNumber.value;
+      address.zip = this.f.zip.value;
+      address.country = this.f.country.value;
+      address.appartementBus = this.f.appartementBus.value;
+
+      return address;
+  }
+
+  private getUserRegisterFromForm(): UserRegister {
+    const userRegister = new UserRegister();
+
+    userRegister.firstName = this.f.firstName.value;
+    userRegister.lastName = this.f.lastName.value;
+    userRegister.userName = this.f.userName.value;
+    userRegister.password = this.f.password.value;
+
+    if (!this.isAddMode) {
+        userRegister.currentPassword = this.f.currentPassword.value;
+    }
+
+    return userRegister;
   }
 }

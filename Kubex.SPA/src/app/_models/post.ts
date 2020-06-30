@@ -1,11 +1,12 @@
-import { User, PostRole } from '.';
+import { DailyActivityReport } from './dailyActivityReport';
+import { Address } from './address';
+import { Company } from './company';
 
 export class Post {
     id: number;
     name: string;
-    companyId: number;
-    addressId: number;
-    locationId: number;
-    users: Array<User>;
-    roles: Array<PostRole>;
+    company: Company;
+    address: Address;
+    location: Location;
+    dailyActivityReports: DailyActivityReport[];
 }
