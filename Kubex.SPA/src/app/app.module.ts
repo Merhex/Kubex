@@ -1,3 +1,4 @@
+import { CompanyModule } from './Company/company.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -28,6 +29,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { PostModule } from './posts/post.module';
+import { CompanyComponent } from './Company/Company.component';
 
 @NgModule({
    declarations: [
@@ -37,6 +39,7 @@ import { PostModule } from './posts/post.module';
       DailyactivityreportComponent,
       AlertComponent,
       AccountComponent,
+      CompanyComponent
    ],
    imports: [
       BrowserModule,
@@ -57,7 +60,8 @@ import { PostModule } from './posts/post.module';
       MatIconModule,
       MatMenuModule,
       ScrollingModule,
-      PostModule
+      PostModule,
+      CompanyModule
    ],
    providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -1,6 +1,6 @@
 export class Address {
     houseNumber?: number;
-    appartementBus?: string;
+    appartementBus: string;
     street: string;
     zip: string;
     country: string;

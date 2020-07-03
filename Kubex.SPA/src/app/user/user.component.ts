@@ -10,21 +10,8 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  selectedUser: User = null;
 
-  users: User[];
-
-  displayUser(userId) {
-    this.userService.getUser(userId).subscribe(user => {
-      this.selectedUser = user;
-    });
-  }
-
-  constructor(private userService: UserService) {
-    userService.getAllUsers().subscribe(users => {
-      this.users = users;
-    });
-  }
+  constructor() {}
 
   ngOnInit() {}
 

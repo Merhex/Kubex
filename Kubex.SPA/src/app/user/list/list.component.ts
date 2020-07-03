@@ -8,7 +8,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class ListComponent implements OnInit {
     users = Array<User>();
 
-    constructor(private accountService: AccountService, private alertService: AlertService) {}
+    constructor(
+        private accountService: AccountService,
+        private alertService: AlertService) {}
 
     ngOnInit() {
         this.accountService.getAll()

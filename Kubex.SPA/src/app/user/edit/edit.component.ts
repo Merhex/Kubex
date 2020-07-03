@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService, AlertService } from 'src/app/_services';
 import { first } from 'rxjs/operators';
 import { User, Address, UserRegister } from 'src/app/_models';
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-edit',
@@ -21,11 +20,11 @@ export class AddEditComponent implements OnInit {
   user = new User();
 
   constructor(
-      private formBuilder: FormBuilder,
-      private route: ActivatedRoute,
-      private router: Router,
-      private accountService: AccountService,
-      private alertService: AlertService
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private accountService: AccountService,
+    private alertService: AlertService
   ) {}
 
   // Convenience getter voor de formulier velden
@@ -48,6 +47,8 @@ export class AddEditComponent implements OnInit {
           lastName: ['', Validators.required],
           userName: ['', Validators.required],
           password: ['', passwordValidators],
+
+          // Address
           street: ['', Validators.required],
           houseNumber: [''],
           appartementBus: [''],

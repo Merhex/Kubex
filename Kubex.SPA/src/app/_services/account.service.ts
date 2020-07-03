@@ -70,7 +70,7 @@ export class AccountService {
     delete(userName: string) {
         return this.http.delete(`${environment.apiUrl}/users/${userName}`)
             .pipe(map(x => {
-                // Wanneer User wordt verwijderd, ook meteen uitloggen
+                // Wanneer ingelogde User wordt verwijderd, ook meteen uitloggen
                 if (userName === this.userValue.userName) {
                     this.logout();
                 }
