@@ -50,7 +50,7 @@ export class AddEditComponent implements OnInit {
 
           // Address
           street: ['', Validators.required],
-          houseNumber: [''],
+          houseNumber: ['', Validators.required],
           appartementBus: [''],
           zip: ['', Validators.required],
           country: ['', Validators.required]

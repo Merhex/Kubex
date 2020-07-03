@@ -19,18 +19,15 @@ export class ListComponent implements OnInit {
     }
 
     deleteUser(userName: string) {
-        console.log(userName);
         const user = this.users.find(x => x.userName === userName);
         user.isDeleting = true;
         this.accountService.delete(userName)
             .pipe(first())
             .subscribe(() => {
                 this.users = this.users.filter(x => x.userName !== userName);
-                this.alertService.success(userName + ' deleted succesfully!');
             },
-            (error: HttpErrorResponse) => {
-                this.alertService.error('You are not allowed to delete a user.');
-                user.isDeleting = false;
+            error => {
+                this.alertService.error(error);
             });
     }
 }

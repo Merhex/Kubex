@@ -15,5 +15,4 @@ export class DailyactivityreportComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
-
 }
