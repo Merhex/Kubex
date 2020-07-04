@@ -1,3 +1,4 @@
+import { EditComponent } from './edit/edit.component';
 import { CompanyListComponent } from './companyList/companyList.component';
 import { CompanyLayoutComponent } from './companyLayout/companyLayout.component';
 import { NgModule } from '@angular/core';
@@ -8,12 +9,13 @@ import { CompanyRoutingModule } from './company-routing.module';
 @NgModule({
     declarations: [
         CompanyLayoutComponent,
-        CompanyListComponent
+        CompanyListComponent,
+        EditComponent
     ],
     imports: [
+        CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        CommonModule,
         CompanyRoutingModule
     ]
 })

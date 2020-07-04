@@ -1,7 +1,7 @@
-<h1 *ngIf="isAddMode">Add User</h1>
-<h1 *ngIf="!isAddMode">Edit User</h1>
+<h1 *ngIf="isAddMode">Add Client</h1>
+<h1 *ngIf="!isAddMode">Edit Client</h1>
 <!-- [formGroup]="form" -->
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="companyForm" formControlName="companyForm" (ngSubmit)="onSubmit()">
   <div class="form-row">
     <div class="form-group col">
       <label for="name">Name</label>
@@ -36,7 +36,7 @@
 
     <!-- Buttons -->
     <div class="form-group">
-      <button [disabled]="loading || form.invalid" class="btn btn-primary">
+      <button [disabled]="loading || companyForm.invalid" class="btn btn-primary">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
         Save
       </button>

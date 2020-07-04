@@ -1,6 +1,6 @@
 import { first } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyService } from 'src/app/_services/company.service';
 import { AlertService } from 'src/app/_services';
@@ -13,7 +13,7 @@ import { CompanyRegister } from 'src/app/_models/companyRegister';
   styleUrls: ['./edit.component.css']
 })
 export class EditComponent implements OnInit {
-  form: FormGroup;
+  companyForm: FormGroup;
   submitted = false;
   loading = false;
   isAddMode: boolean;
@@ -29,13 +29,13 @@ export class EditComponent implements OnInit {
   ) { }
 
   // Convenience getter voor de formulier velden
-  get f() { return this.form.controls; }
+  get f() { return this.companyForm.controls; }
 
   ngOnInit() {
     this.id = this.route.snapshot.params.id;
     this.isAddMode = !this.id;
 
-    this.form = this.formBuilder.group({
+    this.companyForm = this.formBuilder.group({
       name: ['', Validators.required],
 
       // Address

@@ -1,4 +1,3 @@
-import { CompanyModule } from './Company/company.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -60,8 +59,7 @@ import { CompanyComponent } from './Company/Company.component';
       MatIconModule,
       MatMenuModule,
       ScrollingModule,
-      PostModule,
-      CompanyModule
+      PostModule
    ],
    providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
