@@ -39,13 +39,12 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "~6.5.4",
     "string-format": "^2.0.0",
-    "truly-ui": "^4.5.0",
     "ts-md5": "^1.2.7",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.900.1",
+    "@angular-devkit/build-angular": "^0.1000.1",
     "@angular/cli": "~9.0.1",
     "@angular/compiler-cli": "~9.0.0",
     "@angular/language-service": "~9.0.0",
