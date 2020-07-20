@@ -11,7 +11,7 @@ import { CompanyRegister } from '../_models/companyRegister';
 })
 export class CompanyService {
 
-  baseUrl = environment.apiUrl + '/company/';
+  baseUrl = environment.apiUrl + '/companies/';
 
 constructor(
   private router: Router,
@@ -27,7 +27,7 @@ getCompanyById(id: number): Observable<Company> {
 }
 
 register(company: CompanyRegister) {
-  return this.http.post(`${environment.apiUrl}/company/register`, company);
+  return this.http.post(`${environment.apiUrl}/companies/create`, company);
 }
 
 }
