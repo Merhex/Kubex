@@ -26,10 +26,11 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatSelectModule} from '@angular/material/select';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+
 import { PostModule } from './posts/post.module';
 import { CompanyComponent } from './Company/Company.component';
-import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
    declarations: [
@@ -39,8 +40,7 @@ import { ContactComponent } from './contact/contact.component';
       DailyactivityreportComponent,
       AlertComponent,
       AccountComponent,
-      CompanyComponent,
-      ContactComponent
+      CompanyComponent
    ],
    imports: [
       BrowserModule,
@@ -60,6 +60,7 @@ import { ContactComponent } from './contact/contact.component';
       MatButtonModule,
       MatIconModule,
       MatMenuModule,
+      MatSelectModule,
       ScrollingModule,
       PostModule
    ],
