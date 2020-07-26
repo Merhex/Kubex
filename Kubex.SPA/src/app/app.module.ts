@@ -29,6 +29,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { PostModule } from './posts/post.module';
 import { CompanyComponent } from './Company/Company.component';
+import { ContactComponent } from './contact/contact.component';
 
 @NgModule({
    declarations: [
@@ -38,7 +39,8 @@ import { CompanyComponent } from './Company/Company.component';
       DailyactivityreportComponent,
       AlertComponent,
       AccountComponent,
-      CompanyComponent
+      CompanyComponent,
+      ContactComponent
    ],
    imports: [
       BrowserModule,

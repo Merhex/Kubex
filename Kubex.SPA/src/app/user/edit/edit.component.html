@@ -48,7 +48,10 @@
             </div>
         </div>
     </div>
-    <div class="form-row">
+
+    <h3 class="section">Address</h3>
+
+    <!-- <div class="form-row">
         <div class="form-group col">
             <label for="street">Streetname</label>
             <input type="text" formControlName="street" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.street.errors }" />
@@ -80,7 +83,13 @@
                 <div *ngIf="f.country.errors.required">Country is required</div>
             </div>
         </div>
-    </div>
+    </div> -->
+    <app-address></app-address>
+    
+    <h3 class="section">Contact</h3>
+    
+
+    <!-- Button group -->>
     <div class="form-group">
         <button [disabled]="loading || form.invalid" class="btn btn-primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
