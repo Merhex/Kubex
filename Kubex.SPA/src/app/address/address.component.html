@@ -1,0 +1,28 @@
+<ng-container [formGroup]="controlContainer.control">
+  <div fxLayout="row" fxLayoutGap="1%">
+    <mat-form-field appearance="fill" fxFlex>
+      <mat-label>Street</mat-label>
+      <input matInput formControlName="street" placeholder="Ex. Turnhoutsebaan">
+      <!-- <input matInput [formControl]="emailFormControl" placeholder="Ex. pat@example.com"> -->
+    </mat-form-field>
+    <mat-form-field appearance="fill" fxFlex="10%">
+      <mat-label>Number</mat-label>
+      <input matInput formControlName="houseNumber" placeholder="Ex. 01">
+    </mat-form-field>
+    <mat-form-field appearance="fill" fxFlex="10%">
+      <mat-label>Bus</mat-label>
+      <input matInput formControlName="appartementBus" placeholder="Ex. A">
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="row" fxLayoutGap="1%">
+    <mat-form-field appearance="fill" fxFlex="30%">
+      <mat-label>ZIP</mat-label>
+      <input matInput formControlName="zip" placeholder="Ex. 1000">
+    </mat-form-field>
+    <mat-form-field appearance="fill" fxFlex>
+      <mat-label>Country</mat-label>
+      <input matInput formControlName="country" placeholder="Ex. Belgium">
+    </mat-form-field>
+  </div>
+</ng-container>

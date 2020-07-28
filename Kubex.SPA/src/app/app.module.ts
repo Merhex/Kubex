@@ -26,8 +26,11 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatSelectModule} from '@angular/material/select';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+
 import { PostModule } from './posts/post.module';
+import { CompanyComponent } from './Company/Company.component';
 
 @NgModule({
    declarations: [
@@ -37,6 +40,7 @@ import { PostModule } from './posts/post.module';
       DailyactivityreportComponent,
       AlertComponent,
       AccountComponent,
+      CompanyComponent
    ],
    imports: [
       BrowserModule,
@@ -56,6 +60,7 @@ import { PostModule } from './posts/post.module';
       MatButtonModule,
       MatIconModule,
       MatMenuModule,
+      MatSelectModule,
       ScrollingModule,
       PostModule
    ],
