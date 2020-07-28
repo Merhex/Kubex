@@ -1,3 +1,4 @@
+import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -10,8 +11,6 @@ import { UsersRoutingModule } from './user-routing.module';
 import { ListComponent } from './list/list.component';
 import { AddEditComponent } from './edit/edit.component';
 import { UserLayoutComponent } from './userLayout/userLayout.component';
-import { AddressComponent } from '../address/address.component';
-import { ContactComponent } from '../contact/contact.component';
 import { MatIconModule } from '@angular/material/icon';
 
 
@@ -19,9 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
     declarations: [
         UserLayoutComponent,
         ListComponent,
-        AddEditComponent,
-        AddressComponent,
-        ContactComponent
+        AddEditComponent
     ],
     imports: [
         CommonModule,
@@ -31,7 +28,8 @@ import { MatIconModule } from '@angular/material/icon';
         FlexLayoutModule,
         MatInputModule,
         MatSelectModule,
-        MatIconModule
+        MatIconModule,
+        SharedModule
     ]
 })
 export class UserModule { }
