@@ -15,10 +15,6 @@ namespace Kubex.DAL
         public DbSet<DailyActivityReport> DailyActivityReports { get; set; }
         public DbSet<Entry> Entries { get; set; }
         public DbSet<EntryType> EntryTypes { get; set; }
-        public DbSet<License> Licenses { get; set; }
-        public DbSet<LicenseType> LicenseTypes { get; set; }
-        public DbSet<Media> Media { get; set; }
-        public DbSet<MediaType> MediaTypes { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Priority> Priorities { get; set; }
         public DbSet<Street> Streets { get; set; }
