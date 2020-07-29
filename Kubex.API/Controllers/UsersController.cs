@@ -56,5 +56,23 @@ namespace Kubex.API.Controllers
 
             return Ok(user); 
         }
+
+        [Authorize(Roles = "Administrator, Manager")]
+        [HttpPut("{userName}")]
+        public async Task<IActionResult> UpdateUser(UserRegisterDTO dto) 
+        {
+            await _userService.UpdateUserAsync(dto);
+
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Administrator, Manager")]
+        [HttpDelete("{userName}")]
+        public async Task<IActionResult> DeleteUser(string userName) 
+        {
+            await _userService.DeleteUserAsync(userName);
+
+            return NoContent();
+        }
     }
 }

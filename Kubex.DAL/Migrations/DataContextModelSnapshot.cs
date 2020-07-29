@@ -26,19 +26,19 @@ namespace Kubex.DAL.Migrations
                     b.Property<string>("AppartementBus")
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
-                    b.Property<int>("CountryId")
+                    b.Property<int?>("CountryId")
                         .HasColumnType("int");
 
                     b.Property<byte?>("CountryId1")
                         .HasColumnType("tinyint unsigned");
 
-                    b.Property<int>("HouseNumber")
+                    b.Property<int?>("HouseNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("StreetId")
+                    b.Property<int?>("StreetId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ZIPId")
+                    b.Property<int?>("ZIPId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -160,7 +160,12 @@ namespace Kubex.DAL.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PostId");
 
                     b.ToTable("DailyActivityReports");
                 });
@@ -645,15 +650,11 @@ namespace Kubex.DAL.Migrations
 
                     b.HasOne("Kubex.Models.Street", "Street")
                         .WithMany("Addresses")
-                        .HasForeignKey("StreetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StreetId");
 
                     b.HasOne("Kubex.Models.ZIP", "ZIP")
                         .WithMany("Addresses")
-                        .HasForeignKey("ZIPId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ZIPId");
                 });
 
             modelBuilder.Entity("Kubex.Models.Company", b =>
@@ -686,6 +687,15 @@ namespace Kubex.DAL.Migrations
                     b.HasOne("Kubex.Models.User", null)
                         .WithMany("Contacts")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Kubex.Models.DailyActivityReport", b =>
+                {
+                    b.HasOne("Kubex.Models.Post", "Post")
+                        .WithMany("DailyActivityReports")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Kubex.Models.Entry", b =>
@@ -754,7 +764,7 @@ namespace Kubex.DAL.Migrations
                         .HasForeignKey("AddressId");
 
                     b.HasOne("Kubex.Models.Company", "Company")
-                        .WithMany()
+                        .WithMany("Posts")
                         .HasForeignKey("CompanyId");
 
                     b.HasOne("Kubex.Models.Location", "Location")

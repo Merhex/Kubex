@@ -1,0 +1,18 @@
+<ng-container [formGroup]="controlContainer.control">
+  <h3 class="section">Contact</h3>
+  <div fxLayout="row" fxLayoutGap="1%">
+    <mat-form-field appearance="fill" fxFlex="10%">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="mail">Mail</mat-option>
+        <mat-option value="mobile">Mobile</mat-option>
+        <mat-option value="pager">Pager</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" fxFlex>
+      <mat-label>Value</mat-label>
+      <input matInput formControlName="value" placeholder="Ex. 01">
+    </mat-form-field>
+  </div>
+  <a href="#">Add a contact</a>
+</ng-container>

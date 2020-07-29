@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Kubex.DTO;
 
@@ -7,10 +8,10 @@ namespace Kubex.BLL.Services.Interfaces
     {
         Task<DailyActivityReportDTO> CreateDailyActivityReportAsync();
         Task<DailyActivityReportDTO> AddEntryAsync(AddEntryToDailyActivityReportDTO dto);
-        Task<DailyActivityReportDTO> GetDailyActivityReportAsync(int id);
-        Task DeleteDailyActivityReportAsync(int id);
+        Task<DailyActivityReportDTO> GetDailyActivityReportAsync(int darId);
+        Task<DailyActivityReportDTO> GetLastDailyActivityReportAsync();
+        Task DeleteDailyActivityReportAsync(int darId);
         Task DeleteEntryFromDailyActivityReportAsync(int entryId, int darId);
-        Task<DailyActivityReportDTO> AddChildEntryAsync(AddEntryToDailyActivityReportDTO dto);
-
+        Task UpdateEntryInDailyActivityReportAsync(AddEntryToDailyActivityReportDTO dto);
     }
 }

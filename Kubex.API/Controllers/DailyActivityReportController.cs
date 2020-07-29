@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Kubex.BLL.Services.Interfaces;
 using Kubex.DTO;
@@ -19,9 +21,17 @@ namespace Kubex.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetDAR(int id) 
+        public async Task<IActionResult> GetDARbyId(int id) 
         {
             var dar = await _darService.GetDailyActivityReportAsync(id);
+
+            return Ok(dar);
+        }
+
+        [HttpGet("last")]
+        public async Task<IActionResult> GetLastDAR() 
+        {
+            var dar = await _darService.GetLastDailyActivityReportAsync();
 
             return Ok(dar);
         }
@@ -45,6 +55,14 @@ namespace Kubex.API.Controllers
             var dar = await _darService.AddEntryAsync(dto);
             
             return Ok(dar);
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateEntryInDailyActivityReport(AddEntryToDailyActivityReportDTO dto) 
+        {
+            await _darService.UpdateEntryInDailyActivityReportAsync(dto);
+
+            return NoContent();
         }
 
         [HttpDelete("{id}")]

@@ -46,10 +46,7 @@ namespace Kubex.BLL.Services
         
         public async Task<UserToReturnDTO> GetUserAsync(string userName)
         {
-            var user = await _userManager.FindByNameAsync(userName);
-
-            if (user == null)
-                throw new ApplicationException("Could not find a user with the given username.");
+            var user = await FindUserAsync(userName);
 
             var userToReturn = _mapper.Map<UserToReturnDTO>(user);
 
@@ -67,7 +64,7 @@ namespace Kubex.BLL.Services
         {
             await ValidateModifyRolesDTO(dto);
 
-            var user = await _userManager.FindByNameAsync(dto.Name);
+            var user = await FindUserAsync(dto.Name);
 
             var result = await _userManager.AddToRolesAsync(user, dto.Roles);
 
@@ -92,7 +89,7 @@ namespace Kubex.BLL.Services
         {
             await ValidateModifyRolesDTO(dto);
 
-            var user = await _userManager.FindByNameAsync(dto.Name);
+            var user = await FindUserAsync(dto.Name);
 
             var result = await _userManager.RemoveFromRolesAsync(user, dto.Roles);
 
@@ -126,7 +123,7 @@ namespace Kubex.BLL.Services
 
         public async Task<string> GenerateJWTToken(UserLoginDTO dto)
         {
-            var user = await _userManager.FindByNameAsync(dto.UserName);
+            var user = await FindUserAsync(dto.UserName);
 
             var claims = new List<Claim>
             {
@@ -173,6 +170,8 @@ namespace Kubex.BLL.Services
                    
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(newUser, "User");
+
                 var userToReturn = _mapper.Map<UserToReturnDTO>(newUser);
 
                 return userToReturn;
@@ -183,10 +182,7 @@ namespace Kubex.BLL.Services
 
         public async Task<UserToReturnDTO> Login(UserLoginDTO dto)
         {
-            var user = await _userManager.FindByNameAsync(dto.UserName);
-
-            if (user == null)
-                throw new ArgumentNullException(null, "We could not find an account with that given username and password.");
+            var user = await FindUserAsync(dto.UserName);
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
 
@@ -200,6 +196,23 @@ namespace Kubex.BLL.Services
             throw new ArgumentNullException(null, "We could not find an account with that given username and password.");
         }
 
+        public async Task UpdateUserAsync(UserRegisterDTO dto) 
+        {
+            var user = await FindUserAsync(dto.UserName);
+
+            _mapper.Map(dto, user);
+
+            await _userManager.UpdateAsync(user);
+
+            if (! string.IsNullOrWhiteSpace(dto.Password)) 
+            {
+                var result = await _userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.Password);
+
+                if (! result.Succeeded)
+                    throw new ApplicationException($"Could not update the password. {result.Errors.FirstOrDefault().Description}");
+            }
+        }
+
         private async Task<bool> ValidateModifyRolesDTO(ModifyRolesDTO dto) 
         {
             if (dto == null)
@@ -208,10 +221,7 @@ namespace Kubex.BLL.Services
             if (dto.Name == null)
                 throw new ApplicationException("The name field in the data sent was empty.");
                 
-            var user = await _userManager.FindByNameAsync(dto.Name);
-
-            if (user == null)
-                throw new ArgumentNullException(null, "Could not find a user with the given name.");
+            var user = await FindUserAsync(dto.Name);
 
             foreach (var role in dto.Roles)
             {
@@ -224,5 +234,19 @@ namespace Kubex.BLL.Services
 
             return true;
         }
+
+        public async Task DeleteUserAsync(string userName)
+        {
+            var user = await FindUserAsync(userName);
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (! result.Succeeded)
+                throw new ApplicationException($"Could not delete the given user. {result.Errors.FirstOrDefault().Description}");
+        }
+
+        public async Task<User> FindUserAsync(string userName) => 
+            await _userManager.FindByNameAsync(userName)
+            ?? throw new ArgumentNullException(null, "Could not find a user with the given username.");
     }
 }

@@ -1,0 +1,24 @@
+<h1 *ngIf="isAddMode">Add Client</h1>
+<h1 *ngIf="!isAddMode">Edit Client</h1>
+
+<form [formGroup]="companyForm" formControlName="companyForm" (ngSubmit)="onSubmit()">
+  <div fxLayout="row" fxLayoutGap="1%">
+    <mat-form-field appearance="fill" fxFlex="50%">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" placeholder="Ex. Security One-O-One">
+    </mat-form-field>
+  </div>
+
+  <app-address></app-address>
+  
+  <app-contact></app-contact>
+
+  <!-- Buttons -->
+  <div class="form-group">
+    <button [disabled]="loading || companyForm.invalid" class="btn btn-primary">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+      Save
+    </button>
+    <a routerLink="/companies" class="btn btn-link">Cancel</a>
+  </div>
+</form>
