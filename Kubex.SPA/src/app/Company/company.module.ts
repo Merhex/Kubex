@@ -10,6 +10,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
         MatInputModule,
         MatSelectModule,
         MatIconModule,
+        MatDatepickerModule,
         SharedModule
     ]
 })
