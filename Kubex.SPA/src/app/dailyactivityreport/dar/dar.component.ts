@@ -35,7 +35,7 @@ export class DarComponent implements OnInit {
 
   ngOnInit() {
     // Haal de laatste DAR op
-    this.dailyactivityreportService.getLastDar()
+    this.dailyactivityreportService.getLastDar(1)
       .subscribe(
         (dar: DailyActivityReport) => {
           this.dar = dar;
@@ -147,7 +147,7 @@ export class DarComponent implements OnInit {
   }
 
   createDar() {
-    this.dailyactivityreportService.createDar()
+    this.dailyactivityreportService.createDar(1)
       .subscribe(
         (dar: DailyActivityReport) => {
           this.dar = dar;
