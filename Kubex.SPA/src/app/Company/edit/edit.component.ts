@@ -19,6 +19,8 @@ export class EditComponent implements OnInit {
   isAddMode: boolean;
   id: number;
 
+  fileData: File= null;
+  previewUrl: any = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -101,6 +103,26 @@ export class EditComponent implements OnInit {
     companyToRegister.name = this.f.name.value;
 
     return companyToRegister;
+  }
+
+  public fileProgress(fileInput: any) {
+    this.fileData = <File>fileInput.target.files[0];
+    this.preview();
+  }
+
+  private preview() {
+    var filetype = this.fileData.type;
+
+    if (filetype.match(/image\/*/) == null) {
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.readAsDataURL(this.fileData);
+    reader.onload = (event) => {
+      this.previewUrl = reader.result;
+    }
+
   }
 
 }

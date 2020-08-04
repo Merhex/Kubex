@@ -4,7 +4,7 @@
 
 <form [formGroup]="companyForm" formControlName="companyForm" (ngSubmit)="onSubmit()">
   <div fxLayout="row" fxLayoutGap="2%">
-    <div fxFlex="80%">
+    <div fxFlex="85%">
       <div fxLayout="column" fxLayoutGap="1%">
         <mat-form-field appearance="fill" fxFlex="50%">
             <mat-label>Name</mat-label>
@@ -16,7 +16,7 @@
 
         <!-- Buttons -->
         <div class="form-group">
-          <button [disabled]="loading || companyForm.invalid" class="btn btn-primary">
+          <button type="submit" [disabled]="loading || companyForm.invalid" class="btn btn-primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Save
           </button>
@@ -25,10 +25,10 @@
       </div>
     </div>
     <div fxFlex>
-      <img src="assets/images/application/user.png">
-      <!-- <button type="file" mat-button color="primary">Primary</button> -->
-      <!-- <input hidden type="file" id="file" #fileInput > -->
-      <p>Geboortedatum hier</p>
+      <img class="preview" [src]="previewUrl ? previewUrl : 'assets/images/application/user.png'">
+      <button type="button" class="btn btn-primary" (click)="image.click()">Choose file...</button>
+      <input hidden type="file" name="image" #image value="Photo" mat-button color="primary" 
+        accept=".jpg, .jpeg, .png, .bmp" (change)="fileProgress($event)">
     </div>
   </div>
 </form>
