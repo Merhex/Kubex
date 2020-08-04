@@ -15,19 +15,29 @@ namespace Kubex.BLL.Services
         private readonly IMapper _mapper;
         private readonly IDailyActivityReportRepository _darRepository;
         private readonly IEntryRepository _entryRepository;
+        private readonly IPostRepository _postRepository;
 
         public DailyActivityReportService(IMapper mapper,
             IDailyActivityReportRepository darRepository,
-            IEntryRepository entryRepository)
+            IEntryRepository entryRepository,
+            IPostRepository postRepository)
         {
             _entryRepository = entryRepository;
+            _postRepository = postRepository;
             _mapper = mapper;
             _darRepository = darRepository;
         }
 
-        public async Task<DailyActivityReportDTO> CreateDailyActivityReportAsync()
+        public async Task<DailyActivityReportDTO> CreateDailyActivityReportAsync(int postId)
         {
-            var report = new DailyActivityReport { Date = DateTime.Now, Entries = new List<Entry>() };
+            var post = await _postRepository.Find(postId);
+
+            var report = new DailyActivityReport 
+            { 
+                Date = DateTime.Now,
+                Post = post,
+                Entries = new List<Entry>() 
+            };
 
             _darRepository.Add(report);
 
@@ -109,13 +119,12 @@ namespace Kubex.BLL.Services
             return darToReturn;
         }
 
-        public async Task<DailyActivityReportDTO> GetLastDailyActivityReportAsync()
+        public async Task<DailyActivityReportDTO> GetLastDailyActivityReportAsync(int postId)
         {
-            var result = await _darRepository.FindRange(x => x.Id > -1);
-            var dar = result.LastOrDefault();
+            var dar = _darRepository.Last();
             
             if (dar == null)
-                throw new ArgumentNullException(null, "Could not find a Daily Activity Report with the given date.");
+                return await CreateDailyActivityReportAsync(postId);
 
             var entries =  await _entryRepository
                 .FindRange(x => x.ParentEntry == null && x.DailyActivityReportId == dar.Id);
