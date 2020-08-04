@@ -1,5 +1,5 @@
 import { first } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyService } from 'src/app/_services/company.service';
@@ -27,7 +27,8 @@ export class EditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private companyService: CompanyService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private ref: ChangeDetectorRef
   ) { }
 
   // Convenience getter voor de formulier velden
@@ -46,8 +47,9 @@ export class EditComponent implements OnInit {
       appartementBus: [''],
       zip: ['', Validators.required],
       country: ['', Validators.required]
-
     });
+
+    this.ref.detectChanges();
   }
 
   onSubmit() {
