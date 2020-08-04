@@ -17,12 +17,12 @@ export class DailyactivityreportService {
     return this.http.get<DailyActivityReport>(this.baseUrl + id);
   }
 
-  getLastDar(): Observable<DailyActivityReport> {
-    return this.http.get<DailyActivityReport>(this.baseUrl + 'last');
+  getLastDar(postId: number): Observable<DailyActivityReport> {
+    return this.http.get<DailyActivityReport>(this.baseUrl + `last/${postId}`);
   }
 
-  createDar(): Observable<DailyActivityReport> {
-    return this.http.post<DailyActivityReport>(this.baseUrl + 'create', {});
+  createDar(postId: number): Observable<DailyActivityReport> {
+    return this.http.post<DailyActivityReport>(this.baseUrl + `create/${postId}`, {});
   }
 
   addEntry(entry: EntryAdd): Observable<DailyActivityReport> {

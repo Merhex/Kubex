@@ -28,18 +28,18 @@ namespace Kubex.API.Controllers
             return Ok(dar);
         }
 
-        [HttpGet("last")]
-        public async Task<IActionResult> GetLastDAR() 
+        [HttpGet("last/{postId}")]
+        public async Task<IActionResult> GetLastDAR(int postId) 
         {
-            var dar = await _darService.GetLastDailyActivityReportAsync();
+            var dar = await _darService.GetLastDailyActivityReportAsync(postId);
 
             return Ok(dar);
         }
 
-        [HttpPost("create", Name = "CreateDAR")]
-        public async Task<IActionResult> CreateDAR()
+        [HttpPost("create/{postId}", Name = "CreateDAR")]
+        public async Task<IActionResult> CreateDAR(int postId)
         {
-            var dar = await _darService.CreateDailyActivityReportAsync();
+            var dar = await _darService.CreateDailyActivityReportAsync(postId);
 
             return CreatedAtRoute
             (
