@@ -1,23 +1,39 @@
 <h1 *ngIf="isAddMode">Add Client</h1>
 <h1 *ngIf="!isAddMode">Edit Client</h1>
 
+
 <form [formGroup]="companyForm" formControlName="companyForm" (ngSubmit)="onSubmit()">
-  <div fxLayout="column" fxLayoutGap="1%">
-    <mat-form-field appearance="fill" fxFlex="50%">
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name" placeholder="Ex. Security One-O-One">
-    </mat-form-field>
+  <div fxLayout="row" fxLayoutGap="2%">
+    <div fxFlex="80%">
+      <div fxLayout="column" fxLayoutGap="1%">
+        <mat-form-field appearance="fill" fxFlex="50%">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" placeholder="Ex. Security One-O-One">
+        </mat-form-field>
 
-    <app-address></app-address>
-    <app-contact></app-contact>
+        <app-address></app-address>
+        <app-contact></app-contact>
 
-    <!-- Buttons -->
-    <div class="form-group">
-      <button [disabled]="loading || companyForm.invalid" class="btn btn-primary">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        Save
-      </button>
-      <a routerLink="/companies" class="btn btn-link">Cancel</a>
+        <!-- Buttons -->
+        <div class="form-group">
+          <button [disabled]="loading || companyForm.invalid" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save
+          </button>
+          <a routerLink="/companies" class="btn btn-link">Cancel</a>
+        </div>
+      </div>
+    </div>
+    <div fxFlex>
+      <img src="assets/images/application/user.png">
+      <!-- <button type="file" mat-button color="primary">Primary</button> -->
+      <!-- <input hidden type="file" id="file" #fileInput > -->
+      <p>Geboortedatum hier</p>
     </div>
   </div>
 </form>
+
+
+
+<!-- https://w3path.com/new-angular-8-file-upload-or-image-upload/ -->
+<!-- https://stackoverflow.com/questions/41990171/angular-2-not-re-rendering-until-i-click-the-page -->
