@@ -2,79 +2,57 @@
 <h1 *ngIf="!isAddMode">Edit User</h1>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div fxLayout="row" fxLayoutGap="1%">
-        <mat-form-field appearance="fill" fxFlex="50%">
-            <mat-label>First Name</mat-label>
-            <input matInput formControlName="firstName" placeholder="Ex. Kurt">
-        </mat-form-field>
-        <!-- <label for="firstName">First Name</label>
-        <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
-        <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-            <div *ngIf="f.firstName.errors.required">First Name is required</div>
-        </div> -->
+    <div fxLayout="row" fxLayoutGap="2%">
+        <div fxFlex="85%">
+          <div fxLayout="column" fxLayoutGap="1%">
+            <mat-form-field appearance="fill" fxFlex="50%">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName" placeholder="Ex. Kurt">
+            </mat-form-field>
 
-        <mat-form-field appearance="fill" fxFlex>
-            <mat-label>Last Name</mat-label>
-            <input matInput formControlName="lastName" placeholder="Ex. Bellens">
-        </mat-form-field>
-        <!-- <label for="lastName">Last Name</label>
-        <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
-        <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
-            <div *ngIf="f.lastName.errors.required">Last Name is required</div>
-        </div> -->
+            <mat-form-field appearance="fill" fxFlex>
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName" placeholder="Ex. Bellens">
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutGap="1%">
+            <mat-form-field appearance="fill" fxFlex="33%">
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="userName" placeholder="Ex. KBL">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" fxFlex="33%">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
+                <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" fxFlex>
+                <mat-label>Current Password</mat-label>
+                <input matInput formControlName="currentPassword" [type]="hideCurrentPassword ? 'password' : 'text'">
+                <mat-icon matSuffix (click)="hideCurrentPassword = !hideCurrentPassword">{{hideCurrentPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </mat-form-field>
+        </div>
+
+        <app-address></app-address>
+        <app-contact></app-contact>
+
+        <!-- Button group -->
+        <div class="form-group button-group">
+            <button [disabled]="loading || form.invalid" class="btn btn-primary">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Save
+            </button>
+            <a routerLink="/users" class="btn btn-link">Cancel</a>
+        </div>
     </div>
-
-    <div fxLayout="row" fxLayoutGap="1%">
-        <mat-form-field appearance="fill" fxFlex="33%">
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="userName" placeholder="Ex. KBL">
-        </mat-form-field>
-        <!--<label for="userName">Username</label>
-        <input type="text" formControlName="userName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.userName.errors }" />
-        <div *ngIf="submitted && f.userName.errors" class="invalid-feedback">
-            <div *ngIf="f.userName.errors.required">Username is required</div>
-        </div> -->
-
-        <mat-form-field appearance="fill" fxFlex="33%">
-            <mat-label>Password</mat-label>
-            <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
-            <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </mat-form-field>
-        <!-- <label for="password">
-            New password
-            <em *ngIf="!isAddMode">(Leave blank to keep the same password)</em>
-        </label>
-        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-            <div *ngIf="f.password.errors.required">A new password is required</div>
-            <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
-        </div> -->
-
-        <mat-form-field appearance="fill" fxFlex>
-            <mat-label>Current Password</mat-label>
-            <input matInput formControlName="currentPassword" [type]="hideCurrentPassword ? 'password' : 'text'">
-            <mat-icon matSuffix (click)="hideCurrentPassword = !hideCurrentPassword">{{hideCurrentPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </mat-form-field>
-        <!-- <label for="currentPassword">
-            Current password
-        </label>
-        <input type="password" formControlName="currentPassword" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-        <div *ngIf="submitted && f.currentPassword.errors" class="invalid-feedback">
-            <div *ngIf="f.currentPassword.errors.required">Current password is required</div>
-            <div *ngIf="f.currentPassword.errors.minlength">Password must be at least 6 characters</div>
-        </div> -->
-    </div>
-
-    <app-address></app-address>
-    
-    <app-contact></app-contact>
-
-    <!-- Button group -->
-    <div class="form-group button-group">
-        <button [disabled]="loading || form.invalid" class="btn btn-primary">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Save
-        </button>
-        <a routerLink="/users" class="btn btn-link">Cancel</a>
-    </div>
+  </div>
+  <div fxFlex>
+    <img class="preview" [src]="previewUrl ? previewUrl : 'assets/images/application/user.png'">
+    <button type="button" class="btn btn-primary" (click)="image.click()">Choose file...</button>
+    <input hidden type="file" name="image" #image value="Photo" mat-button color="primary" 
+      accept=".jpg, .jpeg, .png, .bmp" (change)="fileProgress($event)">
+  </div>
+<!-- </div> -->
 </form>

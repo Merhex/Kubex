@@ -10,6 +10,10 @@
             <mat-label>Name</mat-label>
             <input matInput formControlName="name" placeholder="Ex. Security One-O-One">
         </mat-form-field>
+        <mat-form-field appearance="fill" fxFlex="50%">
+          <mat-label>Customer Number</mat-label>
+          <input matInput formControlName="customerNumber" placeholder="Ex. FC001">
+      </mat-form-field>
 
         <app-address></app-address>
         <app-contact></app-contact>
@@ -25,7 +29,7 @@
       </div>
     </div>
     <div fxFlex>
-      <img class="preview" [src]="previewUrl ? previewUrl : 'assets/images/application/user.png'">
+      <img class="preview" [src]="previewUrl ? previewUrl : 'assets/images/application/logo.png'">
       <button type="button" class="btn btn-primary" (click)="image.click()">Choose file...</button>
       <input hidden type="file" name="image" #image value="Photo" mat-button color="primary" 
         accept=".jpg, .jpeg, .png, .bmp" (change)="fileProgress($event)">

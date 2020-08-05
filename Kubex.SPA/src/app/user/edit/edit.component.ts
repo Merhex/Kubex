@@ -21,6 +21,9 @@ export class AddEditComponent implements OnInit {
   userName: string;
   user = new User();
 
+  fileData: File = null;
+  previewUrl: any = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -154,5 +157,24 @@ export class AddEditComponent implements OnInit {
     }
 
     return userRegister;
+  }
+
+  public fileProgress(fileInput: any) {
+    this.fileData = fileInput.target.files[0] as File;
+    this.preview();
+  }
+
+  private preview() {
+    const filetype = this.fileData.type;
+
+    if (filetype.match(/image\/*/) == null) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(this.fileData);
+    reader.onload = (event) => {
+      this.previewUrl = reader.result;
+    };
   }
 }

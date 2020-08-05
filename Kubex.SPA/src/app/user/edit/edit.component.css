@@ -1,8 +1,13 @@
-/* .section {
-    margin-top: 25px;
-    border-bottom: black solid 1px;
-} */
-
 .button-group {
     margin-top: 25px;
+}
+
+img {
+    border: gray solid 1px;
+}
+
+.preview {
+    width: 250px;
+    height: 250px;
+    margin-bottom: 1em;
 }

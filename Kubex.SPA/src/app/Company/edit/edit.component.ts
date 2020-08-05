@@ -19,7 +19,7 @@ export class EditComponent implements OnInit {
   isAddMode: boolean;
   id: number;
 
-  fileData: File= null;
+  fileData: File = null;
   previewUrl: any = null;
 
   constructor(
@@ -103,28 +103,27 @@ export class EditComponent implements OnInit {
     const companyToRegister = new CompanyRegister();
 
     companyToRegister.name = this.f.name.value;
+    companyToRegister.customerNumber = this.f.customerNumber.value;
 
     return companyToRegister;
   }
 
   public fileProgress(fileInput: any) {
-    this.fileData = <File>fileInput.target.files[0];
+    this.fileData = fileInput.target.files[0] as File;
     this.preview();
   }
 
   private preview() {
-    var filetype = this.fileData.type;
+    const filetype = this.fileData.type;
 
     if (filetype.match(/image\/*/) == null) {
       return;
     }
 
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(this.fileData);
     reader.onload = (event) => {
       this.previewUrl = reader.result;
-    }
-
+    };
   }
-
 }
