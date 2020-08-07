@@ -48,11 +48,18 @@
         </div>
     </div>
   </div>
+
   <div fxFlex>
     <img class="preview" [src]="previewUrl ? previewUrl : 'assets/images/application/user.png'">
     <button type="button" class="btn btn-primary" (click)="image.click()">Choose file...</button>
+
     <input hidden type="file" name="image" #image value="Photo" mat-button color="primary" 
       accept=".jpg, .jpeg, .png, .bmp" (change)="fileProgress($event)">
+    
+      <!-- <mat-form-field appearance="fill">
+        <mat-label>Birth Date</mat-label>
+        <input matInput formControlName="birthDate" placeholder="Ex. KBL">
+    </mat-form-field> -->
   </div>
 <!-- </div> -->
 </form>

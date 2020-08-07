@@ -27,6 +27,14 @@ namespace Kubex.API.Controllers
             return Ok(company);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCompanies()
+        {
+            var companies = await _companyService.GetCompaniesAsync();
+
+            return Ok(companies);
+        }
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCompany(int id) 
         {

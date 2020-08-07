@@ -8,6 +8,7 @@ namespace Kubex.BLL.Services.Interfaces
     {
          Task<CompanyDTO> CreateCompanyAsync(CompanyDTO dto);
          Task<CompanyDTO> GetCompanyAsync(int companyId);
+         Task<IEnumerable<CompanyDTO>> GetCompaniesAsync();
          Task UpdateCompanyAsync(CompanyDTO dto);
          Task DeleteCompanyAsync(int companyId);
     }

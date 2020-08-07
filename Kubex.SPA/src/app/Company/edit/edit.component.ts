@@ -40,6 +40,7 @@ export class EditComponent implements OnInit {
 
     this.companyForm = this.formBuilder.group({
       name: ['', Validators.required],
+      customerNumber: [''],
 
       // Address
       street: ['', Validators.required],

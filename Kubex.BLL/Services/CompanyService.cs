@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kubex.BLL.Services.Interfaces;
@@ -39,6 +40,15 @@ namespace Kubex.BLL.Services
 
             var companyToReturn = _mapper.Map<CompanyDTO>(company);
             return companyToReturn;
+        }
+
+        public async Task<IEnumerable<CompanyDTO>> GetCompaniesAsync()
+        {
+            var companies = new List<Company>();
+            companies = await _companyRepository.GetAllCompanies();
+
+            var companiesToReturn = _mapper.Map<IEnumerable<CompanyDTO>>(companies);
+            return companiesToReturn;
         }
 
         public async Task DeleteCompanyAsync(int companyId) 

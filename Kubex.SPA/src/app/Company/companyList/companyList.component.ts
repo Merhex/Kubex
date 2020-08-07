@@ -21,6 +21,8 @@ export class CompanyListComponent implements OnInit {
     this.companyService.getCompanies()
     .pipe(first())
     .subscribe(companies => this.companies = companies);
+
+    console.log("Companies: " + this.companies);
   }
 
 }
