@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { AccountService, AlertService } from 'src/app/_services';
 import { User } from 'src/app/_models';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {

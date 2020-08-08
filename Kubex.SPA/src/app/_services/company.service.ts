@@ -13,21 +13,24 @@ export class CompanyService {
 
   baseUrl = environment.apiUrl + '/companies/';
 
-constructor(
-  private router: Router,
-  private http: HttpClient
-) {}
+  constructor(
+    private router: Router,
+    private http: HttpClient
+  ) {}
 
-getCompanies(): Observable<Company[]> {
-  return this.http.get<Company[]>(this.baseUrl);
-}
+  getCompanies(): Observable<Company[]> {
+    return this.http.get<Company[]>(this.baseUrl);
+  }
 
-getCompanyById(id: number): Observable<Company> {
-  return this.http.get<Company>(this.baseUrl + id);
-}
+  getCompanyById(id: number): Observable<Company> {
+    return this.http.get<Company>(this.baseUrl + id);
+  }
 
-register(company: CompanyRegister) {
-  return this.http.post(`${environment.apiUrl}/companies/create`, company);
-}
+  register(company: CompanyRegister) {
+    return this.http.post(this.baseUrl + 'create/', company);
+  }
 
+  delete(id: number) {
+    return this.http.delete(this.baseUrl + id);
+  }
 }

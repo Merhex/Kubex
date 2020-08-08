@@ -50,6 +50,22 @@ export class EditComponent implements OnInit {
       country: ['', Validators.required]
     });
 
+    // In edit mode moeten de velden worden opgevuld
+    if (!this.isAddMode) {
+      this.companyService.getCompanyById(this.id)
+          .pipe(first())
+          .subscribe(user => {
+              // Opvullen van de velden dmv de convenience getter
+              this.f.name.setValue(user.name);
+              this.f.customerNumber.setValue(user.customerNumber);
+              this.f.street.setValue(user.address.street);
+              this.f.houseNumber.setValue(user.address.houseNumber);
+              this.f.zip.setValue(user.address.zip);
+              this.f.country.setValue(user.address.country);
+              this.f.appartementBus.setValue(user.address.appartementBus);
+          });
+    }
+
     this.ref.detectChanges();
   }
 

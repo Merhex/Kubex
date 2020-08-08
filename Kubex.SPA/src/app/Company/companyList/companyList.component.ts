@@ -11,6 +11,7 @@ import { first } from 'rxjs/operators';
 })
 export class CompanyListComponent implements OnInit {
   companies = Array<Company>();
+  isDeleting = false;
 
   constructor(
     private companyService: CompanyService,
@@ -21,8 +22,19 @@ export class CompanyListComponent implements OnInit {
     this.companyService.getCompanies()
     .pipe(first())
     .subscribe(companies => this.companies = companies);
-
-    console.log("Companies: " + this.companies);
   }
+
+  deleteCompany(id: number) {
+    this.isDeleting = true;
+    this.companyService.delete(id)
+        .pipe(first())
+        .subscribe(() => {
+            this.companies = this.companies.filter(x => x.id !== id);
+        },
+        error => {
+            this.alertService.error(error);
+        });
+    this.isDeleting = false;
+}
 
 }
