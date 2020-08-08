@@ -5,12 +5,12 @@
     <div fxLayout="row" fxLayoutGap="2%">
         <div fxFlex="85%">
           <div fxLayout="column" fxLayoutGap="1%">
-            <mat-form-field appearance="fill" fxFlex="50%">
+            <mat-form-field appearance="fill">
                 <mat-label>First Name</mat-label>
                 <input matInput formControlName="firstName" placeholder="Ex. Kurt">
             </mat-form-field>
 
-            <mat-form-field appearance="fill" fxFlex>
+            <mat-form-field appearance="fill">
                 <mat-label>Last Name</mat-label>
                 <input matInput formControlName="lastName" placeholder="Ex. Bellens">
             </mat-form-field>
@@ -28,7 +28,7 @@
                 <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </mat-form-field>
 
-            <mat-form-field appearance="fill" fxFlex>
+            <mat-form-field appearance="fill" fxFlex="32%">
                 <mat-label>Current Password</mat-label>
                 <input matInput formControlName="currentPassword" [type]="hideCurrentPassword ? 'password' : 'text'">
                 <mat-icon matSuffix (click)="hideCurrentPassword = !hideCurrentPassword">{{hideCurrentPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -49,7 +49,7 @@
     </div>
   </div>
 
-  <div fxFlex>
+  <div fxFlex="0 1 15">
     <img class="preview" [src]="previewUrl ? previewUrl : 'assets/images/application/user.png'">
     <button type="button" class="btn btn-primary" (click)="image.click()">Choose file...</button>
 
