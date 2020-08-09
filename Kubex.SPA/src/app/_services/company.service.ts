@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { CompanyRegister } from '../_models/companyRegister';
+import { LogoUrl } from '../_models/logoUrl';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +33,9 @@ export class CompanyService {
 
   delete(id: number) {
     return this.http.delete(this.baseUrl + id);
+  }
+
+  uploadFile(formData: FormData): Observable<LogoUrl> {
+    return this.http.post<LogoUrl>(this.baseUrl + 'upload/', formData);
   }
 }

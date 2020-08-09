@@ -18,9 +18,10 @@ export class EditComponent implements OnInit {
   loading = false;
   isAddMode: boolean;
   id: number;
-
+  logoUrl: string;
   fileData: File = null;
   previewUrl: any = null;
+  response: {dbPath: ''};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -69,10 +70,15 @@ export class EditComponent implements OnInit {
     this.ref.detectChanges();
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.submitted = true;
     this.loading = true;
     this.alertService.clear();
+
+    if(this.fileData.size > 0)
+    {
+      await this.uploadFile();
+    }
 
     if (this.isAddMode) {
       this.createCompany();
@@ -85,6 +91,7 @@ export class EditComponent implements OnInit {
     const address = this.getAddressFromForm();
     const companyToRegister = this.getCompanyRegisterFromForm();
 
+    companyToRegister.logoUrl = this.logoUrl;
     companyToRegister.address = address;
 
     this.companyService.register(companyToRegister)
@@ -100,8 +107,11 @@ export class EditComponent implements OnInit {
         });
   }
 
-  private updateCompany() {
-
+  private async updateCompany() {
+    if(this.fileData.size > 0)
+    {
+      await this.uploadFile();
+    }
   }
 
   private getAddressFromForm(): Address {
@@ -142,5 +152,13 @@ export class EditComponent implements OnInit {
     reader.onload = (event) => {
       this.previewUrl = reader.result;
     };
+  }
+
+  public async uploadFile() {
+    const formData = new FormData();
+    formData.append('file', this.fileData);
+    this.companyService.uploadFile(formData).subscribe(res => {
+      console.log('response = ' + res.url);
+    }) ;
   }
 }

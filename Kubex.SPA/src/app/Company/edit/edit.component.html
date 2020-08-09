@@ -30,7 +30,9 @@
     </div>
     <div fxFlex>
       <img class="preview" [src]="previewUrl ? previewUrl : 'assets/images/application/logo.png'">
-      <button type="button" class="btn btn-primary" (click)="image.click()">Choose file...</button>
+      <button type="button" class="btn btn-info" (click)="image.click()">Choose file...</button>
+
+      <!-- Verborgen input button, Angular Material ondersteund input-type 'file' nog niet -->
       <input hidden type="file" name="image" #image value="Photo" mat-button color="primary" 
         accept=".jpg, .jpeg, .png, .bmp" (change)="fileProgress($event)">
     </div>
