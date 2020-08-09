@@ -157,8 +157,6 @@ export class EditComponent implements OnInit {
   public async uploadFile() {
     const formData = new FormData();
     formData.append('file', this.fileData);
-    this.companyService.uploadFile(formData).subscribe(res => {
-      console.log('response = ' + res.url);
-    }) ;
+    this.companyService.uploadFile(formData);
   }
 }

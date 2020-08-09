@@ -1,5 +1,6 @@
 import { Company } from './../_models/company';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -35,7 +36,10 @@ export class CompanyService {
     return this.http.delete(this.baseUrl + id);
   }
 
-  uploadFile(formData: FormData): Observable<LogoUrl> {
-    return this.http.post<LogoUrl>(this.baseUrl + 'upload/', formData);
+  uploadFile(formData: FormData) {
+    return this.http.post(this.baseUrl + 'upload/', formData).pipe(map((res: Response) => {
+      // return res.url;
+      console.log(res.json());
+    }));
   }
 }
