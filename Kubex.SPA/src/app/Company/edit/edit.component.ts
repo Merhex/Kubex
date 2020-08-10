@@ -1,3 +1,4 @@
+import { UploadResponse } from './../../_models/uploadResponse';
 import { first } from 'rxjs/operators';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
@@ -21,7 +22,7 @@ export class EditComponent implements OnInit {
   logoUrl: string;
   fileData: File = null;
   previewUrl: any = null;
-  response: {dbPath: ''};
+  response: UploadResponse;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,7 +49,11 @@ export class EditComponent implements OnInit {
       houseNumber: [''],
       appartementBus: [''],
       zip: ['', Validators.required],
-      country: ['', Validators.required]
+      country: ['', Validators.required],
+
+      // Contact
+      type: [''],
+      value: ['']
     });
 
     // In edit mode moeten de velden worden opgevuld
@@ -91,18 +96,18 @@ export class EditComponent implements OnInit {
     const address = this.getAddressFromForm();
     const companyToRegister = this.getCompanyRegisterFromForm();
 
-    companyToRegister.logoUrl = this.logoUrl;
+    companyToRegister.logoUrl = this.response.dbPath;
     companyToRegister.address = address;
 
     this.companyService.register(companyToRegister)
       .pipe(first())
       .subscribe(
-        data => {
+        (data) => {
           this.alertService.success('Company successfully registerd',  { keepAfterRouteChange: true });
           this.router.navigate(['.', { relativeTo: this.route }]);
         },
-        error => {
-            this.alertService.error(error);
+        (err) => {
+            this.alertService.error(err);
             this.loading = false;
         });
   }
@@ -157,6 +162,13 @@ export class EditComponent implements OnInit {
   public async uploadFile() {
     const formData = new FormData();
     formData.append('file', this.fileData);
-    this.companyService.uploadFile(formData);
+    this.companyService.uploadFile(formData).subscribe(
+      (res) => this.response = res,
+      (err) => {
+        this.alertService.error(err);
+        this.loading = false;
+      });
+
+      // console.log(this.response.dbPath);
   }
 }

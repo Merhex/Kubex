@@ -47,7 +47,7 @@ namespace Kubex.API.Controllers
                     await file.CopyToAsync(stream);
                 }
 
-                return Ok(dbPath);
+                return Ok(new { dbPath = dbPath });
             }
             else
             {

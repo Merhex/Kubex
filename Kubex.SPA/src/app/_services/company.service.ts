@@ -1,3 +1,4 @@
+import { UploadResponse } from './../_models/uploadResponse';
 import { Company } from './../_models/company';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -36,10 +37,7 @@ export class CompanyService {
     return this.http.delete(this.baseUrl + id);
   }
 
-  uploadFile(formData: FormData) {
-    return this.http.post(this.baseUrl + 'upload/', formData).pipe(map((res: Response) => {
-      // return res.url;
-      console.log(res.json());
-    }));
+  uploadFile(formData: FormData): Observable<UploadResponse> {
+    return this.http.post<UploadResponse>(this.baseUrl + 'upload/', formData);
   }
 }
