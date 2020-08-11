@@ -41,6 +41,11 @@ namespace Kubex.BLL.Services
 
             if (await _postRepository.SaveAll()) 
             {
+                var userRole = await _roleManager.FindByNameAsync("User");
+                post.Roles.Add(new PostRole { RoleId = userRole.Id, PostId = post.Id });
+                
+                await _postRepository.SaveAll();
+
                 var postToReturn = _mapper.Map<PostDTO>(post);
                 return postToReturn;
             }
@@ -178,6 +183,7 @@ namespace Kubex.BLL.Services
             var post = await FindPostAsync(id);
             
             var postToReturn = _mapper.Map<PostDTO>(post);
+            var postRoles = post.Roles;
 
             return postToReturn;
         }

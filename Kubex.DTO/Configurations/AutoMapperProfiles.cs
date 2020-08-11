@@ -10,6 +10,7 @@ namespace Kubex.DTO.Configurations
         {
             CreateMap<User, UserToReturnDTO>()
                 .ForMember(u => u.Roles, opt => opt.MapFrom<RolesResolver>())
+                .ForMember(u => u.PostIds, opt => opt.MapFrom<PostResolver>() )
                 .ReverseMap();
 
             CreateMap<AddressDTO, Address>()
@@ -21,7 +22,8 @@ namespace Kubex.DTO.Configurations
             CreateMap<CompanyDTO, Company>()
                 .ReverseMap();
 
-            CreateMap<PostDTO, Post>()
+            CreateMap<Post, PostDTO>()
+                .ForMember(p => p.Roles, opt => opt.Ignore())
                 .ReverseMap();
 
             CreateMap<LocationDTO, Location>()

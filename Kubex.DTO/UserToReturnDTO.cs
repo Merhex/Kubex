@@ -9,5 +9,6 @@ namespace Kubex.DTO
         public string LastName { get; set; }
         public AddressDTO Address { get; set; }
         public IEnumerable<string> Roles { get; set; }
+        public IEnumerable<int> PostIds { get; set; }
     }
 }
