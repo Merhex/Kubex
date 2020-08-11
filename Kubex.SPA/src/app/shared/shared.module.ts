@@ -9,6 +9,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { PostsComponent } from './posts/posts.component';
 
 @NgModule({
   imports: [
@@ -19,16 +21,19 @@ import { MatIconModule } from '@angular/material/icon';
         FlexLayoutModule,
         MatInputModule,
         MatSelectModule,
-        MatIconModule
+        MatIconModule,
+        MatButtonModule
   ],
   declarations: [
     SharedComponent,
     AddressComponent,
-    ContactComponent
+    ContactComponent,
+    PostsComponent
   ],
   exports: [
     AddressComponent,
-    ContactComponent
+    ContactComponent,
+    PostsComponent
   ]
 })
 export class SharedModule { }

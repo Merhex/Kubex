@@ -29,7 +29,6 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatSelectModule} from '@angular/material/select';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 
-import { PostModule } from './posts/post.module';
 import { CompanyComponent } from './Company/Company.component';
 
 @NgModule({
@@ -61,8 +60,7 @@ import { CompanyComponent } from './Company/Company.component';
       MatIconModule,
       MatMenuModule,
       MatSelectModule,
-      ScrollingModule,
-      PostModule
+      ScrollingModule
    ],
    providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
