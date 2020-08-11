@@ -9,10 +9,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 
-import { ButtonModule } from 'primeng/button';
-import { ListboxModule } from 'primeng/listbox';
-import { AccordionModule } from 'primeng/accordion';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserComponent } from './user/user.component';
@@ -49,10 +45,7 @@ import { CompanyComponent } from './Company/Company.component';
       FormsModule,
       ReactiveFormsModule,
       RouterModule,
-      ButtonModule,
       FlexLayoutModule,
-      ListboxModule,
-      AccordionModule,
       FontAwesomeModule,
       BrowserAnimationsModule,
       MatExpansionModule,

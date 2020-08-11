@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kubex.DAL.Repositories.Interfaces;
 using Kubex.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kubex.DAL.Repositories
 {
@@ -20,7 +21,7 @@ namespace Kubex.DAL.Repositories
 
         public async Task<List<Company>> GetAllCompanies()
         {
-            var companies = _context.Companies.ToList();
+            var companies = await _context.Companies.ToListAsync();
             return companies;
         }
     }
