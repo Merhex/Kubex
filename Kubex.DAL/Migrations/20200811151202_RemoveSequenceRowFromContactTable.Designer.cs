@@ -3,14 +3,16 @@ using System;
 using Kubex.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kubex.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200811151202_RemoveSequenceRowFromContactTable")]
+    partial class RemoveSequenceRowFromContactTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,10 +91,16 @@ namespace Kubex.DAL.Migrations
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ContactId")
+                        .HasColumnType("int");
+
                     b.Property<byte>("ContactTypeId")
                         .HasColumnType("tinyint unsigned");
 
                     b.Property<int?>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Sequence")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -104,6 +112,8 @@ namespace Kubex.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("ContactId");
 
                     b.HasIndex("ContactTypeId");
 
@@ -661,6 +671,10 @@ namespace Kubex.DAL.Migrations
                     b.HasOne("Kubex.Models.Company", null)
                         .WithMany("Contacts")
                         .HasForeignKey("CompanyId");
+
+                    b.HasOne("Kubex.Models.Contact", null)
+                        .WithMany("Contacts")
+                        .HasForeignKey("ContactId");
 
                     b.HasOne("Kubex.Models.ContactType", "ContactType")
                         .WithMany()
