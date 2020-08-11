@@ -113,8 +113,7 @@ export class EditComponent implements OnInit {
   }
 
   private async updateCompany() {
-    if(this.fileData.size > 0)
-    {
+    if (this.fileData.size > 0) {
       await this.uploadFile();
     }
   }
