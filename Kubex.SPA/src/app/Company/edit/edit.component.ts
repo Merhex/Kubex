@@ -80,11 +80,6 @@ export class EditComponent implements OnInit {
     this.loading = true;
     this.alertService.clear();
 
-    if(this.fileData.size > 0)
-    {
-      await this.uploadFile();
-    }
-
     if (this.isAddMode) {
       this.createCompany();
     } else {
@@ -92,18 +87,23 @@ export class EditComponent implements OnInit {
     }
   }
 
-  private createCompany() {
+  private async createCompany() {
     const address = this.getAddressFromForm();
     const companyToRegister = this.getCompanyRegisterFromForm();
 
     companyToRegister.logoUrl = this.response.dbPath;
     companyToRegister.address = address;
 
+    if (this.fileData.size > 0) {
+      await this.uploadFile();
+    }
+
     this.companyService.register(companyToRegister)
       .pipe(first())
       .subscribe(
         (data) => {
-          this.alertService.success('Company successfully registerd',  { keepAfterRouteChange: true });
+          console.log(data);
+          this.alertService.success('Company successfully registered',  { keepAfterRouteChange: true });
           this.router.navigate(['.', { relativeTo: this.route }]);
         },
         (err) => {
@@ -163,7 +163,11 @@ export class EditComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', this.fileData);
     this.companyService.uploadFile(formData).subscribe(
-      (res) => this.response = res,
+      (res) => {
+        this.response = res;
+        this.alertService.success('The image has been succesfully uploaded!');
+        this.loading = false;
+      },
       (err) => {
         this.alertService.error(err);
         this.loading = false;

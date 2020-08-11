@@ -5,19 +5,24 @@ using System.Threading.Tasks;
 using Kubex.BLL.Services.Interfaces;
 using Kubex.DTO;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kubex.API.Controllers
 {
     [ApiController]
-    [Authorize] 
+    [Authorize]
     [Route("[controller]")]
     public class CompaniesController : ControllerBase
     {
         private readonly ICompanyService _companyService;
+        private readonly IFileService _fileService;
 
-        public CompaniesController(ICompanyService companyService)
+        public CompaniesController(
+            ICompanyService companyService,
+            IFileService fileService)
         {
+            _fileService = fileService;
             _companyService = companyService;
         }
 
@@ -29,30 +34,12 @@ namespace Kubex.API.Controllers
             return Ok(company);
         }
 
-        [HttpPost("upload"), DisableRequestSizeLimit]
-        public async Task<IActionResult> UploadFile()
+        [HttpPost("upload")]
+        public async Task<ActionResult> UploadFile([FromForm] IFormFile file)
         {
-            var file = Request.Form.Files[0];
-            var folderName = Path.Combine("Resources", "Images");
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            var fileLocation = await _fileService.Upload(file);
 
-            if (file.Length > 0)
-            {
-                var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                var fullPath = Path.Combine(pathToSave, fileName);
-                var dbPath = Path.Combine(folderName, fileName);
-
-                using (var stream = new FileStream(fullPath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-
-                return Ok(new { dbPath = dbPath });
-            }
-            else
-            {
-                return BadRequest();
-            }
+            return Ok(new { path = fileLocation });
         }
 
         [HttpGet]
@@ -62,9 +49,9 @@ namespace Kubex.API.Controllers
 
             return Ok(companies);
         }
-        
+
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCompany(int id) 
+        public async Task<IActionResult> GetCompany(int id)
         {
             var company = await _companyService.GetCompanyAsync(id);
 
@@ -72,7 +59,7 @@ namespace Kubex.API.Controllers
         }
 
         [HttpPatch]
-        public async Task<IActionResult> UpdateCompany(CompanyDTO dto) 
+        public async Task<IActionResult> UpdateCompany(CompanyDTO dto)
         {
             await _companyService.UpdateCompanyAsync(dto);
 
@@ -80,7 +67,7 @@ namespace Kubex.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCompany(int id) 
+        public async Task<IActionResult> DeleteCompany(int id)
         {
             await _companyService.DeleteCompanyAsync(id);
 
