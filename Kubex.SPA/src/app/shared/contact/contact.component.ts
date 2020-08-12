@@ -4,7 +4,7 @@ import { ControlContainer } from '@angular/forms';
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
-  styleUrls: ['./contact.component.css']
+  styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent {
 
