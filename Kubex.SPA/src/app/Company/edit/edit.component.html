@@ -1,7 +1,6 @@
 <h1 *ngIf="isAddMode">Add Client</h1>
 <h1 *ngIf="!isAddMode">Edit Client</h1>
 
-
 <form [formGroup]="companyForm" formControlName="companyForm" (ngSubmit)="onSubmit()">
   <div fxLayout="row" fxLayoutGap="2%">
     <div fxFlex="85%">
@@ -15,9 +14,9 @@
           <input matInput formControlName="customerNumber" placeholder="Ex. FC001">
       </mat-form-field>
 
-        <app-address></app-address>
-        <app-contact></app-contact>
-        <app-posts></app-posts>
+        <app-address [formGroup]="companyForm"></app-address>
+        <app-contact [formGroup]="companyForm"></app-contact>
+        <app-posts [formGroup]="companyForm"></app-posts>
 
         <!-- Buttons -->
         <div class="form-group">
@@ -41,6 +40,6 @@
 </form>
 
 
-
+<!-- https://www.thecodecampus.de/blog/nested-forms-in-angular/ -->
 <!-- https://w3path.com/new-angular-8-file-upload-or-image-upload/ -->
 <!-- https://stackoverflow.com/questions/41990171/angular-2-not-re-rendering-until-i-click-the-page -->
