@@ -10,4 +10,7 @@ export class ContactComponent {
 
   constructor(public controlContainer: ControlContainer) { }
 
+  addContact() {
+    console.log('Adding contact.');
+  }
 }
