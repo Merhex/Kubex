@@ -91,10 +91,12 @@ export class EditComponent implements OnInit {
     const address = this.getAddressFromForm();
     const companyToRegister = this.getCompanyRegisterFromForm();
 
-    companyToRegister.logoUrl = this.response.dbPath;
+    if (this.response) {
+      companyToRegister.logoUrl = this.response.path ?? '';
+    }
     companyToRegister.address = address;
-
-    if (this.fileData.size > 0) {
+    
+    if (this.fileData && this.fileData.size > 0) {
       await this.uploadFile();
     }
 
@@ -102,7 +104,6 @@ export class EditComponent implements OnInit {
       .pipe(first())
       .subscribe(
         (data) => {
-          console.log(data);
           this.alertService.success('Company successfully registered',  { keepAfterRouteChange: true });
           this.router.navigate(['.', { relativeTo: this.route }]);
         },
@@ -113,10 +114,30 @@ export class EditComponent implements OnInit {
   }
 
   private async updateCompany() {
-    if(this.fileData.size > 0)
+    const address = this.getAddressFromForm();    
+    const companyToUpdate = this.getCompanyRegisterFromForm();
+    companyToUpdate.id = this.id;
+    companyToUpdate.address = address;
+
+    if (this.response) {
+      companyToUpdate.logoUrl = this.response.path ?? '';
+    }
+
+    if(this.fileData && this.fileData.size > 0)
     {
       await this.uploadFile();
     }
+
+    this.companyService.update(companyToUpdate)
+      .subscribe(
+        (data) => {
+          this.alertService.success('Company successfully updated!', { keepAfterRouteChange: true });
+          this.loading = false;
+        },
+        (err) => {
+          this.alertService.error(err);
+          this.loading = false;
+        });
   }
 
   private getAddressFromForm(): Address {

@@ -64,9 +64,12 @@ namespace Kubex.BLL.Services
         public async Task UpdateCompanyAsync(CompanyDTO dto) 
         {
             var company = await FindCompanyAsync(dto.Id);
-            var newCompany = _mapper.Map<Company>(dto);
+            var updatedCompany = _mapper.Map<Company>(dto);
 
-            _mapper.Map(newCompany, company);
+            company.Name = updatedCompany.Name;
+            company.Address = updatedCompany.Address;
+            company.CustomerNumber = updatedCompany.CustomerNumber;
+            company.LogoUrl = updatedCompany.LogoUrl;
 
             if (! await _companyRepository.SaveAll())
                 throw new ApplicationException("Something went wrong updating the company");

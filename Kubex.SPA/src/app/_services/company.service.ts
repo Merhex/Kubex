@@ -37,6 +37,10 @@ export class CompanyService {
     return this.http.delete(this.baseUrl + id);
   }
 
+  update(company: CompanyRegister) {
+    return this.http.patch(this.baseUrl, company);
+  }
+
   uploadFile(formData: FormData): Observable<UploadResponse> {
     return this.http.post<UploadResponse>(this.baseUrl + 'upload/', formData);
   }

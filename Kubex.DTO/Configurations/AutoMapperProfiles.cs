@@ -53,7 +53,8 @@ namespace Kubex.DTO.Configurations
             CreateMap<EntryDTO, Entry>()
                 .ForMember(x => x.EntryType, opt => opt.MapFrom<EntryTypeConverter>())
                 .ForMember(x => x.Priority, opt => opt.MapFrom<PriorityConverter>());
-
+            
+            CreateMap<Company, Company>();
         }
     }
 }

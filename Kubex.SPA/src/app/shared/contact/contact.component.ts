@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ControlContainer } from '@angular/forms';
+import { ControlContainer, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-contact',
@@ -11,6 +11,6 @@ export class ContactComponent {
   constructor(public controlContainer: ControlContainer) { }
 
   addContact() {
-    console.log('Adding contact.');
+    console.log(this.controlContainer.name);
   }
 }

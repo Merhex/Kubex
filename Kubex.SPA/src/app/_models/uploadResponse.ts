@@ -1,3 +1,3 @@
 export class UploadResponse {
-    dbPath: string;
+    path: string;
 }
