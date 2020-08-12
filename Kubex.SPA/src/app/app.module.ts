@@ -26,6 +26,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 
 import { CompanyComponent } from './Company/Company.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
    declarations: [
@@ -53,7 +54,8 @@ import { CompanyComponent } from './Company/Company.component';
       MatIconModule,
       MatMenuModule,
       MatSelectModule,
-      ScrollingModule
+      ScrollingModule,
+      MatDialogModule
    ],
    providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

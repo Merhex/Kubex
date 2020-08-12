@@ -16,7 +16,7 @@
 
         <app-address [formGroup]="companyForm"></app-address>
         <app-contact [formGroup]="companyForm"></app-contact>
-        <app-posts [formGroup]="companyForm"></app-posts>
+        <app-posts ([company])="company" [formGroup]="companyForm"></app-posts>
 
         <!-- Buttons -->
         <div class="form-group">
