@@ -12,11 +12,11 @@
         <mat-form-field appearance="fill" fxFlex="50%">
           <mat-label>Customer Number</mat-label>
           <input matInput formControlName="customerNumber" placeholder="Ex. FC001">
-      </mat-form-field>
+        </mat-form-field>
 
         <app-address [formGroup]="companyForm"></app-address>
         <app-contact [formGroup]="companyForm"></app-contact>
-        <app-posts ([company])="company" [formGroup]="companyForm"></app-posts>
+        <app-posts *ngIf="company" (company)="company" [formGroup]="companyForm"></app-posts>
 
         <!-- Buttons -->
         <div class="form-group">
@@ -43,3 +43,5 @@
 <!-- https://www.thecodecampus.de/blog/nested-forms-in-angular/ -->
 <!-- https://w3path.com/new-angular-8-file-upload-or-image-upload/ -->
 <!-- https://stackoverflow.com/questions/41990171/angular-2-not-re-rendering-until-i-click-the-page -->
+<!-- https://blog.thoughtram.io/angular/2017/11/13/easy-dialogs-with-angular-material.html -->
+<!-- https://blog.hackages.io/angular-component-interaction-with-input-output-and-eventemitter-72526422b95c -->

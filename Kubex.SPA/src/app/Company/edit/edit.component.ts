@@ -67,7 +67,7 @@ export class EditComponent implements OnInit {
           .pipe(first())
           .subscribe(company => {
               this.company = company;
-              console.log('company when opened: ' + this.company);
+              console.log('company when opened: ' + this.company.name);
               this.posts = company.posts;
               // Opvullen van de velden dmv de convenience getter
               this.f.name.setValue(company.name);
@@ -80,6 +80,8 @@ export class EditComponent implements OnInit {
           });
     } else {
       this.company = new Company();
+      this.company.address = new Address();
+      console.log('New company made: ' + this.company + ' with adress ' + this.company.address);
     }
 
     this.ref.detectChanges();
