@@ -124,7 +124,7 @@ namespace Kubex.API
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IFileService, CloudinaryService>();
             services.AddScoped<IContactService, ContactService>();
         }
 

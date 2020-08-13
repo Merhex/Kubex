@@ -14,19 +14,19 @@ export class AlertService {
     }
 
     success(message: string, options?: any) {
-        this.alert(new Alert({ ...options, type: AlertType.Success, message }));
+        this.alert(new Alert({ ...options, type: AlertType.Success, message, autoClose: true }));
     }
 
     error(message: string, options?: any) {
-        this.alert(new Alert({ ...options, type: AlertType.Error, message }));
+        this.alert(new Alert({ ...options, type: AlertType.Error, message, autoClose: true }));
     }
 
     info(message: string, options?: any) {
-        this.alert(new Alert({ ...options, type: AlertType.Info, message }));
+        this.alert(new Alert({ ...options, type: AlertType.Info, message, autoClose: true }));
     }
 
     warn(message: string, options?: any) {
-        this.alert(new Alert({ ...options, type: AlertType.Warning, message }));
+        this.alert(new Alert({ ...options, type: AlertType.Warning, message, autoClose: true }));
     }
 
     // main alert methode

@@ -7,6 +7,8 @@ import { CompanyService } from 'src/app/_services/company.service';
 import { AlertService } from 'src/app/_services';
 import { Address } from 'src/app/_models';
 import { CompanyRegister } from 'src/app/_models/companyRegister';
+import { DomSanitizer } from '@angular/platform-browser';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-edit',
@@ -23,6 +25,8 @@ export class EditComponent implements OnInit {
   fileData: File = null;
   previewUrl: any = null;
   response: UploadResponse;
+  lastAddress: Address;
+  lastCompany: CompanyRegister;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,6 +43,7 @@ export class EditComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.params.id;
     this.isAddMode = !this.id;
+    this.response = new UploadResponse();
 
     this.companyForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -69,7 +74,13 @@ export class EditComponent implements OnInit {
               this.f.zip.setValue(user.address.zip);
               this.f.country.setValue(user.address.country);
               this.f.appartementBus.setValue(user.address.appartementBus);
+              console.log(user.logoUrl);
+              
+              this.previewUrl = user.logoUrl;
           });
+      
+      this.lastAddress = this.getAddressFromForm();
+      this.lastCompany = this.getCompanyRegisterFromForm();
     }
 
     this.ref.detectChanges();
@@ -80,12 +91,19 @@ export class EditComponent implements OnInit {
     this.loading = true;
     this.alertService.clear();
 
+
+    if (this.fileLoaded()) {
+      await this.uploadFile();
+    }
+
     if (this.isAddMode) {
       this.createCompany();
     } else {
       this.updateCompany();
     }
   }
+
+  fileLoaded() { return this.fileData && this.fileData.size > 0 };
 
   private async createCompany() {
     const address = this.getAddressFromForm();
@@ -95,10 +113,6 @@ export class EditComponent implements OnInit {
       companyToRegister.logoUrl = this.response.path ?? '';
     }
     companyToRegister.address = address;
-    
-    if (this.fileData && this.fileData.size > 0) {
-      await this.uploadFile();
-    }
 
     this.companyService.register(companyToRegister)
       .pipe(first())
@@ -119,13 +133,14 @@ export class EditComponent implements OnInit {
     companyToUpdate.id = this.id;
     companyToUpdate.address = address;
 
-    if (this.response) {
-      companyToUpdate.logoUrl = this.response.path ?? '';
+    if (_.isEqual(this.lastAddress, address) && _.isEqual(this.lastCompany, companyToUpdate)) {
+      this.alertService.info('There are no new changes made to save!');
+      this.loading = false;
+      return;
     }
 
-    if(this.fileData && this.fileData.size > 0)
-    {
-      await this.uploadFile();
+    if (this.previewUrl) {
+      companyToUpdate.logoUrl = this.previewUrl;
     }
 
     this.companyService.update(companyToUpdate)
@@ -133,6 +148,8 @@ export class EditComponent implements OnInit {
         (data) => {
           this.alertService.success('Company successfully updated!', { keepAfterRouteChange: true });
           this.loading = false;
+          this.lastAddress = address;
+          this.lastCompany = companyToUpdate;
         },
         (err) => {
           this.alertService.error(err);
@@ -158,6 +175,10 @@ export class EditComponent implements OnInit {
     companyToRegister.name = this.f.name.value;
     companyToRegister.customerNumber = this.f.customerNumber.value;
 
+    if(this.response.path) {
+      companyToRegister.logoUrl = this.response.path;
+    }
+
     return companyToRegister;
   }
 
@@ -180,20 +201,29 @@ export class EditComponent implements OnInit {
     };
   }
 
-  public async uploadFile() {
+  public async uploadFile(): Promise<void> {
     const formData = new FormData();
     formData.append('file', this.fileData);
-    this.companyService.uploadFile(formData).subscribe(
-      (res) => {
-        this.response = res;
-        this.alertService.success('The image has been succesfully uploaded!');
-        this.loading = false;
-      },
-      (err) => {
-        this.alertService.error(err);
-        this.loading = false;
-      });
 
-      // console.log(this.response.dbPath);
+    return new Promise<void>((resolve, reject) => {
+      this.companyService.uploadFile(formData).subscribe(
+        (res) => {
+          console.log(res);
+
+          this.previewUrl = res.path;
+          this.alertService.success('The image has been succesfully uploaded!');
+          this.loading = false;
+          this.companyForm.markAsUntouched();
+          this.fileData = null;
+
+          resolve();
+        },
+        (err) => {
+          this.alertService.error(err);
+          this.loading = false;
+
+          reject();
+        });
+    });
   }
 }

@@ -9,7 +9,7 @@ namespace Kubex.BLL.Services
 {
     public class FileService : IFileService
     {
-        public async Task<string> Upload(IFormFile file) 
+        public async Task<string> UploadImage(IFormFile file) 
         {
             if (file == null || file.Length <= 0)
                 throw new ApplicationException("Invalid image. Retry or choose a different image.");
