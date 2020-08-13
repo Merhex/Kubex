@@ -18,7 +18,23 @@ namespace Kubex.API.Controllers
             _contactService = contactService;
 
         }
+        
+        [HttpGet("/company/{companyId}")]
+        public async Task<IActionResult> GetContactsForCompany(int companyId) 
+        {
+            var contacts = await _contactService.GetContactsForCompany(companyId);
 
+            return Ok(contacts);
+        }
+
+        [HttpGet("/user/{userId}")]
+        public async Task<IActionResult> GetContactsForUser(int userId) 
+        {
+            var contacts = await _contactService.GetContactsForUser(userId);
+
+            return Ok(contacts);
+        }
+        
         [HttpPost("/add")]
         public async Task<IActionResult> AddContact(ContactDTO dto) 
         {

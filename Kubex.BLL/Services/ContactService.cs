@@ -59,6 +59,11 @@ namespace Kubex.BLL.Services
             throw new System.NotImplementedException();
         }
 
+        public Task<IEnumerable<ContactDTO>> GetContactsForUser(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task UpdateContactAsync(ContactDTO dto)
         {
             throw new System.NotImplementedException();
