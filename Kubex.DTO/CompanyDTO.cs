@@ -7,6 +7,7 @@ namespace Kubex.DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public string LogoUrl { get; set; }
+        public string CustomerNumber { get; set; }
         public AddressDTO Address { get; set; }
     }
 }

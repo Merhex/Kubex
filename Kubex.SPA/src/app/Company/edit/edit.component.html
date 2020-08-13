@@ -20,7 +20,7 @@
 
         <!-- Buttons -->
         <div class="form-group">
-          <button type="submit" [disabled]="loading || companyForm.invalid" class="btn btn-primary">
+          <button type="submit" [disabled]="loading || companyForm.invalid || companyForm.untouched" class="btn btn-primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Save
           </button>

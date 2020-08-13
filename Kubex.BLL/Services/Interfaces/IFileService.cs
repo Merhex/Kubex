@@ -5,6 +5,6 @@ namespace Kubex.BLL.Services.Interfaces
 {
     public interface IFileService
     {
-        Task<string> Upload(IFormFile file);
+        Task<string> UploadImage(IFormFile file);
     }
 }

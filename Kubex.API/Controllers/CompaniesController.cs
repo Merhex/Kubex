@@ -37,7 +37,7 @@ namespace Kubex.API.Controllers
         [HttpPost("upload")]
         public async Task<ActionResult> UploadFile([FromForm] IFormFile file)
         {
-            var fileLocation = await _fileService.Upload(file);
+            var fileLocation = await _fileService.UploadImage(file);
 
             return Ok(new { path = fileLocation });
         }
