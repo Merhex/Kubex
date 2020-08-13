@@ -13,6 +13,6 @@ export class ContactService {
     constructor(private http: HttpClient) { }
 
     add(contact: Contact): Observable<Contact> {
-        return this.http.post<Contact>(this.baseUrl, contact);
+        return this.http.post<Contact>(this.baseUrl + '/add', contact);
     }
 }

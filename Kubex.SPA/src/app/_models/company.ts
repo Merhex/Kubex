@@ -1,4 +1,4 @@
-import { Address } from './address';
+import { Post, Contact, Address } from '.';
 
 export class Company {
     id: number;
@@ -6,4 +6,6 @@ export class Company {
     logoUrl: string;
     customerNumber: string;
     address: Address;
+    contacts: Array<Contact>;
+    posts: Array<Post>;
 }

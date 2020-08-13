@@ -11,3 +11,5 @@ export * from './post';
 export * from './postRole';
 export * from './postUser';
 export * from './location';
+export * from './address';
+export * from './contact';

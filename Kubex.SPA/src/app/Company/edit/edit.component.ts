@@ -1,3 +1,4 @@
+import { Company } from './../../_models/company';
 import { UploadResponse } from './../../_models/uploadResponse';
 import { first } from 'rxjs/operators';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
@@ -5,7 +6,7 @@ import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyService } from 'src/app/_services/company.service';
 import { AlertService } from 'src/app/_services';
-import { Address } from 'src/app/_models';
+import { Address, Post } from 'src/app/_models';
 import { CompanyRegister } from 'src/app/_models/companyRegister';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as _ from 'lodash';
@@ -27,6 +28,10 @@ export class EditComponent implements OnInit {
   response: UploadResponse;
   lastAddress: Address;
   lastCompany: CompanyRegister;
+
+  // 
+  company: Company;
+  posts: Array<Post>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -65,22 +70,26 @@ export class EditComponent implements OnInit {
     if (!this.isAddMode) {
       this.companyService.getCompanyById(this.id)
           .pipe(first())
-          .subscribe(user => {
+          .subscribe(company => {
+              this.company = company;
+              console.log('company when opened: ' + this.company.name);
+              this.posts = company.posts;
               // Opvullen van de velden dmv de convenience getter
-              this.f.name.setValue(user.name);
-              this.f.customerNumber.setValue(user.customerNumber);
-              this.f.street.setValue(user.address.street);
-              this.f.houseNumber.setValue(user.address.houseNumber);
-              this.f.zip.setValue(user.address.zip);
-              this.f.country.setValue(user.address.country);
-              this.f.appartementBus.setValue(user.address.appartementBus);
-              console.log(user.logoUrl);
+              this.f.name.setValue(company.name);
+              this.f.customerNumber.setValue(company.customerNumber);
+              this.f.street.setValue(company.address.street);
+              this.f.houseNumber.setValue(company.address.houseNumber);
+              this.f.zip.setValue(company.address.zip);
+              this.f.country.setValue(company.address.country);
+              this.f.appartementBus.setValue(company.address.appartementBus);
               
-              this.previewUrl = user.logoUrl;
+              console.log(company.logoUrl);
+              this.previewUrl = company.logoUrl;
           });
-      
-      this.lastAddress = this.getAddressFromForm();
-      this.lastCompany = this.getCompanyRegisterFromForm();
+    } else {
+      this.company = new Company();
+      this.company.address = new Address();
+      console.log('New company made: ' + this.company + ' with adress ' + this.company.address);
     }
 
     this.ref.detectChanges();

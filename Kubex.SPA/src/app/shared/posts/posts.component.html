@@ -1,0 +1,22 @@
+<ng-container [formGroup]="controlContainer.control">
+  <h3 class="section">Posts</h3>
+  <div *ngFor(post in company.posts) fxLayout="row" fxLayoutGap="1%">
+    <mat-form-field appearance="fill" fxFlex>
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="value" placeholder="Ex. 01">
+    </mat-form-field>
+    <button mat-mini-fab type="button" aria-label="edit" color="primary" class="my-fab">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-mini-fab type="button" aria-label="delete" color="warn" class="my-fab">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+  <!-- Open diaglog knop -->
+  <button mat-mini-fab type="button" aria-label="add" color="primary" class="my-fab" (click)="openDialog()">
+    <mat-icon>add</mat-icon>
+  </button>
+  <span class="dialogtext" (click)="openDialog()">Add a new Post</span>
+  
+</ng-container>
