@@ -55,6 +55,9 @@ namespace Kubex.DTO.Configurations
                 .ForMember(x => x.Priority, opt => opt.MapFrom<PriorityConverter>());
             
             CreateMap<Company, Company>();
+
+            CreateMap<ContactDTO, Contact>()
+                .ReverseMap();
         }
     }
 }
