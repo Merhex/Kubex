@@ -1,6 +1,35 @@
+
 <ng-container [formGroup]="controlContainer.control">
   <h3 class="section">Contact</h3>
   <div *ngFor="let contact of contacts" fxLayout="row" fxLayoutGap="1%">
+    <mat-form-field appearance="fill" fxFlex="10%">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type" [value]="contact.type">
+        <mat-option value="mail">Mail</mat-option>
+        <mat-option value="mobile">Mobile</mat-option>
+        <mat-option value="pager">Pager</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" fxFlex>
+      <mat-label>Value</mat-label>
+      <input matInput formControlName="value" [value]="contact.value">
+    </mat-form-field>
+    <button type="button" aria-label="delete" color="warn" class="my-fab" (click)="deleteContact(contact.id)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!addContactMode">
+  <button mat-mini-fab type="button" aria-label="add" color="primary" class="my-fab" (click)="addContactMode = !addContactMode">
+    <mat-icon>add</mat-icon>
+  </button>
+  <span class="dialogtext">Add a new Contact</span>
+</ng-container>
+
+<ng-container *ngIf="addContactMode"  [formGroup]="newContactForm">
+  <h4 class="section">New contact</h4>
+  <div fxLayout="row" fxLayoutGap="1%">
     <mat-form-field appearance="fill" fxFlex="10%">
       <mat-label>Type</mat-label>
       <mat-select formControlName="type">
@@ -13,13 +42,8 @@
       <mat-label>Value</mat-label>
       <input matInput formControlName="value" placeholder="Ex. 01">
     </mat-form-field>
-    <button mat-mini-fab aria-label="delete" color="warn" class="my-fab">
-      <mat-icon>delete</mat-icon>
+    <button type="button" aria-label="send" color="accent" class="my-fab" [disabled]="!newContactForm.valid" (click)="addContact()">
+      <mat-icon>send</mat-icon>
     </button>
+    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
   </div>
-  
-  <button mat-mini-fab type="button" aria-label="add" color="primary" class="my-fab" (click)="addContact()">
-    <mat-icon>add</mat-icon>
-  </button>
-  <span class="dialogtext" (click)="addContact()">Add a new Contact</span>
-</ng-container>

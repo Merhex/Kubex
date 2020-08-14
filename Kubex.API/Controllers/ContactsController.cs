@@ -19,7 +19,7 @@ namespace Kubex.API.Controllers
 
         }
         
-        [HttpGet("/company/{companyId}")]
+        [HttpGet("company/{companyId}")]
         public async Task<IActionResult> GetContactsForCompany(int companyId) 
         {
             var contacts = await _contactService.GetContactsForCompany(companyId);
@@ -27,20 +27,28 @@ namespace Kubex.API.Controllers
             return Ok(contacts);
         }
 
-        [HttpGet("/user/{userId}")]
-        public async Task<IActionResult> GetContactsForUser(int userId) 
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetContactsForUser(string userName) 
         {
-            var contacts = await _contactService.GetContactsForUser(userId);
+            var contacts = await _contactService.GetContactsForUser(userName);
 
             return Ok(contacts);
         }
         
-        [HttpPost("/add")]
+        [HttpPost("add")]
         public async Task<IActionResult> AddContact(ContactDTO dto) 
         {
             var contact = await _contactService.CreateContactAsync(dto);
 
             return Ok(contact);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteContact(int id) 
+        {
+            await _contactService.DeleteContactAsync(id);
+
+            return NoContent();
         }
     }
 }

@@ -38,6 +38,9 @@ namespace Kubex.BLL.Services
         {
             var company = await FindCompanyAsync(companyId);
 
+            if (company == null)
+                throw new ApplicationException("There is no company found with the given id.");
+
             var companyToReturn = _mapper.Map<CompanyDTO>(company);
             return companyToReturn;
         }

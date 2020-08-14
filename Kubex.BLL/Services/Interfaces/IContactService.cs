@@ -9,7 +9,7 @@ namespace Kubex.BLL.Services.Interfaces
         Task<ContactDTO> CreateContactAsync(ContactDTO dto);
         Task<ContactDTO> GetContactAsync(int contactId);
         Task<IEnumerable<ContactDTO>> GetContactsForCompany(int companyId);
-        Task<IEnumerable<ContactDTO>> GetContactsForUser(int userId);
+        Task<IEnumerable<ContactDTO>> GetContactsForUser(string userName);
         Task UpdateContactAsync(ContactDTO dto);
         Task DeleteContactAsync(int contactId);
         Task DeleteAllContactsForCompany(int companyId);

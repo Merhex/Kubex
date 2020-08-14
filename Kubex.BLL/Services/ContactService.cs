@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Kubex.BLL.Services.Interfaces;
 using Kubex.DAL.Repositories.Interfaces;
 using Kubex.DTO;
 using Kubex.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Kubex.BLL.Services
 {
@@ -13,17 +15,20 @@ namespace Kubex.BLL.Services
     {
         private readonly IContactRepository _contactRepository;
         private readonly ICompanyRepository _companyRepository;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
         public ContactService(
             IContactRepository contactRepository,
             ICompanyRepository companyRepository,
+            UserManager<User> userService,
             IMapper mapper
         )
         {
             _mapper = mapper;
             _contactRepository = contactRepository;
             _companyRepository = companyRepository;
+            _userManager = userService;
         }
 
         public async Task<ContactDTO> CreateContactAsync(ContactDTO dto)
@@ -32,8 +37,36 @@ namespace Kubex.BLL.Services
 
             _contactRepository.Add(contact);
 
-            if (await _contactRepository.SaveAll())
-                return dto;
+            if (await _contactRepository.SaveAll()) 
+            {
+                if (dto.CompanyId.HasValue) 
+                {
+                    var company = await _companyRepository.Find(dto.CompanyId.Value);
+
+                    company.Contacts.Add(contact);
+
+                    if (await _companyRepository.SaveAll())
+                        return _mapper.Map<ContactDTO>(contact);
+                    else
+                        throw new ApplicationException("Something went wrong adding the contact to the company");
+                
+                }
+
+                if (!string.IsNullOrWhiteSpace(dto.UserName)) 
+                {
+                    var user = await _userManager.FindByIdAsync(dto.UserName);
+
+                    user.Contacts.Add(contact);
+
+                    var result = await _userManager.UpdateAsync(user);
+
+                    if (result.Succeeded)
+                        return _mapper.Map<ContactDTO>(contact);
+                    else
+                        throw new ApplicationException("Something went wrong adding the contact to the company");
+
+                }
+            }
             
             throw new ApplicationException("Something went wrong adding a new contact.");
 
@@ -44,9 +77,17 @@ namespace Kubex.BLL.Services
             throw new System.NotImplementedException();
         }
 
-        public Task DeleteContactAsync(int contactId)
+        public async Task DeleteContactAsync(int contactId)
         {
-            throw new System.NotImplementedException();
+            var contact = await _contactRepository.Find(contactId);
+
+            if (contact == null)
+                throw new ArgumentNullException(null, "Could not find a contact with the given id.");
+            
+            _contactRepository.Remove(contact);
+
+            if (! await _contactRepository.SaveAll())
+                throw new ApplicationException("Something went wrong deleting the contact.");
         }
 
         public Task<ContactDTO> GetContactAsync(int contactId)
@@ -54,14 +95,27 @@ namespace Kubex.BLL.Services
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<ContactDTO>> GetContactsForCompany(int companyId)
+        public async Task<IEnumerable<ContactDTO>> GetContactsForCompany(int companyId)
         {
-            throw new System.NotImplementedException();
-        }
+            var company = await _companyRepository.Find(companyId);
 
-        public Task<IEnumerable<ContactDTO>> GetContactsForUser(int userId)
+            if (company == null)
+                throw new ApplicationException("There is no company found with the given id.");
+
+            var contacts = _mapper.Map<IEnumerable<ContactDTO>>(company.Contacts);
+
+            return contacts;
+        }
+        public async Task<IEnumerable<ContactDTO>> GetContactsForUser(string userName)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByNameAsync(userName);
+
+            if (user == null)
+                throw new ApplicationException("The is no user found with the given username.");
+
+            var contacts = _mapper.Map<IEnumerable<ContactDTO>>(user.Contacts);
+
+            return contacts;
         }
 
         public Task UpdateContactAsync(ContactDTO dto)
