@@ -33,7 +33,6 @@ export class PostsAddDialogComponent implements OnInit {
 
   submit(postForm) {
     this.data.name = postForm.value.postName;
-    console.log(this.data.name);
     this.dialogRef.close(this.data);
   }
 

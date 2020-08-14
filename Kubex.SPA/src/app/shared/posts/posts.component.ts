@@ -18,18 +18,12 @@ export class PostsComponent implements OnInit {
               public dialog: MatDialog
               ) {}
 
-  ngOnInit() {
-    console.log('given company on init = ' + this.company);
-  }
+  ngOnInit() {}
 
   openDialog() {
-    console.log('given company on open dialog = ' + this.company);
     const newPost = new Post();
     newPost.address = this.company.address;
     newPost.company = this.company;
-
-    console.log('data address = ' + newPost.address);
-    console.log('data companie = ' + newPost.company.name);
 
 
     const dialogRef = this.dialog.open(PostsAddDialogComponent, {
@@ -38,7 +32,6 @@ export class PostsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.companyChange.emit(result);
     });
   }

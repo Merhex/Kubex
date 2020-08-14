@@ -27,8 +27,6 @@ export class EditComponent implements OnInit {
   response: UploadResponse;
   lastAddress: Address;
   lastCompany: CompanyRegister;
-
-  // 
   company: Company = null;
   posts: Array<Post>;
 
@@ -71,8 +69,6 @@ export class EditComponent implements OnInit {
           .pipe(first())
           .subscribe(company => {
               this.company = company;
-              console.log('company when opened: ' + this.company.name);
-
               this.posts = company.posts;
               // Opvullen van de velden dmv de convenience getter
               this.f.name.setValue(company.name);
