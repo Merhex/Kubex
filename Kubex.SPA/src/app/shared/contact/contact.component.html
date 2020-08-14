@@ -17,5 +17,9 @@
       <mat-icon>delete</mat-icon>
     </button>
   </div>
-  <a (click)="addContact()" class="btn btn-outline-secondary mb-4">Add a contact</a>
+  
+  <button mat-mini-fab type="button" aria-label="add" color="primary" class="my-fab" (click)="addContact()">
+    <mat-icon>add</mat-icon>
+  </button>
+  <span class="dialogtext" (click)="addContact()">Add a new Contact</span>
 </ng-container>
