@@ -97,6 +97,7 @@ export class EditComponent implements OnInit {
     console.log('post count before: ' + this.company.name + ' has ' + this.posts.length);
     this.company.posts.push(post);
     console.log('post count after: ' + this.company.posts.length);
+    this.ref.detectChanges();
   }
 
   async onSubmit() {
