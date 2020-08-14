@@ -2,13 +2,12 @@ import { Company } from './../../_models/company';
 import { UploadResponse } from './../../_models/uploadResponse';
 import { first } from 'rxjs/operators';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyService } from 'src/app/_services/company.service';
 import { AlertService } from 'src/app/_services';
 import { Address, Post } from 'src/app/_models';
 import { CompanyRegister } from 'src/app/_models/companyRegister';
-import { DomSanitizer } from '@angular/platform-browser';
 import * as _ from 'lodash';
 
 @Component({
@@ -30,7 +29,7 @@ export class EditComponent implements OnInit {
   lastCompany: CompanyRegister;
 
   // 
-  company: Company;
+  company: Company = null;
   posts: Array<Post>;
 
   constructor(
@@ -73,6 +72,7 @@ export class EditComponent implements OnInit {
           .subscribe(company => {
               this.company = company;
               console.log('company when opened: ' + this.company.name);
+
               this.posts = company.posts;
               // Opvullen van de velden dmv de convenience getter
               this.f.name.setValue(company.name);
@@ -83,16 +83,24 @@ export class EditComponent implements OnInit {
               this.f.country.setValue(company.address.country);
               this.f.appartementBus.setValue(company.address.appartementBus);
               
-              console.log(company.logoUrl);
+              console.log('logo url: ' + company.logoUrl);
               this.previewUrl = company.logoUrl;
           });
-    } else {
-      this.company = new Company();
-      this.company.address = new Address();
-      console.log('New company made: ' + this.company + ' with adress ' + this.company.address);
-    }
+    } 
+    // else {
+    //   this.company = new Company();
+    //   this.company.address = new Address();
+    //   console.log('New company made: ' + this.company + ' with adress ' + this.company.address);
+    // }
 
     this.ref.detectChanges();
+  }
+
+  addPost(post: Post) {
+    console.log('received event');
+    console.log('post count before: ' + this.company.name + ' has ' + this.posts.length);
+    this.company.posts.push(post);
+    console.log('post count after: ' + this.company.posts.length);
   }
 
   async onSubmit() {

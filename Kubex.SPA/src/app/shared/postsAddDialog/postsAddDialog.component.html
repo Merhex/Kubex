@@ -1,4 +1,5 @@
 <h1 mat-dialog-title>New Post</h1>
+<h3>New post for {{data.company.name}}</h3>
 
 <form [formGroup]="postForm" (ngSubmit)="submit(postForm)">
   <mat-dialog-content fxLayout="column" fxLayoutGap="2%">
@@ -6,10 +7,7 @@
       <mat-label>Name</mat-label>
       <input matInput formControlName="postName" placeholder="Ex. Main entrance" autocomplete="off">
     </mat-form-field>
-    <mat-form-field appearance="fill" fxFlex>
-      <mat-label>Address</mat-label>
-      <input matInput formControlName="address" placeholder="Ex. Main street 10, 1000 Brussels, Belgium" autocomplete="off">
-    </mat-form-field>
+    <app-address [formGroup]="postForm"></app-address>
   </mat-dialog-content>
 
   <mat-dialog-actions>

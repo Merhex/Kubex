@@ -2,7 +2,7 @@ import { Company } from './../../_models/company';
 import { Post } from './../../_models/post';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-postsadddialog',
@@ -12,6 +12,9 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class PostsAddDialogComponent implements OnInit {
   postForm: FormGroup;
 
+  // Convenience getter voor de formulier velden
+  get f() { return this.postForm.controls; }
+
   constructor(private formBuilder: FormBuilder,
               public dialogRef: MatDialogRef<PostsAddDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: Post
@@ -20,17 +23,18 @@ export class PostsAddDialogComponent implements OnInit {
   ngOnInit() {
     this.postForm = this.formBuilder.group({
       postName: '',
-      address: ''
+      street: [this.data.company.address.street, Validators.required],
+      houseNumber: [this.data.company.address.houseNumber, Validators.required],
+      appartementBus: [this.data.company.address.appartementBus],
+      zip: [this.data.company.address.zip, Validators.required],
+      country: [this.data.company.address.country, Validators.required],
     });
-    console.log('company = ' + this.data.company);
-    console.log('name =' + this.data.name);
   }
 
   submit(postForm) {
     this.data.name = postForm.value.postName;
     console.log(this.data.name);
-    // this.dialogRef.close(this.data);
-    this.dialogRef.close(`${postForm.value.postName}`);
+    this.dialogRef.close(this.data);
   }
 
   close(): void {

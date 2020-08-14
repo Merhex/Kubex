@@ -1,9 +1,8 @@
-import { Company } from './../../_models/company';
+import { Company, Post } from 'src/app/_models';
 import { PostsAddDialogComponent } from './../postsAddDialog/postsAddDialog.component';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
-import { Post, Address } from 'src/app/_models';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-posts',
@@ -12,6 +11,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 })
 export class PostsComponent implements OnInit {
   @Input() company: Company;
+  @Output() companyChange = new EventEmitter<Post>();
   posts: Array<Post>;
 
   constructor(public controlContainer: ControlContainer,
@@ -39,8 +39,7 @@ export class PostsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      // this.company.posts.push(result);
-      console.log('result = ' + result);
+      this.companyChange.emit(result);
     });
   }
 
