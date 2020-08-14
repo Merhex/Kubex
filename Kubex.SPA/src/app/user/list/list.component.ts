@@ -23,6 +23,7 @@ export class ListComponent implements OnInit {
         this.accountService.delete(userName)
             .pipe(first())
             .subscribe(() => {
+                this.alertService.success(`${userName} has been removed!`);
                 this.users = this.users.filter(x => x.userName !== userName);
             },
             error => {
