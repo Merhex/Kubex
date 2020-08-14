@@ -10,5 +10,6 @@ namespace Kubex.DTO
         public string CustomerNumber { get; set; }
         public AddressDTO Address { get; set; }
         public IEnumerable<PostDTO> Posts { get; set; }
+        public IEnumerable<ContactDTO> Contacts { get; set; }
     }
 }

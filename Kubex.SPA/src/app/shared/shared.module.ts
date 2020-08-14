@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatSelectModule,
         MatIconModule,
         MatButtonModule,
-        MatDialogModule
+        MatDialogModule,
+        MatCardModule
   ],
   declarations: [
     SharedComponent,

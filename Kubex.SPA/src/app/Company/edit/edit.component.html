@@ -15,7 +15,7 @@
         </mat-form-field>
 
         <app-address [formGroup]="companyForm"></app-address>
-        <app-contact [formGroup]="companyForm"></app-contact>
+        <app-contact *ngIf="!isAddMode" [formGroup]="companyForm" [companyId]="id"></app-contact>
         <app-posts *ngIf="company" [company]="company" (companyChange)="addPost($event)" [formGroup]="companyForm"></app-posts>
 
         <!-- Buttons -->

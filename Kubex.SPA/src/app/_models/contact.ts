@@ -1,5 +1,7 @@
-export class Contact {
+export interface Contact {
     id: number;
     value: string;
-    contactType: number;
+    type: string;
+    username: string;
+    companyId: number;
 }
