@@ -1,6 +1,6 @@
 import { Company, Post } from 'src/app/_models';
 import { PostsAddDialogComponent } from './../postsAddDialog/postsAddDialog.component';
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -15,10 +15,13 @@ export class PostsComponent implements OnInit {
   posts: Array<Post>;
 
   constructor(public controlContainer: ControlContainer,
+              public changeDetection: ChangeDetectorRef,
               public dialog: MatDialog
               ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.posts = this.company.posts;
+  }
 
   openDialog() {
     const newPost = new Post();
@@ -32,8 +35,8 @@ export class PostsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.company.posts.push(result);
       this.companyChange.emit(result);
     });
   }
-
 }
