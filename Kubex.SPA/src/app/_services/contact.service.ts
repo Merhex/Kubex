@@ -24,8 +24,8 @@ export class ContactService {
         return this.http.patch(this.baseUrl + '/update', contact);
     }
 
-    getContactsForUser(userId: number): Observable<Contact[]> {
-        return this.http.get<Contact[]>(this.baseUrl + `/user/${userId}`);
+    getContactsForUser(username: string): Observable<Contact[]> {
+        return this.http.get<Contact[]>(this.baseUrl + `/user/${username}`);
     }
 
     getContactsForCompany(companyId: number): Observable<Contact[]> {

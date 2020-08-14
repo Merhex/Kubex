@@ -27,7 +27,7 @@ namespace Kubex.API.Controllers
             return Ok(contacts);
         }
 
-        [HttpGet("user/{userId}")]
+        [HttpGet("user/{userName}")]
         public async Task<IActionResult> GetContactsForUser(string userName) 
         {
             var contacts = await _contactService.GetContactsForUser(userName);

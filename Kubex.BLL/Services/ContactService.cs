@@ -8,6 +8,7 @@ using Kubex.DAL.Repositories.Interfaces;
 using Kubex.DTO;
 using Kubex.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kubex.BLL.Services
 {
@@ -54,7 +55,10 @@ namespace Kubex.BLL.Services
 
                 if (!string.IsNullOrWhiteSpace(dto.UserName)) 
                 {
-                    var user = await _userManager.FindByIdAsync(dto.UserName);
+                    var user = await _userManager
+                        .Users
+                        .Include(x => x.Contacts)
+                        .FirstOrDefaultAsync(u => u.UserName == dto.UserName);
 
                     user.Contacts.Add(contact);
 
@@ -63,7 +67,7 @@ namespace Kubex.BLL.Services
                     if (result.Succeeded)
                         return _mapper.Map<ContactDTO>(contact);
                     else
-                        throw new ApplicationException("Something went wrong adding the contact to the company");
+                        throw new ApplicationException("Something went wrong adding the contact to the user");
 
                 }
             }

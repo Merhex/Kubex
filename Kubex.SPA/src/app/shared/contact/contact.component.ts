@@ -11,7 +11,7 @@ import { Contact } from 'src/app/_models/contact';
 })
 export class ContactComponent implements OnInit {
   @Input() companyId: number;
-  @Input() userId: number;
+  @Input() username: string;
   contacts: Contact[];
   newContactForm: FormGroup;
   addContactMode = false;
@@ -38,8 +38,8 @@ export class ContactComponent implements OnInit {
           this.alertService.error('Could not retrieve contacts for this company');
         });
     }
-    if (this.userId) {
-      this.contactService.getContactsForUser(this.userId).subscribe(
+    if (this.username) {
+      this.contactService.getContactsForUser(this.username).subscribe(
         (data) => {
           this.contacts = data;
         },
@@ -62,7 +62,7 @@ export class ContactComponent implements OnInit {
       type: this.newContactForm.controls.type.value,
       value: this.newContactForm.controls.value.value,
       companyId: this.companyId,
-      userId: this.userId,
+      username: this.username,
     };
 
     this.contactService.add(contact).subscribe(
@@ -87,7 +87,7 @@ export class ContactComponent implements OnInit {
       type: this.getControls().type.value,
       value: this.getControls().value.value,
       companyId: this.companyId,
-      userId: this.userId,
+      username: this.username,
     };
 
     this.contactService.update(contact).subscribe(
