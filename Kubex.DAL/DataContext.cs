@@ -10,7 +10,6 @@ namespace Kubex.DAL
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-        public DbSet<ContactType> ContactTypes { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<DailyActivityReport> DailyActivityReports { get; set; }
         public DbSet<Entry> Entries { get; set; }
