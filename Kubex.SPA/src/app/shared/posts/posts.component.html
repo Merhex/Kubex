@@ -3,12 +3,12 @@
   <div *ngFor="let post of company.posts" fxLayout="row" fxLayoutGap="1%">
     <mat-form-field appearance="fill" fxFlex>
       <mat-label>Name</mat-label>
-      <input matInput formControlName="postName" placeholder="Ex. Main Entrance" [ngModel]="post.name">
+      <input matInput formControlName="postName" placeholder="Ex. Main Entrance" value={{post.name}}>
     </mat-form-field>
     <button mat-mini-fab type="button" aria-label="edit" color="primary" class="my-fab">
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-mini-fab type="button" aria-label="delete" color="warn" class="my-fab">
+    <button mat-mini-fab type="button" aria-label="delete" color="warn" class="my-fab" (click)="deletePost(post)">
       <mat-icon>delete</mat-icon>
     </button>
   </div>

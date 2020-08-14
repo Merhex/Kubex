@@ -9,11 +9,13 @@ import { Post } from '../_models';
   })
 export class PostService {
 
+    baseUrl = environment.apiUrl + '/post/';
+
     constructor(private accountService: AccountService,
                 private http: HttpClient) { }
 
     create(params: Post) {
-        return this.http.post<Post>(`${environment.apiUrl}/post/create`, params);
+        return this.http.post<Post>(this.baseUrl + 'create/', params);
     }
 
     update() {
@@ -24,7 +26,7 @@ export class PostService {
 
     }
 
-    delete() {
-
+    delete(id: number) {
+        return this.http.delete(this.baseUrl + id);
     }
 }

@@ -3,6 +3,9 @@ import { PostsAddDialogComponent } from './../postsAddDialog/postsAddDialog.comp
 import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { PostService } from 'src/app/_services/post.service';
+import { first } from 'rxjs/operators';
+import { AlertService } from 'src/app/_services';
 
 @Component({
   selector: 'app-posts',
@@ -16,6 +19,8 @@ export class PostsComponent implements OnInit {
 
   constructor(public controlContainer: ControlContainer,
               public changeDetection: ChangeDetectorRef,
+              private postService: PostService,
+              private alertService: AlertService,
               public dialog: MatDialog
               ) {}
 
@@ -35,8 +40,33 @@ export class PostsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.company.posts.push(result);
-      this.companyChange.emit(result);
+      this.postService.create(result)
+                      .pipe(first())
+                      .subscribe(
+                        (data) => {
+                          this.alertService.success('Company successfully registered',  { keepAfterRouteChange: true });
+                          this.company.posts.push(result);
+                          this.companyChange.emit(result);
+                        },
+                        (err) => {
+                            this.alertService.error(err);
+                        });
     });
+  }
+
+  deletePost(post: Post) {
+    if (post.id == null) {
+      this.postService.delete(post.id)
+      .pipe(first())
+        .subscribe(() => {
+            this.company.posts = this.company.posts.filter(x => x.id !== post.id);
+        },
+        error => {
+            this.alertService.error(error);
+        });
+    } else {
+      const index = this.company.posts.indexOf(post);
+      this.company.posts.splice(index, 1);
+    }
   }
 }
