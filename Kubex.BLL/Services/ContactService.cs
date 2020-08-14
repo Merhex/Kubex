@@ -79,10 +79,7 @@ namespace Kubex.BLL.Services
 
         public async Task DeleteContactAsync(int contactId)
         {
-            var contact = await _contactRepository.Find(contactId);
-
-            if (contact == null)
-                throw new ArgumentNullException(null, "Could not find a contact with the given id.");
+            var contact = await FindContact(contactId);
             
             _contactRepository.Remove(contact);
 
@@ -118,9 +115,20 @@ namespace Kubex.BLL.Services
             return contacts;
         }
 
-        public Task UpdateContactAsync(ContactDTO dto)
+        public async Task UpdateContactAsync(ContactDTO dto)
         {
-            throw new System.NotImplementedException();
+            var contact = await FindContact(dto.Id);
+
+            contact.Type = dto.Type;
+            contact.Value = dto.Value;
+
+            if (! await _companyRepository.SaveAll())
+                throw new ApplicationException("Sonething went wrong updating the contact>");
         }
+
+        private async Task<Contact> FindContact(int id) => 
+            await _contactRepository.Find(id) 
+            ?? 
+            throw new ArgumentNullException(null, "Could not find a contact with the given id.");
     }
 }

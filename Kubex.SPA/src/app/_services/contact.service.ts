@@ -20,6 +20,10 @@ export class ContactService {
         return this.http.delete(this.baseUrl + `/${id}`);
     }
 
+    update(contact: Contact) {
+        return this.http.patch(this.baseUrl + '/update', contact);
+    }
+
     getContactsForUser(userId: number): Observable<Contact[]> {
         return this.http.get<Contact[]>(this.baseUrl + `/user/${userId}`);
     }

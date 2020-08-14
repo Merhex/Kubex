@@ -50,5 +50,13 @@ namespace Kubex.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPatch("update")]
+        public async Task<IActionResult> UpdateContact(ContactDTO dto) 
+        {
+            await _contactService.UpdateContactAsync(dto);
+
+            return NoContent();
+        }
     }
 }

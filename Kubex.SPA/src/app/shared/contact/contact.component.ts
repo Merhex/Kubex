@@ -28,6 +28,11 @@ export class ContactComponent implements OnInit {
       this.contactService.getContactsForCompany(this.companyId).subscribe(
         (data) => {
           this.contacts = data;
+
+          this.contacts.forEach(contact => {
+            this.getControls().value.setValue(contact.value);
+            this.getControls().type.setValue(contact.type);
+          });
         },
         (err) => {
           this.alertService.error('Could not retrieve contacts for this company');
@@ -72,6 +77,24 @@ export class ContactComponent implements OnInit {
         this.alertService.error(error);
         this.loading = false;
         this.addContactMode = false;
+      }
+    );
+  }
+
+  updateContact(id: number) {
+    const contact = {
+      id,
+      type: this.getControls().type.value,
+      value: this.getControls().value.value,
+      companyId: this.companyId,
+      userId: this.userId,
+    };
+
+    this.contactService.update(contact).subscribe(
+      (data: Contact) => {
+        let c = this.contacts.find(x => x.id === id);
+        c = data;
+        this.alertService.success('Succesfully updated contact.');
       }
     );
   }
