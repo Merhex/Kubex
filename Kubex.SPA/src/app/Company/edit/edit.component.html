@@ -16,7 +16,7 @@
 
         <app-address [formGroup]="companyForm"></app-address>
         <app-contact *ngIf="!isAddMode" [formGroup]="companyForm" [companyId]="id"></app-contact>
-        <app-posts *ngIf="company" [company]="company" [formGroup]="companyForm"></app-posts>
+        <app-posts *ngIf="company" [company]="company" (companyChange)="addPost($event)" [formGroup]="companyForm"></app-posts>
 
         <!-- Buttons -->
         <div class="form-group">

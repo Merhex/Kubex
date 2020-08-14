@@ -6,5 +6,6 @@ namespace Kubex.DTO
     {
         public string Name { get; set; }
         public AddressDTO Address { get; set; }
+        public IEnumerable<PostDTO> Posts { get; set; }
     }
 }
