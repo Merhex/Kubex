@@ -2,7 +2,7 @@
 <h3>New post for {{data.company.name}}</h3>
 
 <form [formGroup]="postForm" (ngSubmit)="submit(postForm)">
-  <mat-dialog-content fxLayout="column" fxLayoutGap="2%">
+  <mat-dialog-content fxLayout="column" fxLayoutGap="1%">
     <mat-form-field appearance="fill" fxFlex>
       <mat-label>Name</mat-label>
       <input matInput #postName formControlName="postName" placeholder="Ex. Main entrance" autocomplete="off">
@@ -12,18 +12,27 @@
 
     <h3 class="section">Agents</h3>
     
-    <mat-form-field appearance="outline" class="search">
-      <mat-label>Name</mat-label>
-      <input type="text"
-        placeholder="Search agent"
-        aria-label="Agent"
-        matInput
-        [matAutocomplete]="auto"
-        #searchInput>
-    </mat-form-field>
-    <div *ngFor="let user of postUsers">
-      {{user.userName}} - {{user.lastName}} {{user.firstName}}
+    <div fxLayout="row">
+      <mat-form-field appearance="outline" class="search">
+        <mat-label>Agent</mat-label>
+        <input type="text"
+          placeholder="Search agent"
+          aria-label="Agent"
+          matInput
+          [matAutocomplete]="auto"
+          #searchInput>
+      </mat-form-field>
+      
+      <span class="spacer"></span>
+
+      <mat-icon class="deleteIcon">delete</mat-icon>
     </div>
+    
+    <mat-selection-list #agents>
+      <mat-list-option *ngFor="let user of postUsers">
+        {{user.userName}} - {{user.lastName}} {{user.firstName}}
+      </mat-list-option>
+    </mat-selection-list>
     
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
       <mat-option *ngFor="let user of users" [value]="user">
@@ -33,7 +42,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button mat-button type="submit">Add</button>
-    <button mat-button type="button" (click)="close()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit">Add</button>
+    <button mat-raised-button color="accent" type="button" (click)="close()">Cancel</button>
   </mat-dialog-actions>
 </form>
