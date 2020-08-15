@@ -10,14 +10,13 @@
 
     <app-address [formGroup]="postForm"></app-address>
 
-    <h4>Agents</h4>
+    <h3 class="section">Agents</h3>
     
-    <mat-form-field appearance="fill" fxFlex>
+    <mat-form-field appearance="outline" class="search">
       <mat-label>Name</mat-label>
       <input type="text"
         placeholder="Search agent"
         aria-label="Agent"
-        appearance="fill"
         matInput
         [matAutocomplete]="auto"
         #searchInput>
