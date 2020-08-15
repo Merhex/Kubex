@@ -10,9 +10,11 @@ import { User } from './_models';
 export class AppComponent {
   title = 'Kubex';
   user: User;
+  photoUrl: string;
 
   constructor(private accountService: AccountService) {
       this.accountService.user.subscribe(x => this.user = x);
+      this.photoUrl = this.accountService.userValue.photoUrl;
   }
 
   logout() {

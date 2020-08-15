@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         MatButtonModule,
         MatDialogModule,
         MatCardModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatListModule
   ],
   declarations: [
     SharedComponent,

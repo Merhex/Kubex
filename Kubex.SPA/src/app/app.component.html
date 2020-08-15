@@ -7,7 +7,7 @@
 
     <span class="spacer"></span>
 
-    <img class="userProfile" mat-button [matMenuTriggerFor]="menu" [src]="user.photoUrl ? user.photoUrl : 'assets/images/application/user.png'">
+    <img class="userProfile" mat-button [matMenuTriggerFor]="menu" [src]="photoUrl ? photoUrl : 'assets/images/application/user.png'">
     <mat-menu #menu="matMenu">
         <mat-form-field appearance="outline">
             <mat-label>Post</mat-label>

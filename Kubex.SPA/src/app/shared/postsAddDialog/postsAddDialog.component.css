@@ -6,3 +6,11 @@
 .search {
     width: 200px;
 }
+
+.spacer {
+    flex: 1 1 auto;
+  }
+
+.deleteIcon {
+    margin-top: .75em;
+}
