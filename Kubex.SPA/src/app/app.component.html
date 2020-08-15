@@ -9,12 +9,11 @@
 
     <img class="userProfile" mat-button [matMenuTriggerFor]="menu" [src]="user.photoUrl ? user.photoUrl : 'assets/images/application/user.png'">
     <mat-menu #menu="matMenu">
-        <!-- <button mat-menu-item>Item 1</button> -->
         <mat-form-field appearance="outline">
             <mat-label>Post</mat-label>
             <mat-select>
-              <mat-option> <!-- *ngFor="let food of foods" [value]="food.value"> -->
-                <!-- {{food.viewValue}} -->
+              <mat-option> <!-- *ngFor="let post of user.posts"> -->
+                <!-- {{post.postName}} -->
               </mat-option>
             </mat-select>
           </mat-form-field>

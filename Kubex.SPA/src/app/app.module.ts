@@ -25,6 +25,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatSelectModule} from '@angular/material/select';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatCardModule} from '@angular/material/card';
 
 import { CompanyComponent } from './Company/Company.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -57,7 +58,8 @@ import { MatDialogModule } from '@angular/material/dialog';
       MatSelectModule,
       ScrollingModule,
       MatDialogModule,
-      MatToolbarModule
+      MatToolbarModule,
+      MatCardModule
    ],
    providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
