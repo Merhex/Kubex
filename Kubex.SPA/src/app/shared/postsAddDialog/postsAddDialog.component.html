@@ -5,9 +5,32 @@
   <mat-dialog-content fxLayout="column" fxLayoutGap="2%">
     <mat-form-field appearance="fill" fxFlex>
       <mat-label>Name</mat-label>
-      <input matInput formControlName="postName" placeholder="Ex. Main entrance" autocomplete="off">
+      <input matInput #postName formControlName="postName" placeholder="Ex. Main entrance" autocomplete="off">
     </mat-form-field>
+
     <app-address [formGroup]="postForm"></app-address>
+
+    <h4>Agents</h4>
+    
+    <mat-form-field appearance="fill" fxFlex>
+      <mat-label>Name</mat-label>
+      <input type="text"
+        placeholder="Search agent"
+        aria-label="Agent"
+        appearance="fill"
+        matInput
+        [matAutocomplete]="auto"
+        #searchInput>
+    </mat-form-field>
+    <div *ngFor="let user of postUsers">
+      {{user.userName}} - {{user.lastName}} {{user.firstName}}
+    </div>
+    
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let user of users" [value]="user">
+        {{user.lastName}} {{user.firstName}}
+      </mat-option>
+    </mat-autocomplete>
   </mat-dialog-content>
 
   <mat-dialog-actions>
