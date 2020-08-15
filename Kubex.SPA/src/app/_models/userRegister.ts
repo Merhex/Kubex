@@ -6,4 +6,5 @@ export class UserRegister {
     password: string;
     currentPassword: string;
     address: Address;
+    photoUrl: string;
 }

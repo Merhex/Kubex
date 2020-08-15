@@ -11,4 +11,5 @@ export class User {
     roles: Array<string>;
     token: string;
     isDeleting?: boolean;
+    photoUrl: string;
 }

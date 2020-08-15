@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService, AlertService } from 'src/app/_services';
 import { first } from 'rxjs/operators';
 import { User, Address, UserRegister } from 'src/app/_models';
+import { CompanyService } from 'src/app/_services/company.service';
 
 @Component({
   selector: 'app-edit',
@@ -29,7 +30,8 @@ export class AddEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private companyService: CompanyService
   ) {}
 
   // Convenience getter voor de formulier velden
@@ -77,14 +79,19 @@ export class AddEditComponent implements OnInit {
                   this.f.zip.setValue(user.address.zip);
                   this.f.country.setValue(user.address.country);
                   this.f.appartementBus.setValue(user.address.appartementBus);
+                  this.previewUrl = user.photoUrl;
               });
       }
   }
 
-  onSubmit() {
+  async onSubmit() {
       this.submitted = true;
       this.alertService.clear();
       this.loading = true;
+
+      if (this.fileLoaded()) {
+        await this.uploadFile();
+      }
 
       if (this.isAddMode) {
           this.createUser();
@@ -92,6 +99,8 @@ export class AddEditComponent implements OnInit {
           this.updateUser();
       }
   }
+
+  fileLoaded() { return this.fileData && this.fileData.size > 0; }
 
   private createUser() {
     const address = this.getAddressFromForm();
@@ -118,13 +127,13 @@ export class AddEditComponent implements OnInit {
     const userRegister = this.getUserRegisterFromForm();
 
     userRegister.address = address;
+    userRegister.photoUrl = this.previewUrl;
 
     this.accountService.update(this.userName, userRegister)
         .pipe(first())
         .subscribe(
             data => {
-                this.alertService.success('Update successful', { keepAfterRouteChange: true });
-                this.router.navigate(['..', { relativeTo: this.route }]);
+                this.alertService.success('User succesfully updated!', { keepAfterRouteChange: true });
             },
             error => {
                 this.alertService.error(error);
@@ -176,5 +185,31 @@ export class AddEditComponent implements OnInit {
     reader.onload = (event) => {
       this.previewUrl = reader.result;
     };
+  }
+
+  public async uploadFile(): Promise<void> {
+    const formData = new FormData();
+    formData.append('file', this.fileData);
+
+    return new Promise<void>((resolve, reject) => {
+      this.companyService.uploadFile(formData).subscribe(
+        (res) => {
+          console.log(res);
+
+          this.previewUrl = res.path;
+          this.alertService.success('The image has been succesfully uploaded!');
+          this.loading = false;
+          this.form.markAsUntouched();
+          this.fileData = null;
+
+          resolve();
+        },
+        (err) => {
+          this.alertService.error(err);
+          this.loading = false;
+
+          reject();
+        });
+    });
   }
 }
