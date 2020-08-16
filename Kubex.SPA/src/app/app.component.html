@@ -1,14 +1,27 @@
 <!-- navigation -->
-<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
-    <div class="navbar-nav">
-        <a class="nav-item nav-link" routerLink="/posts" routerLinkActive="active" >Posts</a>
-        <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-        <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Users</a>
-        <a class="nav-item nav-link" routerLink="/companies" routerLinkActive="active">Clients</a>
-        <a class="nav-item nav-link" routerLink="/dar" routerLinkActive="active">DAR</a>
-        <a class="nav-item nav-link" (click)="logout()">Logout</a>
-    </div>
-</nav>
+<mat-toolbar color="primary" *ngIf="user">
+    <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+    <a mat-button routerLink="/users" routerLinkActive="active">Users</a>
+    <a mat-button routerLink="/companies" routerLinkActive="active">Clients</a>
+    <a mat-button routerLink="/dar" routerLinkActive="active">DAR</a>
+
+    <span class="spacer"></span>
+
+    <img class="userProfile" mat-button [matMenuTriggerFor]="menu" [src]="photoUrl ? photoUrl : 'assets/images/application/user.png'">
+    <mat-menu #menu="matMenu">
+        <mat-form-field appearance="outline">
+            <mat-label>Post</mat-label>
+            <mat-select>
+              <mat-option> <!-- *ngFor="let post of user.posts"> -->
+                <!-- {{post.postName}} -->
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        <button mat-menu-item (click)="logout()"><mat-icon>meeting_room</mat-icon> Logout</button>
+      </mat-menu>
+</mat-toolbar>
+  
+
 
 <!-- main app -->
 <div class="app-container" [ngClass]="{ 'bg-light': user }">

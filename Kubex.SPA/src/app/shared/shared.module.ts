@@ -14,6 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   imports: [
@@ -27,7 +29,9 @@ import { MatCardModule } from '@angular/material/card';
         MatIconModule,
         MatButtonModule,
         MatDialogModule,
-        MatCardModule
+        MatCardModule,
+        MatAutocompleteModule,
+        MatListModule
   ],
   declarations: [
     SharedComponent,

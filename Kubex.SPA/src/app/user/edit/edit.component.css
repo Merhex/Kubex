@@ -8,7 +8,9 @@ img {
 
 .preview {
     width: 100%;
-    max-width: 200px;
-    min-width: 100px;
     margin-bottom: 1em;
+}
+
+.form-group {
+    margin-top: 25px;
 }

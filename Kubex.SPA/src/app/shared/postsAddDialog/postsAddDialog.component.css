@@ -1,0 +1,16 @@
+.section {
+    margin-top: 25px;
+    border-bottom: black solid 1px;
+}
+
+.search {
+    width: 200px;
+}
+
+.spacer {
+    flex: 1 1 auto;
+  }
+
+.deleteIcon {
+    margin-top: .75em;
+}

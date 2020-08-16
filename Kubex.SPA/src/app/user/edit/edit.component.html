@@ -4,62 +4,61 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div fxLayout="row" fxLayoutGap="2%">
         <div fxFlex="85%">
-          <div fxLayout="column" fxLayoutGap="1%">
-            <mat-form-field appearance="fill">
-                <mat-label>First Name</mat-label>
-                <input matInput formControlName="firstName" placeholder="Ex. Kurt">
-            </mat-form-field>
+            <div fxLayout="column" fxLayoutGap="1%">
+                <mat-form-field appearance="fill">
+                    <mat-label>First Name</mat-label>
+                    <input matInput formControlName="firstName" placeholder="Ex. Kurt">
+                </mat-form-field>
 
-            <mat-form-field appearance="fill">
-                <mat-label>Last Name</mat-label>
-                <input matInput formControlName="lastName" placeholder="Ex. Bellens">
-            </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Last Name</mat-label>
+                    <input matInput formControlName="lastName" placeholder="Ex. Bellens">
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="1%">
+                <mat-form-field appearance="fill" fxFlex="33%">
+                    <mat-label>Username</mat-label>
+                    <input matInput formControlName="userName" placeholder="Ex. KBL">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex="33%">
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
+                    <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="!isAddMode" appearance="fill" fxFlex="32%">
+                    <mat-label>Current Password</mat-label>
+                    <input matInput formControlName="currentPassword" [type]="hideCurrentPassword ? 'password' : 'text'">
+                    <mat-icon matSuffix (click)="hideCurrentPassword = !hideCurrentPassword">{{hideCurrentPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <app-address></app-address>
+            <app-contact [username]="userName"></app-contact>
+
+            <!-- Button group -->
+            <div class="form-group button-group">
+                <button [disabled]="loading || form.invalid" class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Save
+                </button>
+                <a routerLink="/users" class="btn btn-link">Cancel</a>
+            </div>
         </div>
 
-        <div fxLayout="row" fxLayoutGap="1%">
-            <mat-form-field appearance="fill" fxFlex="33%">
-                <mat-label>Username</mat-label>
-                <input matInput formControlName="userName" placeholder="Ex. KBL">
-            </mat-form-field>
+        <div fxFlex fxLayout="column" fxLayoutGap="2%">
+            <img class="preview" [src]="previewUrl ? previewUrl : 'assets/images/application/user.png'">
+            <button type="button" class="btn btn-primary" (click)="image.click()">Choose file...</button>
 
-            <mat-form-field appearance="fill" fxFlex="33%">
-                <mat-label>Password</mat-label>
-                <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
-                <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </mat-form-field>
-
-            <mat-form-field *ngIf="!isAddMode" appearance="fill" fxFlex="32%">
-                <mat-label>Current Password</mat-label>
-                <input matInput formControlName="currentPassword" [type]="hideCurrentPassword ? 'password' : 'text'">
-                <mat-icon matSuffix (click)="hideCurrentPassword = !hideCurrentPassword">{{hideCurrentPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </mat-form-field>
-        </div>
-
-        <app-address></app-address>
-        <app-contact [username]="userName"></app-contact>
-
-        <!-- Button group -->
-        <div class="form-group button-group">
-            <button [disabled]="loading || form.invalid" class="btn btn-primary">
-                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                Save
-            </button>
-            <a routerLink="/users" class="btn btn-link">Cancel</a>
+            <input hidden type="file" name="image" #image value="Photo" mat-button color="primary" 
+            accept=".jpg, .jpeg, .png, .bmp" (change)="fileProgress($event)">
+            
+            <!-- <mat-form-field appearance="fill">
+                <mat-label>Birth Date</mat-label>
+                <input matInput formControlName="birthDate" placeholder="Ex. KBL">
+            </mat-form-field> -->
         </div>
     </div>
-  </div>
-
-  <div fxFlex>
-    <img class="preview" [src]="previewUrl ? previewUrl : 'assets/images/application/user.png'">
-    <button type="button" class="btn btn-primary" (click)="image.click()">Choose file...</button>
-
-    <input hidden type="file" name="image" #image value="Photo" mat-button color="primary" 
-      accept=".jpg, .jpeg, .png, .bmp" (change)="fileProgress($event)">
-    
-      <!-- <mat-form-field appearance="fill">
-        <mat-label>Birth Date</mat-label>
-        <input matInput formControlName="birthDate" placeholder="Ex. KBL">
-    </mat-form-field> -->
-  </div>
-<!-- </div> -->
 </form>

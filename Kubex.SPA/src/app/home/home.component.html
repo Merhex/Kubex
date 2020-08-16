@@ -1,12 +1,72 @@
-<div class="p-4">
-  <div class="container">
-      <h1>Hi {{user.firstName}}!</h1>
-      <p>You're logged in with Angular 9!!</p>
-      <p><a routerLink="/users">Manage Users</a></p>
-  </div>
+<div class="container" fxLayout="row" fxLayoutGap="2%">
+  <mat-card class="link-card" routerLink="/users" routerLinkActive="active" fxFlex="30%">
+    <mat-card-header>
+      <mat-card-title>Gebruikers</mat-card-title>
+      <mat-card-subtitle>Want wat zijn we zonder gebruikers?</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="/assets/images/application/guards.jpg" alt="Guards">
+    <mat-card-content>
+      <p>
+        Hier kan je als manager uw gebruikers op dit portaal beheren.
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="link-card" routerLink="/companies" routerLinkActive="active" fxFlex="30%">
+    <mat-card-header>
+      <mat-card-title>Klanten</mat-card-title>
+      <mat-card-subtitle>Wie zouden we anders beschermen?</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="/assets/images/application/clients.jpg" alt="Clients">
+    <mat-card-content>
+      <p>
+        Hier kan je als manager uw klanten beheren. Klanten toevoegen, posten aanmaken, agenten toewijzen...
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="link-card" routerLink="/dar" routerLinkActive="active" fxFlex="30%">
+    <mat-card-header>
+      <mat-card-title>Daily Activity Report</mat-card-title>
+      <mat-card-subtitle>Want dit is wat wij doen!</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="/assets/images/application/dar.jpg" alt="DAR">
+    <mat-card-content>
+      <p>
+        Hier noteren we onze observaties voor de klant.
+      </p>
+    </mat-card-content>
+  </mat-card>
 </div>
 
-<div class="container">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container">
   <div class="row">
     <div class="col-sm">
       <div class="card" style="width: 20rem;">
@@ -33,4 +93,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
