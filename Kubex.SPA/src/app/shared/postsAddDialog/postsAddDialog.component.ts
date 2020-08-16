@@ -33,11 +33,11 @@ export class PostsAddDialogComponent implements OnInit {
   ngOnInit() {
     this.postForm = this.formBuilder.group({
       postName: '',
-      street: [this.data.company.address.street, Validators.required],
-      houseNumber: [this.data.company.address.houseNumber, Validators.required],
-      appartementBus: [this.data.company.address.appartementBus],
-      zip: [this.data.company.address.zip, Validators.required],
-      country: [this.data.company.address.country, Validators.required],
+      street: [this.data.address.street, Validators.required],
+      houseNumber: [this.data.address.houseNumber, Validators.required],
+      appartementBus: [this.data.address.appartementBus],
+      zip: [this.data.address.zip, Validators.required],
+      country: [this.data.address.country, Validators.required],
     });
 
     this.accountService.getAll()
@@ -48,6 +48,7 @@ export class PostsAddDialogComponent implements OnInit {
   submit(postForm) {
     this.data.name = postForm.value.postName;
     this.data.users = this.postUsers;
+    this.data.company = null;
     this.dialogRef.close(this.data);
   }
 

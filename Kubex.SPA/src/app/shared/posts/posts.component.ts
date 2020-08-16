@@ -31,6 +31,8 @@ export class PostsComponent implements OnInit {
   openDialog() {
     const newPost = new Post();
     newPost.address = this.company.address;
+    console.log('address: ' + newPost.address.street);
+    newPost.companyId = this.company.id;
     newPost.company = this.company;
 
 
