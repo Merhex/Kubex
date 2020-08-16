@@ -13,13 +13,7 @@ export class AppComponent {
   photoUrl: string;
 
   constructor(private accountService: AccountService) {
-      this.accountService.user.subscribe(x => {
-        console.log(x.userName);
-        this.user = JSON.parse(localStorage.getItem('user'));
-      });
-      this.photoUrl = this.user.photoUrl;
-      console.log('user bij aanmelden: ' + this.user.userName);
-      console.log('photo url bij inloggen: ' + this.photoUrl);
+      this.accountService.user.subscribe(x => this.user = x );
   }
 
   logout() {
