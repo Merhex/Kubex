@@ -1,3 +1,4 @@
+import { PostCreate } from './../../_models/postCreate';
 import { Company, Post } from 'src/app/_models';
 import { PostsAddDialogComponent } from './../postsAddDialog/postsAddDialog.component';
 import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef, OnChanges } from '@angular/core';
@@ -29,7 +30,7 @@ export class PostsComponent implements OnInit {
   }
 
   openDialog() {
-    const newPost = new Post();
+    const newPost = new PostCreate();
     newPost.address = this.company.address;
     console.log('address: ' + newPost.address.street);
     newPost.companyId = this.company.id;

@@ -8,6 +8,7 @@ export * from './dailyActivityReport';
 export * from './address';
 export * from './company';
 export * from './post';
+export * from './postCreate';
 export * from './postRole';
 export * from './postUser';
 export * from './location';

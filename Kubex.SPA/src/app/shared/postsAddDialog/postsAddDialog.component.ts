@@ -1,6 +1,5 @@
+import { PostCreate } from './../../_models/postCreate';
 import { AccountService } from './../../_services/account.service';
-import { Company } from './../../_models/company';
-import { Post } from './../../_models/post';
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -16,7 +15,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 export class PostsAddDialogComponent implements OnInit {
   postForm: FormGroup;
   users = Array<User>();
-  postUsers = Array<User>();
+  postUsers = Array<string>();
 
   // Convenience getter voor de formulier velden
   get f() { return this.postForm.controls; }
@@ -27,7 +26,7 @@ export class PostsAddDialogComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private accountService: AccountService,
               public dialogRef: MatDialogRef<PostsAddDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: Post
+              @Inject(MAT_DIALOG_DATA) public data: PostCreate
               ) {}
 
   ngOnInit() {
@@ -57,7 +56,8 @@ export class PostsAddDialogComponent implements OnInit {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.postUsers.push(event.option.value);
+    const selectedUser: User = event.option.value;
+    this.postUsers.push(selectedUser.userName);
     this.searchInput.nativeElement.value = '';
     this.postName.nativeElement.focus();
   }
