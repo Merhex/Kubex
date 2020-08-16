@@ -35,14 +35,29 @@ namespace Kubex.BLL.Services
 
         public async Task<PostDTO> CreatePostAsync(PostDTO dto)
         {
-            var post = _mapper.Map<Post>(dto);
+            var p = _mapper.Map<Post>(dto);
 
-            _postRepository.Add(post);
+            _postRepository.Add(p);
 
             if (await _postRepository.SaveAll()) 
             {
+                var post = await _postRepository.Find(p.Id);
+
                 var userRole = await _roleManager.FindByNameAsync("User");
                 post.Roles.Add(new PostRole { RoleId = userRole.Id, PostId = post.Id });
+
+                if (dto.UserNames != null) 
+                {
+                    foreach (var userName in dto.UserNames)
+                    {
+                        var user = await _userManager.FindByNameAsync(userName);
+
+                        if (user == null)
+                            continue;
+                        
+                        post.Users.Add(new UserPost { UserId = user.Id, PostId = post.Id});
+                    }
+                }
                 
                 await _postRepository.SaveAll();
 

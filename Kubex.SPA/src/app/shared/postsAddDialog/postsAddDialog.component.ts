@@ -46,7 +46,7 @@ export class PostsAddDialogComponent implements OnInit {
 
   submit(postForm) {
     this.data.name = postForm.value.postName;
-    this.data.users = this.postUsers;
+    this.data.userNames = this.postUsers;
     this.data.company = null;
     this.dialogRef.close(this.data);
   }

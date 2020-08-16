@@ -48,6 +48,7 @@ export class PostsComponent implements OnInit {
                       .subscribe(
                         (data) => {
                           this.alertService.success('Company successfully registered',  { keepAfterRouteChange: true });
+                          console.log(data);
                           this.company.posts.push(result);
                           this.companyChange.emit(result);
                         },

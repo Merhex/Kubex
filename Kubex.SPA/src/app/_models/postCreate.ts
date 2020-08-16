@@ -1,4 +1,5 @@
 import { Address, Company } from './';
+import { User } from './user';
 
 export class PostCreate {
     id?: number;
@@ -6,5 +7,5 @@ export class PostCreate {
     companyId: number;
     company?: Company;
     address?: Address;
-    users?: string[];
+    userNames?: string[];
 }
