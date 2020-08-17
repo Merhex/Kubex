@@ -1,6 +1,4 @@
 import { Address } from '.';
-
-
 export class User {
     id?: number;
     userName: string;
@@ -12,4 +10,5 @@ export class User {
     token: string;
     isDeleting?: boolean;
     photoUrl: string;
+    postIds: Array<number>;
 }

@@ -21,6 +21,10 @@ export class DailyactivityreportService {
     return this.http.get<DailyActivityReport>(this.baseUrl + `last/${postId}`);
   }
 
+  getDarsByPost(postId: number): Observable<DailyActivityReport[]> {
+    return this.http.get<DailyActivityReport[]>(this.baseUrl + `post/${postId}`);
+  }
+
   createDar(postId: number): Observable<DailyActivityReport> {
     return this.http.post<DailyActivityReport>(this.baseUrl + `create/${postId}`, {});
   }

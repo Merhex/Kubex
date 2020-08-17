@@ -28,6 +28,14 @@ namespace Kubex.API.Controllers
             return Ok(dar);
         }
 
+        [HttpGet("post/{postId}")]
+        public async Task<IActionResult> GetDARsByPostId(int postId) 
+        {
+            var dar = await _darService.GetDailyActivityReportForPostAsync(postId);
+
+            return Ok(dar);
+        }
+
         [HttpGet("last/{postId}")]
         public async Task<IActionResult> GetLastDAR(int postId) 
         {

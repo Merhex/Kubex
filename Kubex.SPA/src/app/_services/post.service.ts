@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { AccountService } from './account.service';
 import { HttpClient } from '@angular/common/http';
 import { Post } from '../_models';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -28,5 +29,9 @@ export class PostService {
 
     delete(id: number) {
         return this.http.delete(this.baseUrl + id);
+    }
+
+    getPostsForUser(userName: string): Observable<Post[]> {
+        return this.http.get<Post[]>(this.baseUrl + `user/${userName}`);
     }
 }

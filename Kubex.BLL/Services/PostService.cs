@@ -171,7 +171,7 @@ namespace Kubex.BLL.Services
             return userToReturn;
         }
 
-        public async Task<IEnumerable<PostRole>> GetUserPostRolesAsync(string userId)
+        private async Task<IEnumerable<PostRole>> GetUserPostRolesAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -184,13 +184,24 @@ namespace Kubex.BLL.Services
             return userPostRoles;
         }
 
-        public async Task<IEnumerable<Post>> GetUserPostsAsync(string userId)
+        private async Task<IEnumerable<Post>> GetUserPostsAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
             var userPosts = await _postRepository.FindRange(p => p.Users.Any(u => u.UserId == user.Id));
 
             return userPosts;
+        }
+        
+        public async Task<IEnumerable<PostDTO>> GetPostsAsync(string userName) 
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+
+            var userPosts = await _postRepository.FindRange(p => p.Users.Any(u => u.UserId == user.Id));
+
+            var posts = _mapper.Map<IEnumerable<PostDTO>>(userPosts);
+
+            return posts;
         }
 
         public async Task<PostDTO> GetPostAsync(int id) 

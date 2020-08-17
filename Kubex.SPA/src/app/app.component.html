@@ -12,8 +12,8 @@
         <mat-form-field appearance="outline">
             <mat-label>Post</mat-label>
             <mat-select>
-              <mat-option> <!-- *ngFor="let post of user.posts"> -->
-                <!-- {{post.postName}} -->
+              <mat-option *ngFor="let post of posts">
+                {{post.name}}
               </mat-option>
             </mat-select>
           </mat-form-field>
