@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-dar',
   templateUrl: './dar.component.html',
-  styleUrls: ['./dar.component.css']
+  styleUrls: ['./dar.component.scss']
 })
 export class DarComponent implements OnInit {
   hasPosts = false;

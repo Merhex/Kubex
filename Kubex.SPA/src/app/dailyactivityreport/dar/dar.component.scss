@@ -69,3 +69,22 @@ mat-form-field {
 .mainrow {
   margin: 3em 1%;
 }
+
+.my-fab {
+  margin-top: 10px;
+  width: 30px;
+  height: 30px;
+  line-height: 25px;
+  font-size: 25px;
+
+  &::ng-deep .mat-button-wrapper{
+      line-height: 25px;
+      padding: 0;
+
+       .mat-icon {
+           font-size: 22px;
+           padding-right: 0px;
+           padding-top: 0px;
+       }
+ }
+}
