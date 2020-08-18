@@ -35,14 +35,11 @@ export class DarComponent implements OnInit {
   get s() { return this.postSubEntry.controls; }
 
   ngOnInit() {
-    // const user = this.accountService.userValue as any;
+    // Haal User en Posten op uit Local Storage
     const user = JSON.parse(localStorage.getItem('user'));
-    const userName = user['userName'];
-    console.log('username: ' + userName);
-
-    // const postIds = user.user.postIds as number[];
     const postIds = user['postIds'];
-    console.log('postIds: ' + postIds);
+    // const user = this.accountService.userValue as any;
+    // const postIds = user.user.postIds as number[];
 
     if (!postIds) {
       return;
@@ -51,7 +48,7 @@ export class DarComponent implements OnInit {
     this.postId = postIds[postIds.length - 1];
     console.log(this.postId);
 
-    // Initiate form groups
+    // Vul velden van formulieren in
     this.postEntry = this.formBuilder.group({
       entryTime: ['', Validators.required],
       entryLocation: ['', Validators.required],
