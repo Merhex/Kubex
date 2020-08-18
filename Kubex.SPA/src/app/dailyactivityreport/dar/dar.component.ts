@@ -1,10 +1,8 @@
 import { DailyactivityreportService, AlertService, AccountService } from 'src/app/_services';
-import { DailyActivityReport, Entry, EntryAdd, Location } from 'src/app/_models';
+import { DailyActivityReport, Entry, EntryAdd, Location, User } from 'src/app/_models';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MatCardHeader } from '@angular/material/card';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dar',
@@ -25,7 +23,6 @@ export class DarComponent implements OnInit {
   entries: Entry[];
   detail: Observable<Entry>;
 
-
   constructor(
     private dailyactivityreportService: DailyactivityreportService,
     private formBuilder: FormBuilder,
@@ -38,8 +35,14 @@ export class DarComponent implements OnInit {
   get s() { return this.postSubEntry.controls; }
 
   ngOnInit() {
-    const user = this.accountService.userValue as any;
-    const postIds = user.user.postIds as number[];
+    // const user = this.accountService.userValue as any;
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userName = user['userName'];
+    console.log('username: ' + userName);
+
+    // const postIds = user.user.postIds as number[];
+    const postIds = user['postIds'];
+    console.log('postIds: ' + postIds);
 
     if (!postIds) {
       return;
@@ -47,6 +50,18 @@ export class DarComponent implements OnInit {
 
     this.postId = postIds[postIds.length - 1];
     console.log(this.postId);
+
+    // Initiate form groups
+    this.postEntry = this.formBuilder.group({
+      entryTime: ['', Validators.required],
+      entryLocation: ['', Validators.required],
+      entryDescription: ['', Validators.required]
+    });
+    this.postSubEntry = this.formBuilder.group({
+      subEntryTime: ['', Validators.required],
+      subEntryLocation: ['', Validators.required],
+      subEntryDescription: ['', Validators.required]
+    });
 
     // Haal de laatste DAR op
     this.dailyactivityreportService.getDarsByPost(postIds[postIds.length - 1])
@@ -68,18 +83,6 @@ export class DarComponent implements OnInit {
         },
         error => {
           this.alertService.error(error);
-    });
-
-    // Set forms
-    this.postEntry = this.formBuilder.group({
-      entryTime: [''],
-      entryLocation: [''],
-      entryDescription: ['']
-    });
-    this.postSubEntry = this.formBuilder.group({
-      subEntryTime: [''],
-      subEntryLocation: [''],
-      subEntryDescription: ['']
     });
   }
 

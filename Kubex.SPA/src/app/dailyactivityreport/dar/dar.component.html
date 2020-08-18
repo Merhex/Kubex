@@ -5,7 +5,7 @@
         <h1>Post</h1>
 
         <!-- DAR Menu -->
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="DAR Menu">
           <mat-icon>dehaze</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
@@ -73,7 +73,7 @@
   
           <!-- Empty line for entry in subentries -->
           <mat-action-row class="mat-row">
-            <form [formGroup] = "postSubEntry" (ngSubmit)="onSubmitSub(entry)">
+            <form [formGroup]="postSubEntry" (ngSubmit)="onSubmitSub(entry)">
               <mat-form-field fxFlex="8%">
                 <input matInput type="time" formControlName="subEntryTime">
               </mat-form-field>
@@ -88,7 +88,7 @@
                           style="padding: 0px;"
                           formControlName="subEntryDescription"></textarea>
               </mat-form-field>
-              <button mat-mini-fab color="primary" type="submit">
+              <button mat-mini-fab color="primary" type="submit" [disabled]="postSubEntry.invalid || postSubEntry.untouched">
                 <mat-icon>send</mat-icon>
               </button>
             </form>
@@ -97,7 +97,7 @@
   
         <!-- Empty line for entry in main part -->
         <div class="mat-row newEntry">
-          <form [formGroup] = "postEntry" (ngSubmit)="onSubmit()">
+          <form [formGroup]="postEntry" (ngSubmit)="onSubmit()">
             <mat-form-field fxFlex="8%">
               <input matInput type="time" formControlName="entryTime">
             </mat-form-field>
@@ -112,7 +112,7 @@
                         style="padding: 0px;"
                         formControlName="entryDescription"></textarea>
             </mat-form-field>
-            <button mat-mini-fab color="primary" type="submit">
+            <button mat-mini-fab color="primary" type="submit"  [disabled]="postEntry.invalid || postEntry.untouched">
               <mat-icon>send</mat-icon>
             </button>
           </form>
