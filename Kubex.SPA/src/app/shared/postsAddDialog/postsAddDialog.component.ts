@@ -15,7 +15,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 export class PostsAddDialogComponent implements OnInit {
   postForm: FormGroup;
   users = Array<User>();
-  postUsers = Array<string>();
+  selectedUserNames = Array<string>();
+  postUsers = Array<User>();
 
   // Convenience getter voor de formulier velden
   get f() { return this.postForm.controls; }
@@ -46,7 +47,7 @@ export class PostsAddDialogComponent implements OnInit {
 
   submit(postForm) {
     this.data.name = postForm.value.postName;
-    this.data.userNames = this.postUsers;
+    this.data.userNames = this.selectedUserNames;
     this.data.company = null;
     this.dialogRef.close(this.data);
   }
@@ -57,7 +58,8 @@ export class PostsAddDialogComponent implements OnInit {
 
   selected(event: MatAutocompleteSelectedEvent): void {
     const selectedUser: User = event.option.value;
-    this.postUsers.push(selectedUser.userName);
+    this.postUsers.push(selectedUser);
+    this.selectedUserNames.push(selectedUser.userName);
     this.searchInput.nativeElement.value = '';
     this.postName.nativeElement.focus();
   }
