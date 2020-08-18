@@ -82,20 +82,12 @@ export class EditComponent implements OnInit {
               console.log('logo url: ' + company.logoUrl);
               this.previewUrl = company.logoUrl;
           });
-    } 
-    // else {
-    //   this.company = new Company();
-    //   this.company.address = new Address();
-    //   console.log('New company made: ' + this.company + ' with adress ' + this.company.address);
-    // }
+    }
 
     this.ref.detectChanges();
   }
 
   addPost(post: Post) {
-    console.log('post count before: ' + this.company.name + ' has ' + this.posts.length);
-    // this.company.posts.push(post);
-    console.log('post count after: ' + this.company.posts.length);
     this.ref.detectChanges();
   }
 
@@ -122,17 +114,22 @@ export class EditComponent implements OnInit {
     const address = this.getAddressFromForm();
     const companyToRegister = this.getCompanyRegisterFromForm();
 
-    if (this.response) {
-      companyToRegister.logoUrl = this.response.path ?? '';
+    if (this.previewUrl) {
+      companyToRegister.logoUrl = this.previewUrl;
     }
+
+    // if (this.response) {
+    //   companyToRegister.logoUrl = this.response.path ?? '';
+    // }
     companyToRegister.address = address;
 
     this.companyService.register(companyToRegister)
       .pipe(first())
       .subscribe(
         (data) => {
+          // this.company = data;
           this.alertService.success('Company successfully registered',  { keepAfterRouteChange: true });
-          this.router.navigate(['.', { relativeTo: this.route }]);
+          this.router.navigate(['./edit/' + data.id, { relativeTo: this.route }]);
         },
         (err) => {
             this.alertService.error(err);
@@ -212,6 +209,8 @@ export class EditComponent implements OnInit {
     reader.onload = (event) => {
       this.previewUrl = reader.result;
     };
+
+    this.companyForm.markAsTouched();
   }
 
   public async uploadFile(): Promise<void> {
