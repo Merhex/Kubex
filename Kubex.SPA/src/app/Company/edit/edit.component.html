@@ -1,7 +1,7 @@
 <h1 *ngIf="isAddMode">Add Client</h1>
 <h1 *ngIf="!isAddMode">Edit Client</h1>
 
-<form [formGroup]="companyForm" formControlName="companyForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
   <div fxLayout="row" fxLayoutGap="2%">
     <div fxFlex="85%">
       <div fxLayout="column" fxLayoutGap="1%">
