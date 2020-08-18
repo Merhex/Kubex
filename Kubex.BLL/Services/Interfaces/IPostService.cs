@@ -11,8 +11,7 @@ namespace Kubex.BLL.Services.Interfaces
         Task<PostDTO> SetPostRolesAsync(ModifyPostRolesDTO dto);
         Task<UserToReturnDTO> SetUserPostsAsync(UpdateUserPostsDTO dto);
         Task<UserToReturnDTO> RefreshUserPostRolesAsync(string userId);
-        Task<IEnumerable<PostRole>> GetUserPostRolesAsync(string userName);
-        Task<IEnumerable<Post>> GetUserPostsAsync(string userName);
+        Task<IEnumerable<PostDTO>> GetPostsAsync(string userName);
         Task<PostDTO> GetPostAsync(int id);
         Task DeletePostAsync(int postId);
         Task UpdatePostAsync(UpdatePostDTO dto);

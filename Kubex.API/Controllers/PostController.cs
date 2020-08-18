@@ -26,6 +26,14 @@ namespace Kubex.API.Controllers
             return Ok(post);
         }
 
+        [HttpGet("user/{userName}")]
+        public async Task<IActionResult> Get(string userName) 
+        {
+            var posts = await _postService.GetPostsAsync(userName);
+
+            return Ok(posts);
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id) 
         {

@@ -6,10 +6,12 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { UserToken } from '../_models/UserToken';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
     private userSubject: BehaviorSubject<User>;
+    private token: BehaviorSubject<string>;
     public user: Observable<User>;
 
     constructor(
@@ -17,6 +19,7 @@ export class AccountService {
         private http: HttpClient
     ) {
         this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
+        this.token = new BehaviorSubject<string>(JSON.parse(localStorage.getItem('token')));
         this.user = this.userSubject.asObservable();
     }
 
@@ -24,12 +27,18 @@ export class AccountService {
         return this.userSubject.value;
     }
 
+    public get jwtToken(): string {
+        return this.token.value;
+    }
+
     login(username, password) {
-        return this.http.post<User>(`${environment.apiUrl}/auth/login`, { username, password })
-            .pipe(map(user => {
+        return this.http.post<UserToken>(`${environment.apiUrl}/auth/login`, { username, password })
+            .pipe(map((user: UserToken) => {
                 // Sla User en JWT token op in lokale storage: Houd u ingeloged bij refresh
-                localStorage.setItem('user', JSON.stringify(user));
-                this.userSubject.next(user);
+                localStorage.setItem('user', JSON.stringify(user.user));
+                localStorage.setItem('token', JSON.stringify(user.token));
+                this.userSubject.next(user.user);
+                this.token.next(user.token);
                 return user;
             }));
     }
@@ -37,6 +46,8 @@ export class AccountService {
     logout() {
         // Verwijder huidige User uit lokale storage
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
+
         this.userSubject.next(null);
         this.router.navigate(['/account/login']);
     }

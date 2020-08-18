@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
         });
 
         // Haal URL uit de route parameters, indien niets gevonden naar default (/)
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
     }
 
     // Convenience getter voor de formulier velden

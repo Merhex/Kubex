@@ -1,9 +1,10 @@
-import { DailyactivityreportService, AlertService } from 'src/app/_services';
+import { DailyactivityreportService, AlertService, AccountService } from 'src/app/_services';
 import { DailyActivityReport, Entry, EntryAdd, Location } from 'src/app/_models';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatCardHeader } from '@angular/material/card';
 
 @Component({
   selector: 'app-dar',
@@ -11,6 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./dar.component.css']
 })
 export class DarComponent implements OnInit {
+  hasPosts = false;
   lastDarId: number;
   isDisabledNext: boolean;
   isDisabledPrevious: boolean;
@@ -19,6 +21,7 @@ export class DarComponent implements OnInit {
   dar = new DailyActivityReport();
   date: Date;
   id: number;
+  postId: number;
   entries: Entry[];
   detail: Observable<Entry>;
 
@@ -26,7 +29,8 @@ export class DarComponent implements OnInit {
   constructor(
     private dailyactivityreportService: DailyactivityreportService,
     private formBuilder: FormBuilder,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private accountService: AccountService
   ) {}
 
   // Convenience getter voor de formulier velden
@@ -34,17 +38,33 @@ export class DarComponent implements OnInit {
   get s() { return this.postSubEntry.controls; }
 
   ngOnInit() {
+    const user = this.accountService.userValue as any;
+    const postIds = user.user.postIds as number[];
+
+    if (!postIds) {
+      return;
+    }
+
+    this.postId = postIds[postIds.length - 1];
+    console.log(this.postId);
+
     // Haal de laatste DAR op
-    this.dailyactivityreportService.getLastDar(1)
+    this.dailyactivityreportService.getDarsByPost(postIds[postIds.length - 1])
       .subscribe(
-        (dar: DailyActivityReport) => {
-          this.dar = dar;
-          this.entries = dar.entries as Entry[];
-          this.lastDarId = dar.id;
+        (dars: DailyActivityReport[]) => {
+          const lastDar = dars[dars.length - 1];
+
+          this.dar = lastDar;
+          this.entries = lastDar.entries as Entry[];
+          this.lastDarId = lastDar.id;
           this.alertService.clear();
           // Deactiveer buttons
           this.isDisabledNext = true;
-          if (dar.id === 1) { this.isDisabledPrevious = true; }
+          if (dars.find(x => x.id === Math.min.apply(Math, dars.map((d: DailyActivityReport) => {
+            return x.id;
+          })))) {
+            this.isDisabledPrevious = true;
+          }
         },
         error => {
           this.alertService.error(error);
@@ -112,7 +132,7 @@ export class DarComponent implements OnInit {
     const minutes = data.substring(3);
 
     const time = new Date();
-    time.setHours(hours, minutes, 0);
+    time.setHours(hours - 2, minutes, 0);
 
     // Maak de entry klaar voor verzenden
     const subEntry = new Entry();
@@ -147,7 +167,7 @@ export class DarComponent implements OnInit {
   }
 
   createDar() {
-    this.dailyactivityreportService.createDar(1)
+    this.dailyactivityreportService.createDar(this.postId)
       .subscribe(
         (dar: DailyActivityReport) => {
           this.dar = dar;

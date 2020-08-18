@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './_helpers';
+import { HomeResolver } from './_resolvers/home.resolver';
 
 const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
 const usersModule = () => import('./user/user.module').then(x => x.UserModule);
@@ -10,7 +11,7 @@ const postModule = () => import('./posts/post.module').then(x => x.PostModule);
 const companyModule = () => import('./company/company.module').then(x => x.CompanyModule);
 
 const routes: Routes = [
-    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: '', component: HomeComponent, canActivate: [AuthGuard], resolve: HomeResolver },
     { path: 'users', loadChildren: usersModule, canActivate: [AuthGuard] },
     { path: 'account', loadChildren: accountModule },
     { path: 'dar', loadChildren: dailyactivityreportModule, canActivate: [AuthGuard] },

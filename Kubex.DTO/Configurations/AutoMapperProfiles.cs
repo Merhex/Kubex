@@ -23,7 +23,12 @@ namespace Kubex.DTO.Configurations
                 .ReverseMap();
 
             CreateMap<Post, PostDTO>()
-                .ForMember(p => p.Roles, opt => opt.Ignore())
+                .ReverseMap();
+            
+            CreateMap<PostRole, PostRoleDTO>()
+                .ReverseMap();
+            
+            CreateMap<UserPost, UserPostDTO>()
                 .ReverseMap();
 
             CreateMap<LocationDTO, Location>()

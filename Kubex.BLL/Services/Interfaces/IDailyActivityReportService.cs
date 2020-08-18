@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Kubex.DTO;
 
@@ -13,5 +14,6 @@ namespace Kubex.BLL.Services.Interfaces
         Task DeleteDailyActivityReportAsync(int darId);
         Task DeleteEntryFromDailyActivityReportAsync(int entryId, int darId);
         Task UpdateEntryInDailyActivityReportAsync(AddEntryToDailyActivityReportDTO dto);
+        Task<IEnumerable<DailyActivityReportDTO>> GetDailyActivityReportForPostAsync(int postId);
     }
 }

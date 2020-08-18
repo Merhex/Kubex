@@ -35,14 +35,29 @@ namespace Kubex.BLL.Services
 
         public async Task<PostDTO> CreatePostAsync(PostDTO dto)
         {
-            var post = _mapper.Map<Post>(dto);
+            var p = _mapper.Map<Post>(dto);
 
-            _postRepository.Add(post);
+            _postRepository.Add(p);
 
             if (await _postRepository.SaveAll()) 
             {
+                var post = await _postRepository.Find(p.Id);
+
                 var userRole = await _roleManager.FindByNameAsync("User");
                 post.Roles.Add(new PostRole { RoleId = userRole.Id, PostId = post.Id });
+
+                if (dto.UserNames != null) 
+                {
+                    foreach (var userName in dto.UserNames)
+                    {
+                        var user = await _userManager.FindByNameAsync(userName);
+
+                        if (user == null)
+                            continue;
+                        
+                        post.Users.Add(new UserPost { UserId = user.Id, PostId = post.Id});
+                    }
+                }
                 
                 await _postRepository.SaveAll();
 
@@ -156,7 +171,7 @@ namespace Kubex.BLL.Services
             return userToReturn;
         }
 
-        public async Task<IEnumerable<PostRole>> GetUserPostRolesAsync(string userId)
+        private async Task<IEnumerable<PostRole>> GetUserPostRolesAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -169,13 +184,24 @@ namespace Kubex.BLL.Services
             return userPostRoles;
         }
 
-        public async Task<IEnumerable<Post>> GetUserPostsAsync(string userId)
+        private async Task<IEnumerable<Post>> GetUserPostsAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
             var userPosts = await _postRepository.FindRange(p => p.Users.Any(u => u.UserId == user.Id));
 
             return userPosts;
+        }
+        
+        public async Task<IEnumerable<PostDTO>> GetPostsAsync(string userName) 
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+
+            var userPosts = await _postRepository.FindRange(p => p.Users.Any(u => u.UserId == user.Id));
+
+            var posts = _mapper.Map<IEnumerable<PostDTO>>(userPosts);
+
+            return posts;
         }
 
         public async Task<PostDTO> GetPostAsync(int id) 
