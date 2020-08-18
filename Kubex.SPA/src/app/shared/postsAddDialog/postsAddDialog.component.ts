@@ -2,7 +2,7 @@ import { PostCreate } from './../../_models/postCreate';
 import { AccountService } from './../../_services/account.service';
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { User } from 'src/app/_models';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -32,7 +32,7 @@ export class PostsAddDialogComponent implements OnInit {
 
   ngOnInit() {
     this.postForm = this.formBuilder.group({
-      postName: '',
+      postName: [this.data.name, Validators.required],
       street: [this.data.address.street, Validators.required],
       houseNumber: [this.data.address.houseNumber, Validators.required],
       appartementBus: [this.data.address.appartementBus],
