@@ -10,7 +10,7 @@
   <img class="userProfile" mat-button (click)="fetchPostNames()" [matMenuTriggerFor]="menu"
     [src]="photoUrl ? photoUrl : 'assets/images/application/user.png'">
   <mat-menu #menu="matMenu">
-    <mat-form-field appearance="outline">
+    <mat-form-field *ngIf="!isAdmin" appearance="outline">
       <mat-label>Post</mat-label>
       <mat-select>
         <mat-option *ngFor="let post of posts">
