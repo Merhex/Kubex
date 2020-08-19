@@ -31,8 +31,8 @@ export class DarResolver implements Resolve<Post> {
 
         return this.postService.get(postId).pipe(
             catchError(error => {
-                this.alertService.error('You are not assigned to a post yet.');
                 this.router.navigate(['/']);
+                this.alertService.info('You are not assigned to a post yet. Please contact your supervisor.');
                 return of(null);
             })
         );
