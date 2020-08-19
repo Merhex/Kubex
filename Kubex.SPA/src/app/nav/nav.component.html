@@ -1,6 +1,6 @@
 <!-- navigation -->
 <mat-toolbar color="primary" *ngIf="user">
-  <a *ngIf="isAdmin" mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+  <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
   <a *ngIf="isAdmin" mat-button routerLink="/users" routerLinkActive="active">Users</a>
   <a *ngIf="isAdmin" mat-button routerLink="/companies" routerLinkActive="active">Clients</a>
   <a *ngIf="!isAdmin" mat-button routerLink="/dar" routerLinkActive="active">DAR</a>
@@ -9,8 +9,9 @@
 
   <img class="userProfile" mat-button (click)="fetchPostNames()" [matMenuTriggerFor]="menu"
     [src]="photoUrl ? photoUrl : 'assets/images/application/user.png'">
-  <mat-menu #menu="matMenu">
+  <mat-menu #menu="matMenu" xPosition="before">
     <mat-form-field *ngIf="!isAdmin" appearance="outline">
+      <mat-icon matPrefix>domain</mat-icon>
       <mat-label>Post</mat-label>
       <mat-select>
         <mat-option *ngFor="let post of posts">
@@ -18,6 +19,9 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <button mat-menu-item>
+      <mat-icon>assignment_ind</mat-icon> Profile
+    </button>
     <button mat-menu-item (click)="logout()">
       <mat-icon>meeting_room</mat-icon> Logout
     </button>
