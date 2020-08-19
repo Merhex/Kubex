@@ -1,12 +1,12 @@
 import { PostCreate } from './../../_models/postCreate';
-import { Company, Post } from 'src/app/_models';
+import { Company, Post, User } from 'src/app/_models';
 import { PostsAddDialogComponent } from './../postsAddDialog/postsAddDialog.component';
 import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PostService } from 'src/app/_services/post.service';
 import { first } from 'rxjs/operators';
-import { AlertService } from 'src/app/_services';
+import { AlertService, AccountService } from 'src/app/_services';
 
 @Component({
   selector: 'app-posts',
@@ -22,6 +22,7 @@ export class PostsComponent implements OnInit {
               public changeDetection: ChangeDetectorRef,
               private postService: PostService,
               private alertService: AlertService,
+              private accountService: AccountService,
               public dialog: MatDialog
               ) {}
 
@@ -47,10 +48,21 @@ export class PostsComponent implements OnInit {
                       .pipe(first())
                       .subscribe(
                         (data) => {
-                          this.alertService.success('Company successfully registered',  { keepAfterRouteChange: true });
-                          console.log(data);
+                          let userToUpdate: User;
+
+                          this.accountService.user.subscribe(user => {
+                            userToUpdate = user;
+                          });
+
+                          userToUpdate.postIds.push(data.id);
+
+                          this.accountService.updateUser(userToUpdate);
+                          console.log(userToUpdate);
+
                           this.company.posts.push(result);
                           this.companyChange.emit(result);
+
+                          this.alertService.success('Post successfully registered', { keepAfterRouteChange: true });
                         },
                         (err) => {
                             this.alertService.error(err);

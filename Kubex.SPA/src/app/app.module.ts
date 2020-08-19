@@ -29,16 +29,18 @@ import {MatCardModule} from '@angular/material/card';
 
 import { CompanyComponent } from './Company/Company.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { NavComponent } from './nav/nav.component';
 
 @NgModule({
-   declarations: [
+   declarations: [	
       AppComponent,
       UserComponent,
       HomeComponent,
       DailyactivityreportComponent,
       AlertComponent,
       AccountComponent,
-      CompanyComponent
+      CompanyComponent,
+      NavComponent
    ],
    imports: [
       BrowserModule,

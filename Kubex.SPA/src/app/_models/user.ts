@@ -1,4 +1,5 @@
 import { Address } from '.';
+import { Post } from './post';
 export class User {
     id?: number;
     userName: string;
@@ -11,4 +12,5 @@ export class User {
     isDeleting?: boolean;
     photoUrl: string;
     postIds: Array<number>;
+    posts: Post[];
 }

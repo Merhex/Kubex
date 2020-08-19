@@ -10,37 +10,30 @@ import { UserToken } from '../_models/UserToken';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-    private userSubject: BehaviorSubject<User>;
-    private token: BehaviorSubject<string>;
-    public user: Observable<User>;
+    private userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
+    private token = new BehaviorSubject<string>(JSON.parse(localStorage.getItem('token')));
+    public user = this.userSubject.asObservable();
+    public jwtToken = this.token.asObservable();
 
     constructor(
         private router: Router,
         private http: HttpClient
-    ) {
-        this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
-        this.token = new BehaviorSubject<string>(JSON.parse(localStorage.getItem('token')));
-        this.user = this.userSubject.asObservable();
-    }
-
-    public get userValue(): User {
-        return this.userSubject.value;
-    }
-
-    public get jwtToken(): string {
-        return this.token.value;
-    }
+    ) { }
 
     login(username, password) {
         return this.http.post<UserToken>(`${environment.apiUrl}/auth/login`, { username, password })
-            .pipe(map((user: UserToken) => {
+            .pipe(map((userToken: UserToken) => {
                 // Sla User en JWT token op in lokale storage: Houd u ingeloged bij refresh
-                localStorage.setItem('user', JSON.stringify(user.user));
-                localStorage.setItem('token', JSON.stringify(user.token));
-                this.userSubject.next(user.user);
-                this.token.next(user.token);
-                return user;
+                localStorage.setItem('user', JSON.stringify(userToken.user));
+                localStorage.setItem('token', JSON.stringify(userToken.token));
+                this.userSubject.next(userToken.user);
+                this.token.next(userToken.token);
+                return userToken;
             }));
+    }
+
+    updateUser(user: User) {
+        this.userSubject.next(user);
     }
 
     logout() {
@@ -68,8 +61,8 @@ export class AccountService {
         return this.http.put(`${environment.apiUrl}/users/${userName}`, params)
             .pipe(map(x => {
                 // User in lokale storage updaten met nieuwe data
-                if (userName === this.userValue.userName) {
-                    const user = { ...this.userValue, ...params };
+                if (userName === this.userSubject.value.userName) {
+                    const user = { ...this.userSubject.value, ...params };
                     localStorage.setItem('user', JSON.stringify(user));
 
                     this.userSubject.next(user);
@@ -82,7 +75,7 @@ export class AccountService {
         return this.http.delete(`${environment.apiUrl}/users/${userName}`)
             .pipe(map(x => {
                 // Wanneer ingelogde User wordt verwijderd, ook meteen uitloggen
-                if (userName === this.userValue.userName) {
+                if (userName === this.userSubject.value.userName) {
                     this.logout();
                 }
                 return x;
