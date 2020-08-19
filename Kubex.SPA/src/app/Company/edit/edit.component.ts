@@ -117,17 +117,13 @@ export class EditComponent implements OnInit {
     if (this.previewUrl) {
       companyToRegister.logoUrl = this.previewUrl;
     }
-
-    // if (this.response) {
-    //   companyToRegister.logoUrl = this.response.path ?? '';
-    // }
+    
     companyToRegister.address = address;
 
     this.companyService.register(companyToRegister)
       .pipe(first())
       .subscribe(
         (data) => {
-          // this.company = data;
           this.alertService.success('Company successfully registered',  { keepAfterRouteChange: true });
           this.router.navigate(['/companies/edit/' + data.id, { relativeTo: this.route }]);
         },
