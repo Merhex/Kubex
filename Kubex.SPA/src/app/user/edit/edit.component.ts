@@ -134,6 +134,7 @@ export class AddEditComponent implements OnInit {
         .subscribe(
             data => {
                 this.alertService.success('User succesfully updated!', { keepAfterRouteChange: true });
+                this.loading = false;
             },
             error => {
                 this.alertService.error(error);
