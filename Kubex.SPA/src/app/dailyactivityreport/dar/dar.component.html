@@ -84,6 +84,7 @@
                           cdkAutosizeMinRows="1"
                           cdkAutosizeMaxRows="40"
                           #subEntryDescription
+                          id="subEntryDescription"
                           formControlName="subEntryDescription"></textarea>
               </mat-form-field>
               <button mat-mini-fab class="my-fab" color="primary" type="submit" [disabled]="postSubEntry.invalid || postSubEntry.untouched">
@@ -108,6 +109,7 @@
                         cdkAutosizeMinRows="1"
                         cdkAutosizeMaxRows="40"
                         #entryDescription
+                        id="entryDescription"
                         formControlName="entryDescription"></textarea>
             </mat-form-field>
             <button mat-mini-fab class="my-fab" color="primary" type="submit"  [disabled]="postEntry.invalid || postEntry.untouched">
