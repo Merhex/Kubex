@@ -9,6 +9,24 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  user: User;
+  isAdmin = false;
+
+  constructor(private accountService: AccountService) {
+      this.accountService.user.subscribe(user => {
+      this.user = user;
+      });
+  }
+
+  ngOnInit() {
+    this.accountService.user.subscribe(user => {
+      this.user = user;
+    });
+
+    if (this.user.roles.includes('Administrator')) {
+      this.isAdmin = true;
+    }
+  }
 
 }

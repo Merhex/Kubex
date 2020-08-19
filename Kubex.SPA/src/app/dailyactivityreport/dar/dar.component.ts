@@ -39,7 +39,7 @@ export class DarComponent implements OnInit {
   get s() { return this.postSubEntry.controls; }
 
   ngOnInit() {
-    // Haal User en Posten op uit Local Storage
+    // Haal User en Posten op
     this.accountService.user.subscribe(user => {
       this.user = user;
     });

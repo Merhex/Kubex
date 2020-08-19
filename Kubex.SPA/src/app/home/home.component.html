@@ -1,8 +1,8 @@
 <div class="container" fxLayout="row" fxLayoutGap="2%">
-  <mat-card class="link-card" routerLink="/users" routerLinkActive="active" fxFlex="30%">
+  <mat-card *ngIf="isAdmin" class="link-card" routerLink="/users" routerLinkActive="active" fxFlex="30%">
     <mat-card-header>
       <mat-card-title>Gebruikers</mat-card-title>
-      <mat-card-subtitle>Want wat zijn we zonder gebruikers?</mat-card-subtitle>
+      <mat-card-subtitle>Want wat zijn we zonder onze gebruikers?</mat-card-subtitle>
     </mat-card-header>
     <img mat-card-image src="/assets/images/application/guards.jpg" alt="Guards">
     <mat-card-content>
@@ -12,7 +12,7 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="link-card" routerLink="/companies" routerLinkActive="active" fxFlex="30%">
+  <mat-card *ngIf="isAdmin" class="link-card" routerLink="/companies" routerLinkActive="active" fxFlex="30%">
     <mat-card-header>
       <mat-card-title>Klanten</mat-card-title>
       <mat-card-subtitle>Wie zouden we anders beschermen?</mat-card-subtitle>
@@ -25,10 +25,10 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="link-card" routerLink="/dar" routerLinkActive="active" fxFlex="30%">
+  <mat-card *ngIf="!isAdmin" class="link-card" routerLink="/dar" routerLinkActive="active" fxFlex="30%">
     <mat-card-header>
       <mat-card-title>Daily Activity Report</mat-card-title>
-      <mat-card-subtitle>Want dit is wat wij doen!</mat-card-subtitle>
+      <mat-card-subtitle>Observeren en rapporteren. Want dit is wat wij doen!</mat-card-subtitle>
     </mat-card-header>
     <img mat-card-image src="/assets/images/application/dar.jpg" alt="DAR">
     <mat-card-content>

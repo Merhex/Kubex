@@ -9,6 +9,7 @@
 
   <img class="userProfile" mat-button (click)="fetchPostNames()" [matMenuTriggerFor]="menu"
     [src]="photoUrl ? photoUrl : 'assets/images/application/user.png'">
+
   <mat-menu #menu="matMenu" xPosition="before">
     <mat-form-field *ngIf="!isAdmin" appearance="outline">
       <mat-icon matPrefix>domain</mat-icon>
@@ -19,7 +20,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-menu-item routerLink="./users/edit/{{user.userName}}">
+    <button *ngIf="!isAdmin" mat-menu-item routerLink="./users/edit/{{user.userName}}">
       <mat-icon>assignment_ind</mat-icon> Profile
     </button>
     <button mat-menu-item (click)="logout()">
