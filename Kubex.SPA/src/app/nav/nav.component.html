@@ -19,7 +19,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-menu-item>
+    <button mat-menu-item routerLink="./users/edit/{{user.userName}}">
       <mat-icon>assignment_ind</mat-icon> Profile
     </button>
     <button mat-menu-item (click)="logout()">
