@@ -28,8 +28,11 @@ namespace Kubex.BLL.Services
 
             _companyRepository.Add(company);
 
-            if (await _companyRepository.SaveAll())
-                return dto;
+            if(await _companyRepository.SaveAll()) 
+            {
+                var companyToReturn = _mapper.Map<CompanyDTO>(company);
+                return companyToReturn;
+                }
 
             throw new ApplicationException("Unable to create company.");
         }

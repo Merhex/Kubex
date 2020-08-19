@@ -129,7 +129,7 @@ export class EditComponent implements OnInit {
         (data) => {
           // this.company = data;
           this.alertService.success('Company successfully registered',  { keepAfterRouteChange: true });
-          this.router.navigate(['./edit/' + data.id, { relativeTo: this.route }]);
+          this.router.navigate(['/companies/edit/' + data.id, { relativeTo: this.route }]);
         },
         (err) => {
             this.alertService.error(err);
