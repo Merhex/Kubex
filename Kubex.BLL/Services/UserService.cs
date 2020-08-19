@@ -11,6 +11,7 @@ using Kubex.DAL.Repositories.Interfaces;
 using Kubex.DTO;
 using Kubex.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -51,6 +52,18 @@ namespace Kubex.BLL.Services
             var userToReturn = _mapper.Map<UserToReturnDTO>(user);
 
             return userToReturn;
+        }
+
+        public async Task<IEnumerable<UserToReturnDTO>> GetAllUsersFromPost(int postId) 
+        {
+            var allUsers = await _userManager.Users.ToListAsync();
+
+            var users = allUsers.Where(u => 
+                u.Posts.Any(p => p.PostId == postId));
+
+            var usersToReturn = _mapper.Map<IEnumerable<UserToReturnDTO>>(users);
+
+            return usersToReturn;
         }
 
         public async Task<UserToReturnDTO> AddRoleToUserAsync(ModifyRolesDTO dto)
