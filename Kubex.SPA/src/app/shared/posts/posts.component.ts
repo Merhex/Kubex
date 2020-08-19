@@ -49,7 +49,36 @@ export class PostsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (post === null) {
+      if (post) {
+        this.postService.update(result)
+        .pipe(first())
+        .subscribe(
+          (data) => {
+            let userToUpdate: User;
+
+            this.accountService.user.subscribe(user => {
+              userToUpdate = user;
+            });
+
+            userToUpdate.postIds.push(data.id);
+
+            this.accountService.updateUser(userToUpdate);
+            console.log(userToUpdate);
+
+            // verwijder de bestaande post van de company
+            const index = this.company.posts.indexOf(post);
+            this.company.posts.splice(index, 1);
+
+            // voeg de geupdate post terug toe
+            this.company.posts.push(result);
+            this.companyChange.emit(result);
+
+            this.alertService.success('Post successfully updated', { keepAfterRouteChange: true });
+          },
+          (err) => {
+            this.alertService.error(err);
+          });
+      } else {
         this.postService.create(result)
           .pipe(first())
           .subscribe(
@@ -72,35 +101,6 @@ export class PostsComponent implements OnInit {
             },
             (err) => {
                 this.alertService.error(err);
-            });
-      } else {
-        this.postService.update(result)
-          .pipe(first())
-          .subscribe(
-            (data) => {
-              let userToUpdate: User;
-
-              this.accountService.user.subscribe(user => {
-                userToUpdate = user;
-              });
-
-              userToUpdate.postIds.push(data.id);
-
-              this.accountService.updateUser(userToUpdate);
-              console.log(userToUpdate);
-
-              // verwijder de bestaande post van de company
-              const index = this.company.posts.indexOf(post);
-              this.company.posts.splice(index, 1);
-
-              // voeg de geupdate post terug toe
-              this.company.posts.push(result);
-              this.companyChange.emit(result);
-
-              this.alertService.success('Post successfully updated', { keepAfterRouteChange: true });
-            },
-            (err) => {
-              this.alertService.error(err);
             });
       }
     });
