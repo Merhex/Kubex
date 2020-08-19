@@ -29,8 +29,8 @@ export class CompanyService {
     return this.http.get<Company>(this.baseUrl + id);
   }
 
-  register(company: CompanyRegister) {
-    return this.http.post(this.baseUrl + 'create/', company);
+  register(company: CompanyRegister): Observable<Company> {
+    return this.http.post<Company>(this.baseUrl + 'create/', company);
   }
 
   delete(id: number) {

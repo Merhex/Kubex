@@ -2,7 +2,7 @@ import { PostCreate } from './../../_models/postCreate';
 import { AccountService } from './../../_services/account.service';
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { User } from 'src/app/_models';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -15,7 +15,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 export class PostsAddDialogComponent implements OnInit {
   postForm: FormGroup;
   users = Array<User>();
-  postUsers = Array<string>();
+  selectedUserNames = Array<string>();
+  postUsers = Array<User>();
 
   // Convenience getter voor de formulier velden
   get f() { return this.postForm.controls; }
@@ -31,7 +32,7 @@ export class PostsAddDialogComponent implements OnInit {
 
   ngOnInit() {
     this.postForm = this.formBuilder.group({
-      postName: '',
+      postName: [this.data.name, Validators.required],
       street: [this.data.address.street, Validators.required],
       houseNumber: [this.data.address.houseNumber, Validators.required],
       appartementBus: [this.data.address.appartementBus],
@@ -46,7 +47,7 @@ export class PostsAddDialogComponent implements OnInit {
 
   submit(postForm) {
     this.data.name = postForm.value.postName;
-    this.data.userNames = this.postUsers;
+    this.data.userNames = this.selectedUserNames;
     this.data.company = null;
     this.dialogRef.close(this.data);
   }
@@ -57,7 +58,8 @@ export class PostsAddDialogComponent implements OnInit {
 
   selected(event: MatAutocompleteSelectedEvent): void {
     const selectedUser: User = event.option.value;
-    this.postUsers.push(selectedUser.userName);
+    this.postUsers.push(selectedUser);
+    this.selectedUserNames.push(selectedUser.userName);
     this.searchInput.nativeElement.value = '';
     this.postName.nativeElement.focus();
   }
