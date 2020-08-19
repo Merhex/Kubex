@@ -28,6 +28,14 @@ namespace Kubex.API.Controllers
 
             return Ok(users);
         }
+
+        [HttpGet("post/{postId}")]
+        public async Task<IActionResult> GetUsersFromPost(int postId) 
+        {
+            var users = await _userService.GetAllUsersFromPost(postId);
+
+            return Ok(users);
+        }
        
         [HttpGet("{userName}", Name = "GetUser")]
         public async Task<IActionResult> Get(string userName)

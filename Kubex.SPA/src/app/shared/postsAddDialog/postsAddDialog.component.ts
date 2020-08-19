@@ -6,7 +6,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { User } from 'src/app/_models';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatListOption } from '@angular/material/list';
 
 @Component({
   selector: 'app-postsadddialog',
@@ -40,6 +39,11 @@ export class PostsAddDialogComponent implements OnInit {
       zip: [this.data.address.zip, Validators.required],
       country: [this.data.address.country, Validators.required],
     });
+
+    this.accountService.getUsersFromPost(this.data.id).subscribe(postUsers => {
+      this.postUsers = postUsers;
+    });
+
 
     this.accountService.getAll()
       .pipe(first())

@@ -57,6 +57,10 @@ export class AccountService {
         return this.http.get<User>(`${environment.apiUrl}/users/${userName}`);
     }
 
+    getUsersFromPost(postId: number) {
+        return this.http.get<User[]>(`${environment.apiUrl}/users/post/${postId}`);
+    }
+
     update(userName, params) {
         return this.http.put(`${environment.apiUrl}/users/${userName}`, params)
             .pipe(map(x => {

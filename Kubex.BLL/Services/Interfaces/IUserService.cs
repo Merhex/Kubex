@@ -8,6 +8,7 @@ namespace Kubex.BLL.Services.Interfaces
     public interface IUserService
     {
          Task<UserToReturnDTO> GetUserAsync(string userName);
+         Task<IEnumerable<UserToReturnDTO>> GetAllUsersFromPost(int postId);
          Task<IEnumerable<UserToReturnDTO>> GetUsersAsync(ClaimsPrincipal requestingUser);
          Task<UserToReturnDTO> AddRoleToUserAsync(ModifyRolesDTO dto);
          Task<UserToReturnDTO> AddRolesToUserAsync(ModifyRolesDTO dto);
