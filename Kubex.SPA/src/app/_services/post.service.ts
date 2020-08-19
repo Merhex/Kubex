@@ -20,7 +20,7 @@ export class PostService {
     }
 
     update() {
-
+        return this.http.patch<Post>(this.baseUrl + `update/${id}`);
     }
 
     get(id: number) {

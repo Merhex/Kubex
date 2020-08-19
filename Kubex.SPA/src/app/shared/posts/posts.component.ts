@@ -30,13 +30,18 @@ export class PostsComponent implements OnInit {
     this.posts = this.company.posts;
   }
 
-  openDialog() {
-    const newPost = new PostCreate();
-    newPost.address = this.company.address;
-    console.log('address: ' + newPost.address.street);
+  openDialog(post?: Post) {
+    let newPost: Post;
+
+    if (post === null) {
+      newPost = new PostCreate();
+      newPost.address = this.company.address;
+    } else {
+      newPost = post;
+    }
+
     newPost.companyId = this.company.id;
     newPost.company = this.company;
-
 
     const dialogRef = this.dialog.open(PostsAddDialogComponent, {
       width: '75%',

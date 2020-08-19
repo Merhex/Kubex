@@ -5,7 +5,7 @@
       <mat-label>Name</mat-label>
       <input matInput placeholder="Ex. Main Entrance" value={{post.name}}>
     </mat-form-field>
-    <button mat-mini-fab type="button" aria-label="edit" color="primary" class="my-fab">
+    <button mat-mini-fab type="button" aria-label="edit" color="primary" class="my-fab" (click)="openDialog(post)">
       <mat-icon>edit</mat-icon>
     </button>
     <button mat-mini-fab type="button" aria-label="delete" color="warn" class="my-fab" (click)="deletePost(post)">
