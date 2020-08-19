@@ -30,6 +30,7 @@ export class CompanyListComponent implements OnInit {
         .pipe(first())
         .subscribe(() => {
             this.companies = this.companies.filter(x => x.id !== id);
+            this.alertService.success('Succesfully deleted the company!');
         },
         error => {
             this.alertService.error(error);
