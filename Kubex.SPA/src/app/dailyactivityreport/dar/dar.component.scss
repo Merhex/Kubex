@@ -88,3 +88,19 @@ mat-form-field {
        }
  }
 }
+
+.subentries {
+  padding-left: 1rem;
+}
+
+.subentries textarea {
+  padding: 0;
+}
+
+#subEntryDescription, #entryDescription {
+  padding-bottom: 0;
+}
+
+#dateColumn {
+  text-align: right;
+}
