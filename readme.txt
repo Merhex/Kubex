@@ -1,6 +1,8 @@
 Voor het eerste gebruik:
  - cd Kubex.DAL
  - dotnet ef database update -s "<path naar .API folder>"
+ - cd Kubex.SPA
+ - npm i
 
 Standaard wordt er al één gebruiker aangemaakt.
 User: admin
