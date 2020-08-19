@@ -121,7 +121,7 @@ namespace Kubex.BLL.Services
 
         public async Task<DailyActivityReportDTO> GetLastDailyActivityReportAsync(int postId)
         {
-            var dars = await GetDailyActivityReportForPostAsync(postId);
+            var dars = await GetDailyActivityReportsForPostAsync(postId);
             
             if (dars == null)
                 return await CreateDailyActivityReportAsync(postId);
@@ -179,7 +179,7 @@ namespace Kubex.BLL.Services
                 throw new ApplicationException("Something went wrong, could not update the given entry.");
         }
 
-        public async Task<IEnumerable<DailyActivityReportDTO>> GetDailyActivityReportForPostAsync(int postId) 
+        public async Task<IEnumerable<DailyActivityReportDTO>> GetDailyActivityReportsForPostAsync(int postId) 
         {
             var post = await _postRepository.Find(postId);
 
@@ -189,9 +189,21 @@ namespace Kubex.BLL.Services
             if (post.DailyActivityReports.Count <= 0)
                 await CreateDailyActivityReportAsync(postId);
             
-            var reports = _mapper.Map<IEnumerable<DailyActivityReportDTO>>(post.DailyActivityReports);
+            var reportsToReturn = new List<DailyActivityReportDTO>();
+            foreach (var report in post.DailyActivityReports)
+            {
+                var entries = await _entryRepository
+                    .FindRange(x => x.ParentEntry == null && x.DailyActivityReportId == report.Id);
 
-            return reports;
+                var darToReturn = _mapper.Map<DailyActivityReportDTO>(report);
+                var darEntries = _mapper.Map<ICollection<EntryDTO>>(entries);
+
+                darToReturn.Entries = darEntries;
+
+                reportsToReturn.Add(darToReturn);
+            }
+
+            return reportsToReturn;
         }
 
         private async Task<Entry> FindEntry(int entryId) => 

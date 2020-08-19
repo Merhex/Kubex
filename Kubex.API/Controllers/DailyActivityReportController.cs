@@ -31,7 +31,7 @@ namespace Kubex.API.Controllers
         [HttpGet("post/{postId}")]
         public async Task<IActionResult> GetDARsByPostId(int postId) 
         {
-            var dar = await _darService.GetDailyActivityReportForPostAsync(postId);
+            var dar = await _darService.GetDailyActivityReportsForPostAsync(postId);
 
             return Ok(dar);
         }
