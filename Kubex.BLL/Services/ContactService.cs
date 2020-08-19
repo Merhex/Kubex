@@ -38,21 +38,8 @@ namespace Kubex.BLL.Services
 
             _contactRepository.Add(contact);
 
-            if (await _contactRepository.SaveAll()) 
+            if (await _contactRepository.SaveAll())
             {
-                if (dto.CompanyId.HasValue) 
-                {
-                    var company = await _companyRepository.Find(dto.CompanyId.Value);
-
-                    company.Contacts.Add(contact);
-
-                    if (await _companyRepository.SaveAll())
-                        return _mapper.Map<ContactDTO>(contact);
-                    else
-                        throw new ApplicationException("Something went wrong adding the contact to the company");
-                
-                }
-
                 if (!string.IsNullOrWhiteSpace(dto.UserName)) 
                 {
                     var user = await _userManager
@@ -70,10 +57,11 @@ namespace Kubex.BLL.Services
                         throw new ApplicationException("Something went wrong adding the contact to the user");
 
                 }
+
+                return _mapper.Map<ContactDTO>(contact);
             }
             
             throw new ApplicationException("Something went wrong adding a new contact.");
-
         }
 
         public Task DeleteAllContactsForCompany(int companyId)

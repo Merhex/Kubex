@@ -36,7 +36,7 @@
             </div>
 
             <app-address></app-address>
-            <app-contact [username]="userName"></app-contact>
+            <app-contact [username]="userName" *ngIf="!isAddMode"></app-contact>
 
             <!-- Button group -->
             <div class="form-group button-group">

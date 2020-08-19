@@ -59,6 +59,22 @@ namespace Kubex.DAL
                 .WithOne(pr => pr.Post)
                 .IsRequired()
                 .HasForeignKey(pr => pr.PostId);
+            
+            builder.Entity<User>()
+                .HasMany<Contact>(u => u.Contacts)
+                .WithOne(u => u.User)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            builder.Entity<Company>()
+                .HasMany<Contact>(c => c.Contacts)
+                .WithOne(c => c.Company)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Company>()
+                .HasMany<Post>(c => c.Posts)
+                .WithOne(p => p.Company)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

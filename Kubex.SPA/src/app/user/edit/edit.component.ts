@@ -107,6 +107,7 @@ export class AddEditComponent implements OnInit {
     const userRegister = this.getUserRegisterFromForm();
 
     userRegister.address = address;
+    userRegister.photoUrl = this.previewUrl;
 
         // We sturen onze User naar de accountService voor registratie
     this.accountService.register(userRegister)

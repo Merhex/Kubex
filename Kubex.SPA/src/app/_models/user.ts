@@ -1,7 +1,7 @@
 import { Address } from '.';
 import { Post } from './post';
 export class User {
-    id?: number;
+    id?: string;
     userName: string;
     password?: string;
     firstName: string;
