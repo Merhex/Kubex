@@ -25,7 +25,7 @@
             Save
           </button>
           <button type="button" *ngIf="companyForm.untouched" class="btn btn-primary" routerLink="/companies">Close</button>
-          <a routerLink="/companies" class="btn btn-link">Cancel</a>
+          <a *ngIf="!companyForm.untouched" routerLink="/companies" class="btn btn-link">Cancel</a>
         </div>
       </div>
     </div>
