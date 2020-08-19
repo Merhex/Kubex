@@ -23,8 +23,8 @@ export class PostService {
 
     }
 
-    get() {
-
+    get(id: number) {
+        return this.http.get<Post>(this.baseUrl + `${id}`);
     }
 
     delete(id: number) {
