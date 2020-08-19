@@ -1,9 +1,10 @@
 import { DailyactivityreportService, AlertService, AccountService } from 'src/app/_services';
-import { DailyActivityReport, Entry, EntryAdd, Location, User } from 'src/app/_models';
+import { DailyActivityReport, Entry, EntryAdd, Location, User, Post } from 'src/app/_models';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { PostService } from 'src/app/_services/post.service';
 
 @Component({
   selector: 'app-dar',
@@ -20,6 +21,7 @@ export class DarComponent implements OnInit {
   dar = new DailyActivityReport();
   date: Date;
   postId: number;
+  post: Post;
   entries: Entry[];
   detail: Observable<Entry>;
   user: User;
@@ -42,8 +44,11 @@ export class DarComponent implements OnInit {
       this.user = user;
     });
     const postIds = this.user.postIds as number[];
-    // const user = this.accountService.userValue as any;
-    // const postIds = user.user.postIds as number[];
+
+
+    this.route.data.subscribe(data => {
+      this.post = data.post;
+    });
 
     if (!postIds) { return; }
 
@@ -52,10 +57,6 @@ export class DarComponent implements OnInit {
         if (data.postId) {
           // tslint:disable-next-line: radix
           const postId = parseInt(data.postId);
-
-          console.log(postId);
-          console.log(postIds);
-          console.log(postIds.includes(postId));
 
           if (postIds.includes(postId)) {
             this.postId = postId;
@@ -194,6 +195,7 @@ export class DarComponent implements OnInit {
           this.alertService.clear();
           this.lastDarId = dar.id;
           this.isDisabledNext = true;
+          this.isDisabledPrevious = false;
         },
         error => {
           this.alertService.error(error);
@@ -225,13 +227,23 @@ export class DarComponent implements OnInit {
     this.isDisabledNext = false;
     this.isDisabledPrevious = false;
 
-    this.dailyactivityreportService.getDarById(this.dar.id + 1)
+    this.dailyactivityreportService.getDarsByPost(this.postId)
       .subscribe(
-        (dar: DailyActivityReport) => {
-          this.dar = dar;
-          this.entries = dar.entries as Entry[];
+        (dars: DailyActivityReport[]) => {
+          const nextIndex = dars.findIndex(d => d.id === this.dar.id) + 1;
+
+          if (nextIndex === dars.length) {
+            this.isDisabledNext = true;
+            return;
+          }
+
+          this.dar = dars[nextIndex];
+          this.entries = this.dar.entries as Entry[];
           this.alertService.clear();
-          if (dar.id === this.lastDarId) { this.isDisabledNext = true; }
+
+          if (dars.findIndex(d => d.id === this.dar.id) === dars.length - 1) {
+            this.isDisabledNext = true;
+          }
         },
         error => {
           this.alertService.error(error);
@@ -241,9 +253,6 @@ export class DarComponent implements OnInit {
   gotoTodaysDar() {
     this.isDisabledNext = false;
     this.isDisabledPrevious = false;
-
-    console.log(this.postId);
-
 
     this.dailyactivityreportService.getDarsByPost(this.postId)
       .subscribe(

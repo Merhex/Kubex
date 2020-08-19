@@ -55,7 +55,7 @@ export class NavComponent implements OnInit {
 
   navigateToPostDar(postId: number) {
     console.log('clicked post link');
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+    this.router.navigateByUrl('/refresh', { skipLocationChange: true }).then(() =>
       this.router.navigate(['dar/', { postId }])
     );
   }

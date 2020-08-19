@@ -30,9 +30,11 @@ import {MatCardModule} from '@angular/material/card';
 import { CompanyComponent } from './Company/Company.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NavComponent } from './nav/nav.component';
+import { DarResolver } from './_resolvers/dar.resolver';
+import { RefreshComponent } from './refresh/refresh.component';
 
 @NgModule({
-   declarations: [	
+   declarations: [
       AppComponent,
       UserComponent,
       HomeComponent,
@@ -40,7 +42,8 @@ import { NavComponent } from './nav/nav.component';
       AlertComponent,
       AccountComponent,
       CompanyComponent,
-      NavComponent
+      NavComponent,
+      RefreshComponent
    ],
    imports: [
       BrowserModule,
@@ -65,7 +68,8 @@ import { NavComponent } from './nav/nav.component';
    ],
    providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-      { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+      { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+      DarResolver
    ],
    bootstrap: [
       AppComponent
