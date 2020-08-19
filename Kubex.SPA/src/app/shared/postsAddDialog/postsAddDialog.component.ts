@@ -43,7 +43,12 @@ export class PostsAddDialogComponent implements OnInit {
 
     this.accountService.getAll()
       .pipe(first())
-      .subscribe(users => this.users = users);
+      .subscribe(users => this.users = users.filter((user) => {
+        if (user.roles.includes('Administrator') || user.roles.includes('Moderator')) {
+          return;
+        }
+        return user;
+      }));
   }
 
   submit(postForm) {
