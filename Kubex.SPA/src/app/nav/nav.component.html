@@ -3,7 +3,7 @@
   <a *ngIf="isAdmin" mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
   <a *ngIf="isAdmin" mat-button routerLink="/users" routerLinkActive="active">Users</a>
   <a *ngIf="isAdmin" mat-button routerLink="/companies" routerLinkActive="active">Clients</a>
-  <a mat-button routerLink="/dar" routerLinkActive="active">DAR</a>
+  <a *ngIf="!isAdmin" mat-button routerLink="/dar" routerLinkActive="active">DAR</a>
 
   <span class="spacer"></span>
 
