@@ -63,4 +63,8 @@ export class PostsAddDialogComponent implements OnInit {
     this.searchInput.nativeElement.value = '';
     this.postName.nativeElement.focus();
   }
+
+  deleteAgent() {
+    // delete agent from array
+  }
 }
