@@ -9,7 +9,6 @@ import { RefreshComponent } from './refresh/refresh.component';
 const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
 const usersModule = () => import('./user/user.module').then(x => x.UserModule);
 const dailyactivityreportModule = () => import('./dailyactivityreport/dailyactivityreport.module').then(x => x.DailyactivityreportModule);
-const postModule = () => import('./posts/post.module').then(x => x.PostModule);
 const companyModule = () => import('./company/company.module').then(x => x.CompanyModule);
 
 const routes: Routes = [
@@ -20,7 +19,6 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         resolve: { post: DarResolver},
         runGuardsAndResolvers: 'always' },
-    { path: 'posts', loadChildren: postModule, canActivate: [AuthGuard], runGuardsAndResolvers: 'always'  },
     { path: 'companies', loadChildren: companyModule, canActivate: [AuthGuard], runGuardsAndResolvers: 'always' },
     { path: 'refresh', component: RefreshComponent },
 
