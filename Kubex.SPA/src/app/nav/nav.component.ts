@@ -13,6 +13,7 @@ export class NavComponent implements OnInit {
   user: User;
   photoUrl: string;
   posts: Post[];
+  isAdmin = false;
 
   constructor(private accountService: AccountService,
               private postService: PostService,
@@ -28,6 +29,10 @@ export class NavComponent implements OnInit {
       this.user = user;
       this.photoUrl = this.user.photoUrl;
     });
+
+    if (this.user.roles.includes('Administrator')) {
+      this.isAdmin = true;
+    }
 
     this.getPosts();
   }
