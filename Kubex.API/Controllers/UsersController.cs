@@ -57,13 +57,18 @@ namespace Kubex.API.Controllers
             return Ok(user); 
         }
 
-        [Authorize(Roles = "Administrator, Manager")]
+        [Authorize(Roles = "Administrator, Manager, User, Agent")]
         [HttpPut("{userName}")]
         public async Task<IActionResult> UpdateUser(UserRegisterDTO dto) 
         {
-            await _userService.UpdateUserAsync(dto);
+            if (HttpContext.User.Identity.Name == dto.UserName && HttpContext.User.Identity.IsAuthenticated) 
+            {
+                await _userService.UpdateUserAsync(dto);
 
-            return NoContent();
+                return NoContent();
+            }
+
+            return Unauthorized();
         }
 
         [Authorize(Roles = "Administrator, Manager")]
