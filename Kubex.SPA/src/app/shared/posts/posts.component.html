@@ -1,9 +1,9 @@
-<ng-container [formGroup]="controlContainer.control">
+<ng-container>
   <h3 class="section">Posts</h3>
   <div *ngFor="let post of company.posts" fxLayout="row" fxLayoutGap="1%">
     <mat-form-field appearance="fill" fxFlex>
       <mat-label>Name</mat-label>
-      <input matInput formControlName="postName" placeholder="Ex. Main Entrance" value={{post.name}}>
+      <input matInput placeholder="Ex. Main Entrance" value={{post.name}}>
     </mat-form-field>
     <button mat-mini-fab type="button" aria-label="edit" color="primary" class="my-fab">
       <mat-icon>edit</mat-icon>

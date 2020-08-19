@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { DailyactivityreportLayoutComponent } from './dailyactivityreportLayout/dailyactivityreportLayout.component';
 import { DailyactivityreportRoutingModule } from './dailyactivityreport-routing.module';
 import { DarComponent } from './dar/dar.component';
-import { SubEntryComponent } from './subEntry/subEntry.component';
 
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatInputModule} from '@angular/material/input';
@@ -18,8 +17,7 @@ import {MatMenuModule} from '@angular/material/menu';
 @NgModule({
   declarations: [
     DailyactivityreportLayoutComponent,
-    DarComponent,
-    SubEntryComponent
+    DarComponent
   ],
   imports: [
     CommonModule,

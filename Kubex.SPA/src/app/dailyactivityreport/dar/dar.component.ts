@@ -39,7 +39,7 @@ export class DarComponent implements OnInit {
   get s() { return this.postSubEntry.controls; }
 
   ngOnInit() {
-    // Haal User en Posten op uit Local Storage
+    // Haal User en Posten op
     this.accountService.user.subscribe(user => {
       this.user = user;
     });
@@ -81,26 +81,6 @@ export class DarComponent implements OnInit {
 
     // Haal de laatste DAR op
     this.gotoTodaysDar();
-    // this.dailyactivityreportService.getDarsByPost(postIds[postIds.length - 1])
-    //   .subscribe(
-    //     (dars: DailyActivityReport[]) => {
-    //       const lastDar = dars[dars.length - 1];
-
-    //       this.dar = lastDar;
-    //       this.entries = lastDar.entries as Entry[];
-    //       this.lastDarId = lastDar.id;
-    //       this.alertService.clear();
-    //       // Deactiveer buttons
-    //       this.isDisabledNext = true;
-    //       if (dars.find(x => x.id === Math.min.apply(Math, dars.map((d: DailyActivityReport) => {
-    //         return x.id;
-    //       })))) {
-    //         this.isDisabledPrevious = true;
-    //       }
-    //     },
-    //     error => {
-    //       this.alertService.error(error);
-    // });
   }
 
   onSubmit() {

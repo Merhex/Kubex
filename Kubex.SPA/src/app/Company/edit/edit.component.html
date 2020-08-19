@@ -16,15 +16,16 @@
 
         <app-address [formGroup]="companyForm"></app-address>
         <app-contact *ngIf="!isAddMode" [formGroup]="companyForm" [companyId]="id"></app-contact>
-        <app-posts *ngIf="company" [company]="company" (companyChange)="addPost($event)" [formGroup]="companyForm"></app-posts>
+        <app-posts *ngIf="company" [company]="company" (companyChange)="addPost($event)"></app-posts>
 
         <!-- Buttons -->
         <div class="form-group">
-          <button type="submit" [disabled]="loading || companyForm.invalid || companyForm.untouched" class="btn btn-primary">
+          <button type="submit" *ngIf="!companyForm.untouched" [disabled]="loading || companyForm.invalid" class="btn btn-primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Save
           </button>
-          <a routerLink="/companies" class="btn btn-link">Cancel</a>
+          <button type="button" *ngIf="companyForm.untouched" class="btn btn-primary" routerLink="/companies">Close</button>
+          <a *ngIf="!companyForm.untouched" routerLink="/companies" class="btn btn-link">Cancel</a>
         </div>
       </div>
     </div>
