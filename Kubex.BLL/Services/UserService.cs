@@ -54,6 +54,19 @@ namespace Kubex.BLL.Services
             return userToReturn;
         }
 
+        public async Task DeleteUserFromPostAsync(string userName, int postId)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+
+            if (user == null)
+                throw new ArgumentNullException(null, "Could not find a user with the given username.");
+
+            var post = user.Posts.Where(p => p.PostId == postId).FirstOrDefault();
+            user.Posts.Remove(post);
+
+            await _userManager.UpdateAsync(user);
+        }
+
         public async Task<IEnumerable<UserToReturnDTO>> GetAllUsersFromPost(int postId) 
         {
             var allUsers = await _userManager.Users.ToListAsync();

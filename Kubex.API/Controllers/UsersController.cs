@@ -87,5 +87,14 @@ namespace Kubex.API.Controllers
 
             return NoContent();
         }
+
+        [Authorize(Roles = "Administrator, Manager")]
+        [HttpDelete("post/{postId}/{userName}")]
+        public async Task<IActionResult> DeleteUserFromPost(int postId, string userName)
+        {
+            await _userService.DeleteUserFromPostAsync(userName, postId);
+
+            return NoContent();
+        }
     }
 }

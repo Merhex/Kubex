@@ -84,11 +84,16 @@ export class PostsAddDialogComponent implements OnInit {
   deleteAgentFromPost(user: User) {
     // Haal agent uit de lijst van gekoppelde gebruikers
     const index = this.postUsers.indexOf(user);
-    this.postUsers.splice(index, 1);
+    const postUser = this.postUsers.splice(index, 1);
 
     // Haal username uit de lijst van gekoppelde gebruikers
     const indexUserName = this.selectedUserNames.indexOf(user.userName);
-    this.selectedUserNames.splice(indexUserName, 1);
+
+    const userName = this.selectedUserNames.splice(indexUserName, 1);
+
+    this.accountService.deleteUserFromPost(this.data.id, postUser[0].userName).subscribe(data => {
+      console.log('User deleted');
+    });
 
     // Zet gebruiker terug in selecteerbare gebruikers
     this.users.push(user);

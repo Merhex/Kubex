@@ -85,4 +85,8 @@ export class AccountService {
                 return x;
             }));
     }
+
+    deleteUserFromPost(postId: number, userName: string) {
+        return this.http.delete(`${environment.apiUrl}/users/post/${postId}/${userName}`);
+    }
 }
