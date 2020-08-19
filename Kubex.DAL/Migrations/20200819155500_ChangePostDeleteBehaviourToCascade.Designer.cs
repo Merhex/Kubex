@@ -3,14 +3,16 @@ using System;
 using Kubex.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Kubex.DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200819155500_ChangePostDeleteBehaviourToCascade")]
+    partial class ChangePostDeleteBehaviourToCascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,6 +325,9 @@ namespace Kubex.DAL.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
@@ -330,6 +335,8 @@ namespace Kubex.DAL.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("LocationId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Posts");
                 });
@@ -740,6 +747,10 @@ namespace Kubex.DAL.Migrations
                     b.HasOne("Kubex.Models.Location", "Location")
                         .WithMany("Posts")
                         .HasForeignKey("LocationId");
+
+                    b.HasOne("Kubex.Models.User", null)
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Kubex.Models.PostRole", b =>
@@ -767,7 +778,7 @@ namespace Kubex.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Kubex.Models.User", "User")
-                        .WithMany("Posts")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

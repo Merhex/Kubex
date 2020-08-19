@@ -22,17 +22,17 @@
           [matAutocomplete]="auto"
           #searchInput>
       </mat-form-field>
-      
-      <span class="spacer"></span>
-
-      <mat-icon class="deleteIcon">delete</mat-icon>
     </div>
     
-    <mat-selection-list #agents>
-      <mat-list-option *ngFor="let user of postUsers">
+    <mat-list #agents>
+      <mat-list-item *ngFor="let user of postUsers">
         {{user.userName}} - {{user.lastName}} {{user.firstName}}
-      </mat-list-option>
-    </mat-selection-list>
+        <span class="spacer"></span>
+        <button type="button" mat-icon-button (click)="deleteAgentFromPost(user)">
+          <mat-icon mat-list-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
     
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
       <mat-option *ngFor="let user of users" [value]="user">

@@ -1,8 +1,10 @@
 import { DailyactivityreportService, AlertService, AccountService } from 'src/app/_services';
-import { DailyActivityReport, Entry, EntryAdd, Location, User } from 'src/app/_models';
+import { DailyActivityReport, Entry, EntryAdd, Location, User, Post } from 'src/app/_models';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { PostService } from 'src/app/_services/post.service';
 
 @Component({
   selector: 'app-dar',
@@ -18,16 +20,18 @@ export class DarComponent implements OnInit {
   postSubEntry: FormGroup;
   dar = new DailyActivityReport();
   date: Date;
-  id: number;
   postId: number;
+  post: Post;
   entries: Entry[];
   detail: Observable<Entry>;
+  user: User;
 
   constructor(
     private dailyactivityreportService: DailyactivityreportService,
     private formBuilder: FormBuilder,
     private alertService: AlertService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private route: ActivatedRoute
   ) {}
 
   // Convenience getter voor de formulier velden
@@ -35,18 +39,33 @@ export class DarComponent implements OnInit {
   get s() { return this.postSubEntry.controls; }
 
   ngOnInit() {
-    // Haal User en Posten op uit Local Storage
-    const user = JSON.parse(localStorage.getItem('user'));
-    const postIds = user['postIds'];
-    // const user = this.accountService.userValue as any;
-    // const postIds = user.user.postIds as number[];
+    // Haal User en Posten op
+    this.accountService.user.subscribe(user => {
+      this.user = user;
+    });
+    const postIds = this.user.postIds as number[];
 
-    if (!postIds) {
-      return;
-    }
 
-    this.postId = postIds[postIds.length - 1];
-    console.log(this.postId);
+    this.route.data.subscribe(data => {
+      this.post = data.post;
+    });
+
+    if (!postIds) { return; }
+
+    this.route.params.subscribe(
+      data => {
+        if (data.postId) {
+          // tslint:disable-next-line: radix
+          const postId = parseInt(data.postId);
+
+          if (postIds.includes(postId)) {
+            this.postId = postId;
+          }
+        } else {
+          this.postId = postIds[0];
+        }
+      }
+    );
 
     // Vul velden van formulieren in
     this.postEntry = this.formBuilder.group({
@@ -61,26 +80,7 @@ export class DarComponent implements OnInit {
     });
 
     // Haal de laatste DAR op
-    this.dailyactivityreportService.getDarsByPost(postIds[postIds.length - 1])
-      .subscribe(
-        (dars: DailyActivityReport[]) => {
-          const lastDar = dars[dars.length - 1];
-
-          this.dar = lastDar;
-          this.entries = lastDar.entries as Entry[];
-          this.lastDarId = lastDar.id;
-          this.alertService.clear();
-          // Deactiveer buttons
-          this.isDisabledNext = true;
-          if (dars.find(x => x.id === Math.min.apply(Math, dars.map((d: DailyActivityReport) => {
-            return x.id;
-          })))) {
-            this.isDisabledPrevious = true;
-          }
-        },
-        error => {
-          this.alertService.error(error);
-    });
+    this.gotoTodaysDar();
   }
 
   onSubmit() {
@@ -132,7 +132,7 @@ export class DarComponent implements OnInit {
     const minutes = data.substring(3);
 
     const time = new Date();
-    time.setHours(hours - 2, minutes, 0);
+    time.setHours(hours, minutes, 0);
 
     // Maak de entry klaar voor verzenden
     const subEntry = new Entry();
@@ -175,6 +175,7 @@ export class DarComponent implements OnInit {
           this.alertService.clear();
           this.lastDarId = dar.id;
           this.isDisabledNext = true;
+          this.isDisabledPrevious = false;
         },
         error => {
           this.alertService.error(error);
@@ -185,13 +186,17 @@ export class DarComponent implements OnInit {
     this.isDisabledNext = false;
     this.isDisabledPrevious = false;
 
-    this.dailyactivityreportService.getDarById(this.dar.id - 1)
+    this.dailyactivityreportService.getDarsByPost(this.postId)
       .subscribe(
-        (dar: DailyActivityReport) => {
-          this.dar = dar;
-          this.entries = dar.entries as Entry[];
+        (dars: DailyActivityReport[]) => {
+          const index = dars.findIndex(d => d.id === this.dar.id);
+          if (index - 1 === 0) {
+            this.isDisabledPrevious = true;
+          }
+
+          this.dar = dars[index - 1];
+          this.entries = this.dar.entries as Entry[];
           this.alertService.clear();
-          if (dar.id === 1) { this.isDisabledPrevious = true; }
         },
         error => {
           this.alertService.error(error);
@@ -202,13 +207,23 @@ export class DarComponent implements OnInit {
     this.isDisabledNext = false;
     this.isDisabledPrevious = false;
 
-    this.dailyactivityreportService.getDarById(this.dar.id + 1)
+    this.dailyactivityreportService.getDarsByPost(this.postId)
       .subscribe(
-        (dar: DailyActivityReport) => {
-          this.dar = dar;
-          this.entries = dar.entries as Entry[];
+        (dars: DailyActivityReport[]) => {
+          const nextIndex = dars.findIndex(d => d.id === this.dar.id) + 1;
+
+          if (nextIndex === dars.length) {
+            this.isDisabledNext = true;
+            return;
+          }
+
+          this.dar = dars[nextIndex];
+          this.entries = this.dar.entries as Entry[];
           this.alertService.clear();
-          if (dar.id === this.lastDarId) { this.isDisabledNext = true; }
+
+          if (dars.findIndex(d => d.id === this.dar.id) === dars.length - 1) {
+            this.isDisabledNext = true;
+          }
         },
         error => {
           this.alertService.error(error);
@@ -219,13 +234,15 @@ export class DarComponent implements OnInit {
     this.isDisabledNext = false;
     this.isDisabledPrevious = false;
 
-    this.dailyactivityreportService.getDarById(this.lastDarId)
+    this.dailyactivityreportService.getDarsByPost(this.postId)
       .subscribe(
-        (dar: DailyActivityReport) => {
-          this.dar = dar;
-          this.entries = dar.entries as Entry[];
+        (dars: DailyActivityReport[]) => {
+          this.dar = dars[dars.length - 1];
+          this.entries = this.dar.entries as Entry[];
           this.alertService.clear();
-          if (dar.id === this.lastDarId) { this.isDisabledNext = true; }
+
+          if (this.dar.id === dars[dars.length - 1].id) { this.isDisabledNext = true; }
+          if (dars.length === 1) { this.isDisabledPrevious = true; }
         },
         error => {
           this.alertService.error(error);

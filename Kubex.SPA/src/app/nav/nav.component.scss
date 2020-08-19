@@ -1,0 +1,31 @@
+.container {
+    padding: 7% 5%;
+}
+
+.row {
+    margin-top: 20px;
+}
+
+.link-card {
+    width: 45%;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.userProfile {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+mat-toolbar {
+    padding: 0 10%;
+}
+
+::ng-deep.mat-menu-panel {
+    max-width: none !important;
+    width: auto;
+}

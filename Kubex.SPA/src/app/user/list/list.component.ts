@@ -27,7 +27,8 @@ export class ListComponent implements OnInit {
                 this.users = this.users.filter(x => x.userName !== userName);
             },
             error => {
-                this.alertService.error(error);
+                user.isDeleting = false;
+                this.alertService.error('Unable to delete user. It can be insufficient rights, please contact the administrator.');
             });
     }
 }

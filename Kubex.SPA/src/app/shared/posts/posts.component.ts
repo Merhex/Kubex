@@ -1,12 +1,12 @@
 import { PostCreate } from './../../_models/postCreate';
-import { Company, Post } from 'src/app/_models';
+import { Company, Post, User } from 'src/app/_models';
 import { PostsAddDialogComponent } from './../postsAddDialog/postsAddDialog.component';
 import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PostService } from 'src/app/_services/post.service';
 import { first } from 'rxjs/operators';
-import { AlertService } from 'src/app/_services';
+import { AlertService, AccountService } from 'src/app/_services';
 
 @Component({
   selector: 'app-posts',
@@ -22,6 +22,7 @@ export class PostsComponent implements OnInit {
               public changeDetection: ChangeDetectorRef,
               private postService: PostService,
               private alertService: AlertService,
+              private accountService: AccountService,
               public dialog: MatDialog
               ) {}
 
@@ -29,13 +30,18 @@ export class PostsComponent implements OnInit {
     this.posts = this.company.posts;
   }
 
-  openDialog() {
-    const newPost = new PostCreate();
-    newPost.address = this.company.address;
-    console.log('address: ' + newPost.address.street);
+  openDialog(post?: Post) {
+    let newPost: Post;
+
+    if (post) {
+      newPost = post;
+    } else {
+      newPost = new PostCreate();
+      newPost.address = this.company.address;
+    }
+
     newPost.companyId = this.company.id;
     newPost.company = this.company;
-
 
     const dialogRef = this.dialog.open(PostsAddDialogComponent, {
       width: '75%',
@@ -43,23 +49,68 @@ export class PostsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.postService.create(result)
-                      .pipe(first())
-                      .subscribe(
-                        (data) => {
-                          this.alertService.success('Company successfully registered',  { keepAfterRouteChange: true });
-                          console.log(data);
-                          this.company.posts.push(result);
-                          this.companyChange.emit(result);
-                        },
-                        (err) => {
-                            this.alertService.error(err);
-                        });
+      if (post) {
+        this.postService.update(result)
+        .pipe(first())
+        .subscribe(
+          (data) => {
+            let userToUpdate: User;
+
+            this.accountService.user.subscribe(user => {
+              userToUpdate = user;
+            });
+
+            userToUpdate.postIds.push(data.id);
+
+            this.accountService.updateUser(userToUpdate);
+            console.log(userToUpdate);
+
+            // verwijder de bestaande post van de company
+            const index = this.company.posts.indexOf(post);
+            this.company.posts.splice(index, 1);
+
+            // voeg de geupdate post terug toe
+            this.company.posts.push(result);
+            this.companyChange.emit(result);
+
+            this.alertService.success('Post successfully updated', { keepAfterRouteChange: true });
+          },
+          (err) => {
+            this.alertService.error(err);
+          });
+      } else {
+        this.postService.create(result)
+          .pipe(first())
+          .subscribe(
+            (data) => {
+              let userToUpdate: User;
+
+              this.accountService.user.subscribe(user => {
+                userToUpdate = user;
+              });
+
+              userToUpdate.postIds.push(data.id);
+
+              this.accountService.updateUser(userToUpdate);
+              console.log(userToUpdate);
+
+              this.company.posts.push(result);
+              this.companyChange.emit(result);
+
+              this.alertService.success('Post successfully registered', { keepAfterRouteChange: true });
+            },
+            (err) => {
+                this.alertService.error(err);
+            });
+      }
     });
   }
 
   deletePost(post: Post) {
-    if (post.id == null) {
+    if (post.id === null) {
+      const index = this.company.posts.indexOf(post);
+      this.company.posts.splice(index, 1);
+    } else {
       this.postService.delete(post.id)
       .pipe(first())
         .subscribe(() => {
@@ -68,9 +119,6 @@ export class PostsComponent implements OnInit {
         error => {
             this.alertService.error(error);
         });
-    } else {
-      const index = this.company.posts.indexOf(post);
-      this.company.posts.splice(index, 1);
     }
   }
 }
