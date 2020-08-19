@@ -1,7 +1,7 @@
 <main fxLayout="column" fxFlex="100">
     <!-- header row -->
     <div class="top" fxLayout="row" fxFlex="8">
-      <div fxLayout="column" fxFlex="60">
+      <div fxLayout="column" fxFlex="70">
         <h1>{{post.name}}</h1>
 
         <!-- DAR Menu -->
@@ -28,7 +28,7 @@
         </mat-menu>
         <!-- End of Dar Menu -->
       </div>
-      <div fxLayout="column" #dateColumn fxFlex>
+      <div fxLayout="column" id="dateColumn" #dateColumn fxFlex fxFlexAlign="center end">
         <h1>{{dar.date | date: 'dd/MM/yyyy'}}</h1>
       </div>
     </div>
