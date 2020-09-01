@@ -114,19 +114,22 @@ namespace Kubex.BLL.Services
             var builder = new HtmlContentBuilder();
 
             builder.AppendHtml("<html><head></head><body>");
+            builder.AppendHtml($@"
+                <img src=""{company.LogoUrl}"" width=""100px"" height=""100px""/>
+            ");
+
 
             if (company.Posts == null || company.Posts.Count() <= 0)
                 throw new ApplicationException("The company does not have any posts to generate a PDF report from.");
 
             foreach (var post in company.Posts)
             {
-                builder.AppendHtmlLine($"<h1>{post.Name}</h1>");
-                
+                builder.AppendHtmlLine($"<h2>{post.Name}</h2>");       
                 var dars = await _dailyActivityReportService.GetDailyActivityReportsForPostAsync(post.Id);
 
                 foreach (var dar in dars)
                 {
-                    builder.AppendHtml($"<h2>{dar.Date.ToShortDateString()}</h2>");
+                    builder.AppendHtml($"<h3>{dar.Date.ToShortDateString()}</h3>");
                     builder.AppendHtml("<ul>");
                     foreach (var entry in dar.Entries)
                     {
