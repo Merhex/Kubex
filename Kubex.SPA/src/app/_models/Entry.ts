@@ -4,7 +4,7 @@ import { DailyActivityReport } from './dailyActivityReport';
 
 export class Entry {
     id?: number;
-    occuranceDate: Date;
+    occuranceDate: string;
     description: string;
     parentEntry?: Entry;
     dailyActivityReport?: DailyActivityReport;
