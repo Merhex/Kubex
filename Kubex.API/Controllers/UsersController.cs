@@ -69,7 +69,9 @@ namespace Kubex.API.Controllers
         [HttpPut("{userName}")]
         public async Task<IActionResult> UpdateUser(UserRegisterDTO dto) 
         {
-            if (HttpContext.User.Identity.Name == dto.UserName && HttpContext.User.Identity.IsAuthenticated) 
+            if (HttpContext.User.Identity.Name == dto.UserName
+                && HttpContext.User.Identity.IsAuthenticated
+                || HttpContext.User.IsInRole("Administrator")) 
             {
                 await _userService.UpdateUserAsync(dto);
 
