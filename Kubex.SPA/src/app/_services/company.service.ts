@@ -33,6 +33,10 @@ export class CompanyService {
     return this.http.post<Company>(this.baseUrl + 'create/', company);
   }
 
+  sendMail(companyId: number) {
+    return this.http.post(`${this.baseUrl}report/${companyId}`, {});
+  }
+
   delete(id: number) {
     return this.http.delete(this.baseUrl + id);
   }

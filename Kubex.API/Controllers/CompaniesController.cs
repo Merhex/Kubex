@@ -17,12 +17,15 @@ namespace Kubex.API.Controllers
     {
         private readonly ICompanyService _companyService;
         private readonly IFileService _fileService;
+        private readonly IEmailService _emailService;
 
         public CompaniesController(
             ICompanyService companyService,
-            IFileService fileService)
+            IFileService fileService,
+            IEmailService emailService)
         {
             _fileService = fileService;
+            _emailService = emailService;
             _companyService = companyService;
         }
 
@@ -40,6 +43,14 @@ namespace Kubex.API.Controllers
             var fileLocation = await _fileService.UploadImage(file);
 
             return Ok(new { path = fileLocation });
+        }
+
+        [HttpPost("report/{companyId}")]
+        public async Task<ActionResult> SendReports(int companyId) 
+        {
+            await _emailService.SendReport(companyId);
+
+            return Ok();
         }
 
         [HttpGet]

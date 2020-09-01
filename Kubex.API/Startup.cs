@@ -3,6 +3,8 @@ using System.IO;
 using System.Net;
 using System.Text;
 using AutoMapper;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Kubex.API.Middleware;
 using Kubex.BLL.Services;
 using Kubex.BLL.Services.Interfaces;
@@ -126,6 +128,8 @@ namespace Kubex.API
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IFileService, CloudinaryService>();
             services.AddScoped<IContactService, ContactService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

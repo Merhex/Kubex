@@ -19,6 +19,7 @@ export class EditComponent implements OnInit {
   companyForm: FormGroup;
   submitted = false;
   loading = false;
+  sending = false;
   isAddMode: boolean;
   id: number;
   logoUrl: string;
@@ -94,8 +95,17 @@ export class EditComponent implements OnInit {
   }
 
   sendPdf() {
-    console.log('Sending pdf to ' + this.company.email);
-    
+    this.sending = true;
+    this.companyService.sendMail(this.company.id).subscribe(
+      data => {
+        this.alertService.success('Email with reports has been sent to the company email address.');
+        this.sending = false;
+      },
+      err => {
+        this.alertService.error(err);
+        this.sending = false;
+      }
+    )
   }
 
   async onSubmit() {
