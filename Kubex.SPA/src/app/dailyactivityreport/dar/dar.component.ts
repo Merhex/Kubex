@@ -86,9 +86,9 @@ export class DarComponent implements OnInit {
   onSubmit() {
     // Zet ingegeven tijd om naar DateTime object
     const data = this.e.entryTime.value;
+
     const hours = data.substring(0, 2);
     const minutes = data.substring(3);
-
     const time = new Date();
     time.setHours(hours, minutes, 0);
 
@@ -99,7 +99,7 @@ export class DarComponent implements OnInit {
 
     location.name = this.e.entryLocation.value;
 
-    entry.occuranceDate = time;
+    entry.occuranceDate = time.toLocaleString();
     entry.location = this.e.entryLocation.value;
     entry.description = this.e.entryDescription.value;
     entry.priority = 'Low';
@@ -128,9 +128,9 @@ export class DarComponent implements OnInit {
   onSubmitSub(parentEntry: Entry) {
     // Zet ingegeven tijd om naar DateTime object
     const data = this.s.subEntryTime.value;
+
     const hours = data.substring(0, 2);
     const minutes = data.substring(3);
-
     const time = new Date();
     time.setHours(hours, minutes, 0);
 
@@ -141,7 +141,7 @@ export class DarComponent implements OnInit {
 
     location.name = this.s.subEntryLocation.value;
 
-    subEntry.occuranceDate = time;
+    subEntry.occuranceDate = time.toLocaleString();
     subEntry.description = this.s.subEntryDescription.value;
     subEntry.priority = 'Low';
     subEntry.entryType = 'Log';
