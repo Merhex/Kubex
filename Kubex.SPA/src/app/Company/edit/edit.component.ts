@@ -13,7 +13,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.css']
+  styleUrls: ['./edit.component.scss']
 })
 export class EditComponent implements OnInit {
   companyForm: FormGroup;
@@ -50,6 +50,7 @@ export class EditComponent implements OnInit {
     this.companyForm = this.formBuilder.group({
       name: ['', Validators.required],
       customerNumber: [''],
+      emailAddress: ['', [Validators.required, Validators.email]],
 
       // Address
       street: ['', Validators.required],
@@ -78,6 +79,7 @@ export class EditComponent implements OnInit {
               this.f.zip.setValue(company.address.zip);
               this.f.country.setValue(company.address.country);
               this.f.appartementBus.setValue(company.address.appartementBus);
+              this.f.emailAddress.setValue(company.email);
               
               console.log('logo url: ' + company.logoUrl);
               this.previewUrl = company.logoUrl;
@@ -89,6 +91,11 @@ export class EditComponent implements OnInit {
 
   addPost(post: Post) {
     this.ref.detectChanges();
+  }
+
+  sendPdf() {
+    console.log('Sending pdf to ' + this.company.email);
+    
   }
 
   async onSubmit() {
@@ -180,6 +187,7 @@ export class EditComponent implements OnInit {
 
     companyToRegister.name = this.f.name.value;
     companyToRegister.customerNumber = this.f.customerNumber.value;
+    companyToRegister.email = this.f.emailAddress.value;
 
     if(this.response.path) {
       companyToRegister.logoUrl = this.response.path;

@@ -13,6 +13,14 @@
           <mat-label>Customer Number</mat-label>
           <input matInput formControlName="customerNumber" placeholder="Ex. FC001">
         </mat-form-field>
+        <mat-form-field appearance="fill" fxFlex="50%"> 
+          <mat-label>Email address</mat-label>
+          <input matInput formControlName="emailAddress" placeholder="Ex. company@name.com" fxFlex="95%">
+          <button mat-mini-fab type="button" *ngIf="!isAddMode" (click)="sendPdf()">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            <mat-icon>description</mat-icon>
+          </button>
+        </mat-form-field>
 
         <app-address [formGroup]="companyForm"></app-address>
         <app-contact *ngIf="!isAddMode" [formGroup]="companyForm" [companyId]="id"></app-contact>

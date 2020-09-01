@@ -76,6 +76,7 @@ namespace Kubex.BLL.Services
             company.Address = updatedCompany.Address;
             company.CustomerNumber = updatedCompany.CustomerNumber;
             company.LogoUrl = updatedCompany.LogoUrl;
+            company.Email = updatedCompany.Email;
 
             if (! await _companyRepository.SaveAll())
                 throw new ApplicationException("Something went wrong updating the company");

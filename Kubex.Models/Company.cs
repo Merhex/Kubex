@@ -6,6 +6,7 @@ namespace Kubex.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Email { get; set; }
 
         public string LogoUrl { get; set; }
         public string CustomerNumber { get; set; }
